@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { BeatLoader } from 'react-spinners'
 import { Button, Input } from 'mdbreact'
 import { Navbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink } from 'mdbreact'
 import userManager from '../Authentication/userManager'
@@ -81,7 +80,7 @@ class MainNavbar extends React.Component {
                 <Collapse isOpen={this.state.collapse} navbar>
 
                     <NavbarBrand tag="span">
-                        BOILERPLATE
+                        React Templates
                     </NavbarBrand>
 
                     <NavbarNav left>
