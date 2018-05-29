@@ -57,7 +57,7 @@ class TextFilter extends React.Component {
             <tr>
               <td>
                 <Input size="sm" style={{ marginLeft: "0px", marginRight: "0px", marginTop: "-25px", width: "100%", fontSize: "14px" }}
-                  onChange={this.onChange.bind(this)} placeHolder="Type value here"
+                  onChange={this.onChange.bind(this)} hint="Type value here"
                   value={value} />
               </td>
               <td style={{ width: "1px" }}>
