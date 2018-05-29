@@ -1,7 +1,7 @@
 'use strict'
 
 import React from 'react'
-import { Select, SelectInput, SelectOptions, SelectOption } from 'mdbreact';
+import { Select, SelectInput, SelectOptions, SelectOption, Tooltip } from 'mdbreact';
 
 // Properties:
 //  - label : Component label
@@ -72,8 +72,6 @@ class SelectFilter extends React.Component {
 
       let selectedDataItem = data.filter(d => d.text === value)[0]
       if(typeof selectedDataItem !== 'undefined'){
-
- 
         filterCallback({id: selectedDataItem.id, value})
       }
     }
@@ -87,7 +85,7 @@ class SelectFilter extends React.Component {
       data.map(item => {
         if (typeof item.id !== 'undefined' && typeof item.text !== 'undefined') {
           listOptions.push(
-            <SelectOption key={item.id} id={item.id} triggerOptionClick={this.onSelect.bind(this)}>{item.text}</SelectOption>
+            <SelectOption  key={item.id} id={item.id} triggerOptionClick={this.onSelect.bind(this)}>{item.text}</SelectOption>
           )
         }
       })
@@ -107,11 +105,17 @@ class SelectFilter extends React.Component {
 
     return (
       <>
-        <label data-tip={tooltip} style={{ fontWeight: "bold" }}>{label}</label>
+        <Tooltip 
+          placement="top" 
+          component="label" 
+          tooltipContent={tooltip}> 
+            <b>{label}</b>
+        </Tooltip>
 
         <Select color="primary">
           <SelectInput style={{ height: "35px" }} value={selectedValue}></SelectInput>
           <SelectOptions>
+            {/* <SelectOption disabled>Select...</SelectOption> */}
             {this.renderSelectOptions(data)}
           </SelectOptions>
         </Select>
