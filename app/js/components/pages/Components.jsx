@@ -36,9 +36,8 @@ class Components extends React.Component {
         <br />
 
         <div className="row">
-          <div className="col-md-8"> {/* COMPONENTS */}
-
-            <div className="row"> {/* COMPONENTS ROW 1 */}
+          <div className="col-md-8">
+            <div className="row">
               <div className="col-md-6">
                 <Card>
                   <CardBody style={{ height: "180px" }}>
@@ -72,56 +71,56 @@ class Components extends React.Component {
 
             <br />
 
-            <div className="row">  {/* COMPONENTS ROW 2 */}
+            <div className="row">
               <div className="col-md-12">
                 <Card>
-                  <CardBody>
+                  <CardBody style={{ height: "180px" }}>
                     <CardTitle style={{ color: "#1565c0" }}>Tree Select Filter</CardTitle>
                     <br />
                     <TreeSelectFilter
                       label="Filter by tree selection:"
                       tooltip="Select filter value from tree"
                       selectedValue=""
-                      data={[{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{id: 111, text: "SubChild1"}] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]}
+                      data={[{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{ id: 111, text: "SubChild1" }] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]}
                       filterCallback={this.treeSelectFilterCallbackHandler.bind(this)}
                     />
                   </CardBody>
                 </Card>
               </div>
             </div>
-
-            <br/>
-
-            <div className="row">  {/* COMPONENTS ROW 3 */}
-              <div className="col-md-12">
-                <Card>
-                  <CardBody>
-                    <CardTitle style={{ color: "#1565c0" }}>Tree Filter</CardTitle>
-                    <br />
-                    <TreeFilter
-                      label="Filter by tree selection:"
-                      tooltip="Select filter value from tree"
-                      selectedValue=""
-                      data={[{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{id: 111, text: "SubChild1"}] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]}
-                      filterCallback={this.treeFilterCallbackHandler.bind(this)}
-                    />
-                  </CardBody>
-                </Card>
-              </div>
-            </div>
           </div>
-
-          <div className="col-md-4"> {/* INFORMATION PANEL */}
+          <div className="col-md-4">
             <Card>
-              <CardBody>
-                <CardTitle><u>Additional Information</u></CardTitle>
+              <CardBody style={{ height: "385px" }}>
+                <CardTitle style={{ color: "#1565c0" }}>Tree Filter</CardTitle>
                 <br />
-                <p>
-                  Additional information about the selected component will be shown here.
-                </p>
+                <TreeFilter
+                  label="Filter by tree selection:"
+                  tooltip="Select filter value from tree"
+                  selectedValue="SubChild1"
+                  data={[{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{ id: 111, text: "SubChild1" }] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]}
+                  filterCallback={this.treeFilterCallbackHandler.bind(this)}
+                />
               </CardBody>
             </Card>
           </div>
+        </div>
+
+
+        <div className="row"> {/* COMPONENTS ROW 1 */}
+
+        </div>
+
+        <br />
+
+        <div className="row">  {/* COMPONENTS ROW 2 */}
+
+        </div>
+
+        <br />
+
+        <div className="row">  {/* COMPONENTS ROW 3 */}
+
         </div>
       </>
     )
