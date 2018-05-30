@@ -26,7 +26,8 @@ import Home from './components/Pages/Home.jsx'
 import Components from './components/Pages/Components.jsx'
 import Login from './components/Authentication/Login.jsx'
 import Logout from './components/Authentication/Logout.jsx'
-import MainNavbar from './components/Pages/MainNavbar.jsx'
+import Navbar from './components/header_footer/Navbar.jsx'
+import Footer from './components/header_footer/Footer.jsx'
 import CallbackPage from '../js/components/Authentication/callback.jsx';
 import LoggedOut from './components/Authentication/LoggedOut.jsx';
 import userManager from './components/Authentication/userManager';
@@ -56,7 +57,7 @@ class App extends React.Component {
 
   getNavbar(){
     if(this.state.navbar){
-      return <MainNavbar />
+      return <Navbar />
     }
   }
 
@@ -77,6 +78,8 @@ class App extends React.Component {
               <Route path="/loggedout" component={LoggedOut} exact />
               <Route path="/callback" component={CallbackPage} />
             </Switch>
+
+            <Footer />
 
           </div>
 

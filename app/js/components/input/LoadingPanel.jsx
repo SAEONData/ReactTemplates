@@ -7,7 +7,7 @@ import { Spinner, Tooltip } from 'mdbreact'
 //  - header : Component header
 //  - description : String/text description
 
-class _LoadingPanel extends React.Component {
+class LoadingPanel extends React.Component {
 
   constructor(props) {
     super(props);
@@ -47,4 +47,4 @@ class _LoadingPanel extends React.Component {
   }
 }
 
-export default _LoadingPanel
+export default LoadingPanel

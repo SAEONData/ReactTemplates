@@ -16,7 +16,7 @@ const TreeNode = Tree.TreeNode
 //           [{id: 1, text: "Parent1", children: [{id: 11, text: "Child1"}, {id: 12, text: "Child2"}]}, {id: 2, text: "Parent2"}]
 //  - callback : callback to send filter value
 
-class _TreeInput extends React.Component {
+class TreeInput extends React.Component {
 
   constructor(props) {
     super(props);
@@ -135,4 +135,4 @@ class _TreeInput extends React.Component {
   }
 }
 
-export default _TreeInput
+export default TreeInput

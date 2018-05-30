@@ -9,7 +9,7 @@ import { Button, Input, Tooltip } from 'mdbreact'
 //  - value : String/text value
 //  - callback : callback to send filter value
 
-class _TextInputWithApply extends React.Component {
+class TextInputWithApply extends React.Component {
 
   constructor(props) {
     super(props);
@@ -82,4 +82,4 @@ class _TextInputWithApply extends React.Component {
   }
 }
 
-export default _TextInputWithApply
+export default TextInputWithApply

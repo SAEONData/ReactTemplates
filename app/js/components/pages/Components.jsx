@@ -3,13 +3,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Button, Card, CardBody, CardImage, CardTitle, CardText, InputSwitch, FormInline } from 'mdbreact';
-import _TextInput from '../controls/_TextInput.jsx'
-import _TextInputWithApply from '../controls/_TextInputWithApply.jsx'
-import _TextAreaInput from '../controls/_TextAreaInput.jsx'
-import _SelectInput from '../controls/_SelectInput.jsx'
-import _TreeSelectInput from '../controls/_TreeSelectInput.jsx'
-import _TreeInput from '../controls/_TreeInput.jsx'
-import _LoadingPanel from '../controls/_LoadingPanel.jsx'
+import TextInput from '../input/TextInput.jsx'
+import TextInputWithApply from '../input/TextInputWithApply.jsx'
+import TextAreaInput from '../input/TextAreaInput.jsx'
+import SelectInput from '../input/SelectInput.jsx'
+import TreeSelectInput from '../input/TreeSelectInput.jsx'
+import TreeInput from '../input/TreeInput.jsx'
+import LoadingPanel from '../input/LoadingPanel.jsx'
 
 const mapStateToProps = (state, props) => {
   return { }
@@ -97,7 +97,7 @@ class Components extends React.Component {
                   <CardBody style={{ height: "180px" }}>
                     <CardTitle style={{ color: "#1565c0" }}>Text Input With Apply</CardTitle>
                     <br />
-                    <_TextInputWithApply
+                    <TextInputWithApply
                       label="Type something:"
                       tooltip="Type something below"
                       value=""
@@ -112,7 +112,7 @@ class Components extends React.Component {
                   <CardBody style={{ height: "180px" }}>
                     <CardTitle style={{ color: "#1565c0" }}>Text Input</CardTitle>
                     <br />
-                    <_TextInput
+                    <TextInput
                       label="Type something:"
                       tooltip="Type something below"
                       value=""
@@ -132,7 +132,7 @@ class Components extends React.Component {
                   <CardBody style={{ minHeight: "180px" }}>
                     <CardTitle style={{ color: "#1565c0" }}>Text-Area Input</CardTitle>
                     <br />
-                    <_TextAreaInput
+                    <TextAreaInput
                       label="Type something longer:"
                       tooltip="Type something longer below"
                       value="This input allows for much longer text and automatically resizes to fit its contents."
@@ -149,7 +149,7 @@ class Components extends React.Component {
               <CardBody style={{ height: "402px" }}>
                 <CardTitle style={{ color: "#1565c0" }}>Tree Input</CardTitle>
                 <br />
-                <_TreeInput
+                <TreeInput
                   label="Pick from the tree:"
                   tooltip="Pick from the tree below"
                   selectedValue="SubChild1"
@@ -170,7 +170,7 @@ class Components extends React.Component {
               <CardBody style={{ height: "180px" }}>
                 <CardTitle style={{ color: "#1565c0" }}>Tree-Select Input</CardTitle>
                 <br />
-                <_TreeSelectInput
+                <TreeSelectInput
                   label="Select something:"
                   tooltip="Select something below"
                   selectedValue=""
@@ -186,7 +186,7 @@ class Components extends React.Component {
               <CardBody style={{ height: "180px" }}>
                 <CardTitle style={{ color: "#1565c0" }}>Select Input</CardTitle>
                 <br />
-                <_SelectInput
+                <SelectInput
                   label="Make a selection:"
                   tooltip="Make a selection below"
                   selectedValue=""
@@ -202,7 +202,7 @@ class Components extends React.Component {
 
         <br />
 
-        <_LoadingPanel header="LOADING" description="Please wait..." enabled={showLoader} />
+        <LoadingPanel header="LOADING" description="Please wait..." enabled={showLoader} />
       </>
     )
   }

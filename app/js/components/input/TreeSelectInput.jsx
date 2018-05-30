@@ -17,7 +17,7 @@ const TreeSelectNode = TreeSelect.TreeNode;
 //           [{id: 1, text: "Parent1", children: [{id: 11, text: "Child1"}, {id: 12, text: "Child2"}]}, {id: 2, text: "Parent2"}]
 //  - callback : callback to send filter value
 
-class _TreeSelectInput extends React.Component {
+class TreeSelectInput extends React.Component {
 
   constructor(props) {
     super(props);
@@ -102,4 +102,4 @@ class _TreeSelectInput extends React.Component {
   }
 }
 
-export default _TreeSelectInput
+export default TreeSelectInput

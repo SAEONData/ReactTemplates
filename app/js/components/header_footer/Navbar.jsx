@@ -3,7 +3,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Button, Input } from 'mdbreact'
-import { Navbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink } from 'mdbreact'
+import { Navbar as MDBNavbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink } from 'mdbreact'
 import userManager from '../Authentication/userManager'
 import { ssoBaseURL } from '../../config/ssoBaseURL'
 import { locale } from 'moment';
@@ -13,7 +13,7 @@ const mapStateToProps = (state, props) => {
   return { user }
 }
 
-class MainNavbar extends React.Component {
+class Navbar extends React.Component {
 
   constructor(props) {
     super(props)
@@ -93,7 +93,7 @@ class MainNavbar extends React.Component {
   render() {
 
     return (
-      <Navbar size="sm" color="indigo" expand="md" dark >
+      <MDBNavbar size="sm" color="blue darken-2" expand="md" dark >
         {!this.state.isWideEnough && <NavbarToggler onClick={this.onClick} />}
         <Collapse isOpen={this.state.collapse} navbar>
 
@@ -119,9 +119,9 @@ class MainNavbar extends React.Component {
           </NavbarNav>
 
         </Collapse>
-      </Navbar>
+      </MDBNavbar>
     )
   }
 }
 
-export default connect(mapStateToProps)(MainNavbar)
+export default connect(mapStateToProps)(Navbar)

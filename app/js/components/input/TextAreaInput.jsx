@@ -2,6 +2,9 @@
 
 import React from 'react'
 import { Input, Tooltip } from 'mdbreact'
+import TextareaAutosize from "react-textarea-autosize"
+
+//Requires: react-textarea-autosize
 
 // Properties:
 //  - label : Component label
@@ -9,7 +12,7 @@ import { Input, Tooltip } from 'mdbreact'
 //  - value : String/text value
 //  - callback : callback to send filter value
 
-class _TextInput extends React.Component {
+class TextAreaInput extends React.Component {
 
   constructor(props) {
     super(props);
@@ -54,12 +57,25 @@ class _TextInput extends React.Component {
           <b>{label}</b>
         </Tooltip>
 
-        <Input disabled={!allowEdit} size="sm" style={{ marginLeft: "0px", marginRight: "0px", marginTop: "-25px", width: "100%", fontSize: "15px" }}
+        {/* <Input disabled={!allowEdit} size="sm" style={{ marginLeft: "0px", marginRight: "0px", marginTop: "-25px", width: "100%", fontSize: "15px" }}
           onChange={this.onChange.bind(this)} hint="Type value here"
-          value={value} />
+          value={value} /> */}
+
+        <TextareaAutosize
+          readOnly={!allowEdit}
+          style={{
+            borderStyle: "solid",
+            borderWidth: "0px 0px 1px 0px",
+            borderColor: "#b4b4b4",
+            paddingBottom: "4px",
+            width: "100%"
+          }}
+          value={value}
+          onChange={this.onChange.bind(this)}
+        />
       </>
     )
   }
 }
 
-export default _TextInput
+export default TextAreaInput

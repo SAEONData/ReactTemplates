@@ -1,7 +1,7 @@
 'use strict'
 
 import React from 'react'
-import { Select, SelectInput, SelectOptions, SelectOption, Tooltip } from 'mdbreact';
+import { Select, SelectInput as MBDSelectInput, SelectOptions, SelectOption, Tooltip } from 'mdbreact';
 
 // Properties:
 //  - label : Component label
@@ -10,7 +10,7 @@ import { Select, SelectInput, SelectOptions, SelectOption, Tooltip } from 'mdbre
 //  - data : Data for list >> [{id: 1, text: "one"}, ...]
 //  - callback : callback to send filter value
 
-class _SelectInput extends React.Component {
+class SelectInput extends React.Component {
 
   constructor(props) {
     super(props);
@@ -121,7 +121,7 @@ class _SelectInput extends React.Component {
         </Tooltip>
 
         <Select color="primary">
-          <SelectInput disabled={!allowEdit} style={{ height: "35px" }} value={selectedValue}></SelectInput>
+          <MBDSelectInput disabled={!allowEdit} style={{ height: "35px" }} value={selectedValue}></MBDSelectInput>
           <SelectOptions>
             {this.renderSelectOptions(data)}
           </SelectOptions>
@@ -131,4 +131,4 @@ class _SelectInput extends React.Component {
   }
 }
 
-export default _SelectInput
+export default SelectInput
