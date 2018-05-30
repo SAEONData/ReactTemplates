@@ -5,7 +5,7 @@ import { Tooltip } from 'mdbreact';
 
 //AntD Tree
 import Tree from 'antd/lib/tree'
-import '../../../../css/antd.tree.css' //Overrides default antd.tree css
+import '../../../css/antd.tree.css' //Overrides default antd.tree css
 const TreeNode = Tree.TreeNode
 
 // Properties:
@@ -16,7 +16,7 @@ const TreeNode = Tree.TreeNode
 //           [{id: 1, text: "Parent1", children: [{id: 11, text: "Child1"}, {id: 12, text: "Child2"}]}, {id: 2, text: "Parent2"}]
 //  - filterCallback : callback to send filter value
 
-class TreeFilter extends React.Component {
+class _TreeInput extends React.Component {
 
   constructor(props) {
     super(props);
@@ -95,7 +95,12 @@ class TreeFilter extends React.Component {
 
     let { filterCallback } = this.props
     if (typeof filterCallback !== 'undefined') {
-      filterCallback({ id: parseInt(info.node.props.eventKey), text: info.node.props.title })
+      if (info.selected === true) {
+        filterCallback({ id: parseInt(info.node.props.eventKey), text: info.node.props.title })
+      }
+      else {
+        filterCallback({ id: 0, text: "" })
+      }
     }
   }
 
@@ -105,7 +110,7 @@ class TreeFilter extends React.Component {
 
   render() {
 
-    let { label, tooltip, data } = this.props
+    let { label, tooltip, data, allowEdit } = this.props
     let { selectedKeys, expandedKeys } = this.state
 
     return (
@@ -118,6 +123,7 @@ class TreeFilter extends React.Component {
         </Tooltip>
 
         <Tree
+          disabled={!allowEdit}
           onSelect={this.onSelect.bind(this)}
           expandedKeys={expandedKeys}
           selectedKeys={selectedKeys}
@@ -129,4 +135,4 @@ class TreeFilter extends React.Component {
   }
 }
 
-export default TreeFilter
+export default _TreeInput

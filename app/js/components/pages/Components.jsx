@@ -1,38 +1,61 @@
 'use strict'
 
 import React from 'react'
-import { Button, Card, CardBody, CardImage, CardTitle, CardText } from 'mdbreact';
-import TextFilter from '../controls/filters/TextFilter.jsx'
-import SelectFilter from '../controls/filters/SelectFilter.jsx'
-import TreeSelectFilter from '../controls/filters/TreeSelectFilter.jsx'
-import TreeFilter from '../controls/filters/TreeFilter.jsx'
+import { Button, Card, CardBody, CardImage, CardTitle, CardText, InputSwitch, FormInline } from 'mdbreact';
+import _TextInputWithApply from '../controls/_TextInputWithApply.jsx'
+import _SelectInput from '../controls/_SelectInput.jsx'
+import _TreeSelectInput from '../controls/_TreeSelectInput.jsx'
+import _TreeInput from '../controls/_TreeInput.jsx'
 
 class Components extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.state = { allowEdit: true}
   }
 
-  textFilterCallbackHandler(value) {
-    console.log("Text filter value:", value)
+  textFilterCallbackHandler(text) {
+    console.log("Text input - text:", text)
   }
 
   selectFilterCallbackHandler(selectedItem) {
-    console.log("Selected filter item:", selectedItem)
+    console.log("Select input - selected item:", selectedItem)
   }
 
   treeSelectFilterCallbackHandler(selectedNode) {
-    console.log("Selected filter node:", selectedNode)
+    console.log("Tree-select input - selected node:", selectedNode)
   }
 
   treeFilterCallbackHandler(selectedNode) {
-    console.log("Selected filter node:", selectedNode)
+    console.log("Tree input - selected node:", selectedNode)
+  }
+
+  AllowEditToggle(){
+    this.setState({ allowEdit: !this.state.allowEdit})
   }
 
   render() {
 
+    let { allowEdit } = this.state
+
     return (
       <>
+        <br />
+
+        <div className="row">
+          <div className="col-md-12">
+            <Card>
+              <CardBody style={{ height: "60px" }}>
+                <FormInline>
+                  <label><b>Allow edit:</b>&nbsp;&nbsp;</label>
+                  <InputSwitch checked={allowEdit} onChange={this.AllowEditToggle.bind(this)} />
+                </FormInline>
+              </CardBody>
+            </Card>
+          </div>
+        </div>
+
         <br />
 
         <div className="row">
@@ -41,13 +64,14 @@ class Components extends React.Component {
               <div className="col-md-6">
                 <Card>
                   <CardBody style={{ height: "180px" }}>
-                    <CardTitle style={{ color: "#1565c0" }}>Text Filter</CardTitle>
+                    <CardTitle style={{ color: "#1565c0" }}>Text Input With Apply</CardTitle>
                     <br />
-                    <TextFilter
-                      label="Filter by text:"
-                      tooltip="Type filter value in the box below"
+                    <_TextInputWithApply
+                      label="Type something:"
+                      tooltip="Type something below"
                       value=""
                       filterCallback={this.textFilterCallbackHandler.bind(this)}
+                      allowEdit={allowEdit}
                     />
                   </CardBody>
                 </Card>
@@ -55,14 +79,15 @@ class Components extends React.Component {
               <div className="col-md-6">
                 <Card>
                   <CardBody style={{ height: "180px" }}>
-                    <CardTitle style={{ color: "#1565c0" }}>Select Filter</CardTitle>
+                    <CardTitle style={{ color: "#1565c0" }}>Select Input</CardTitle>
                     <br />
-                    <SelectFilter
-                      label="Filter by selection:"
-                      tooltip="Select filter value from the box below"
+                    <_SelectInput
+                      label="Make a selection:"
+                      tooltip="Make a selection below"
                       selectedValue=""
                       data={[{ id: 1, text: "One" }, { id: 2, text: "Two" }, { id: 3, text: "Three" }]}
                       filterCallback={this.selectFilterCallbackHandler.bind(this)}
+                      allowEdit={allowEdit}
                     />
                   </CardBody>
                 </Card>
@@ -75,14 +100,15 @@ class Components extends React.Component {
               <div className="col-md-12">
                 <Card>
                   <CardBody style={{ height: "180px" }}>
-                    <CardTitle style={{ color: "#1565c0" }}>Tree Select Filter</CardTitle>
+                    <CardTitle style={{ color: "#1565c0" }}>Tree-Select Input</CardTitle>
                     <br />
-                    <TreeSelectFilter
-                      label="Filter by tree selection:"
-                      tooltip="Select filter value from tree"
+                    <_TreeSelectInput
+                      label="Select something:"
+                      tooltip="Select something below"
                       selectedValue=""
                       data={[{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{ id: 111, text: "SubChild1" }] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]}
                       filterCallback={this.treeSelectFilterCallbackHandler.bind(this)}
+                      allowEdit={allowEdit}
                     />
                   </CardBody>
                 </Card>
@@ -92,14 +118,15 @@ class Components extends React.Component {
           <div className="col-md-4">
             <Card>
               <CardBody style={{ height: "385px" }}>
-                <CardTitle style={{ color: "#1565c0" }}>Tree Filter</CardTitle>
+                <CardTitle style={{ color: "#1565c0" }}>Tree Input</CardTitle>
                 <br />
-                <TreeFilter
-                  label="Filter by tree selection:"
-                  tooltip="Select filter value from tree"
+                <_TreeInput
+                  label="Pick from the tree:"
+                  tooltip="Pick from the tree below"
                   selectedValue="SubChild1"
                   data={[{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{ id: 111, text: "SubChild1" }] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]}
                   filterCallback={this.treeFilterCallbackHandler.bind(this)}
+                  allowEdit={allowEdit}
                 />
               </CardBody>
             </Card>

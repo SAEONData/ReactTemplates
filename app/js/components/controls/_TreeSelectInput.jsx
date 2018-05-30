@@ -5,8 +5,8 @@ import { Tooltip } from 'mdbreact';
 
 //AntD Tree-Select
 import TreeSelect from 'antd/lib/tree-select'
-import '../../../../css/antd.tree-select.css' //Overrides default antd.tree-select css
-import '../../../../css/antd.select.css' //Overrides default antd.select css
+import '../../../css/antd.tree-select.css' //Overrides default antd.tree-select css
+import '../../../css/antd.select.css' //Overrides default antd.select css
 const TreeSelectNode = TreeSelect.TreeNode;
 
 // Properties:
@@ -17,7 +17,7 @@ const TreeSelectNode = TreeSelect.TreeNode;
 //           [{id: 1, text: "Parent1", children: [{id: 11, text: "Child1"}, {id: 12, text: "Child2"}]}, {id: 2, text: "Parent2"}]
 //  - filterCallback : callback to send filter value
 
-class TreeSelectFilter extends React.Component {
+class _TreeSelectInput extends React.Component {
 
   constructor(props) {
     super(props);
@@ -56,14 +56,19 @@ class TreeSelectFilter extends React.Component {
     this.setState({ selectedValue: value })
 
     let { filterCallback } = this.props
-    if (typeof filterCallback !== 'undefined'){
-      filterCallback({id: extra.triggerNode.props.eventKey, text: value})
+    if (typeof filterCallback !== 'undefined') {
+      if (typeof extra.triggerNode !== 'undefined') {
+        filterCallback({ id: extra.triggerNode.props.eventKey, text: value })
+      }
+      else {
+        filterCallback({ id: 0, text: "" })
+      }
     }
   }
 
   render() {
 
-    let { label, tooltip, data } = this.props
+    let { label, tooltip, data, allowEdit } = this.props
     let { selectedValue } = this.state
 
     if (typeof selectedValue === 'undefined' || selectedValue === "" || selectedValue === null) {
@@ -80,7 +85,7 @@ class TreeSelectFilter extends React.Component {
         </Tooltip>
 
         <TreeSelect
-          // disabled={this.getDisabledState()}
+          disabled={!allowEdit}
           showSearch
           searchPlaceholder="Search..."
           style={{ width: "100%" }}
@@ -97,4 +102,4 @@ class TreeSelectFilter extends React.Component {
   }
 }
 
-export default TreeSelectFilter
+export default _TreeSelectInput

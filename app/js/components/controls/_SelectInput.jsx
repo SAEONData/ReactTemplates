@@ -10,7 +10,7 @@ import { Select, SelectInput, SelectOptions, SelectOption, Tooltip } from 'mdbre
 //  - data : Data for list >> [{id: 1, text: "one"}, ...]
 //  - filterCallback : callback to send filter value
 
-class SelectFilter extends React.Component {
+class _SelectInput extends React.Component {
 
   constructor(props) {
     super(props);
@@ -53,6 +53,9 @@ class SelectFilter extends React.Component {
 
     document.addEventListener('click', this.onClick);
 
+    //Insert "no-selection" entry
+    this.props.data.splice(0, 0, { id: 0, text: "Select..." })
+
     //Init state
     let { selectedValue } = this.props
 
@@ -68,11 +71,16 @@ class SelectFilter extends React.Component {
     this.setState({ selectedValue: value })
 
     let { filterCallback, data } = this.props
-    if(typeof filterCallback !== 'undefined' && typeof data !== 'undefined'){
+    if (typeof filterCallback !== 'undefined' && typeof data !== 'undefined') {
 
       let selectedDataItem = data.filter(d => d.text === value)[0]
-      if(typeof selectedDataItem !== 'undefined'){
-        filterCallback({id: selectedDataItem.id, value})
+      if (typeof selectedDataItem !== 'undefined') {
+        if (selectedDataItem.id > 0) {
+          filterCallback({ id: selectedDataItem.id, text: value })
+        }
+        else {
+          filterCallback({ id: 0, text: "" })
+        }
       }
     }
   }
@@ -85,7 +93,7 @@ class SelectFilter extends React.Component {
       data.map(item => {
         if (typeof item.id !== 'undefined' && typeof item.text !== 'undefined') {
           listOptions.push(
-            <SelectOption  key={item.id} id={item.id} triggerOptionClick={this.onSelect.bind(this)}>{item.text}</SelectOption>
+            <SelectOption key={item.id} id={item.id} triggerOptionClick={this.onSelect.bind(this)}>{item.text}</SelectOption>
           )
         }
       })
@@ -96,26 +104,25 @@ class SelectFilter extends React.Component {
 
   render() {
 
-    let { label, tooltip, data } = this.props
+    let { label, tooltip, data, allowEdit } = this.props
     let { selectedValue } = this.state
 
-    if(typeof selectedValue === 'undefined' || selectedValue === "" || selectedValue === null){
+    if (typeof selectedValue === 'undefined' || selectedValue === "" || selectedValue === null) {
       selectedValue = "Select..."
     }
 
     return (
       <>
-        <Tooltip 
-          placement="top" 
-          component="label" 
-          tooltipContent={tooltip}> 
-            <b>{label}</b>
+        <Tooltip
+          placement="top"
+          component="label"
+          tooltipContent={tooltip}>
+          <b>{label}</b>
         </Tooltip>
 
         <Select color="primary">
-          <SelectInput style={{ height: "35px" }} value={selectedValue}></SelectInput>
+          <SelectInput disabled={!allowEdit} style={{ height: "35px" }} value={selectedValue}></SelectInput>
           <SelectOptions>
-            {/* <SelectOption disabled>Select...</SelectOption> */}
             {this.renderSelectOptions(data)}
           </SelectOptions>
         </Select>
@@ -124,4 +131,4 @@ class SelectFilter extends React.Component {
   }
 }
 
-export default SelectFilter
+export default _SelectInput

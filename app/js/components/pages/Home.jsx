@@ -17,7 +17,8 @@ class Home extends React.Component {
           <h1>Boilerplate React project</h1>
           <p className="lead">
             This project serves as a template for new React projects and
-            contains some generic reusable components for ease of use.
+            contains some generic template components for reuse in other 
+            projects.
           </p>
           <p className="lead">
             See the <a href="/#/components" >Components</a> page for more details.

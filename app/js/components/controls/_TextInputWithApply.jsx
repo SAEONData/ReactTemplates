@@ -9,7 +9,7 @@ import { Button, Input, Tooltip } from 'mdbreact'
 //  - value : String/text value
 //  - filterCallback : callback to send filter value
 
-class TextFilter extends React.Component {
+class _TextInputWithApply extends React.Component {
 
   constructor(props) {
     super(props);
@@ -45,7 +45,7 @@ class TextFilter extends React.Component {
 
   render() {
 
-    let { label, tooltip } = this.props
+    let { label, tooltip, allowEdit } = this.props
     let { value } = this.state
 
     return (
@@ -61,12 +61,13 @@ class TextFilter extends React.Component {
           <tbody>
             <tr>
               <td>
-                <Input size="sm" style={{ marginLeft: "0px", marginRight: "0px", marginTop: "-25px", width: "100%", fontSize: "15px" }}
+                <Input disabled={!allowEdit} size="sm" style={{ marginLeft: "0px", marginRight: "0px", marginTop: "-25px", width: "100%", fontSize: "15px" }}
                   onChange={this.onChange.bind(this)} hint="Type value here"
                   value={value} />
               </td>
               <td style={{ width: "1px" }}>
                 <Button
+                  disabled={!allowEdit}
                   color="primary"
                   size="sm"
                   style={{ height: "32px", marginTop: "-20px", marginRight: "0px" }}
@@ -81,4 +82,4 @@ class TextFilter extends React.Component {
   }
 }
 
-export default TextFilter
+export default _TextInputWithApply
