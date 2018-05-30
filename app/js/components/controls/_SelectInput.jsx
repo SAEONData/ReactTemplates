@@ -8,7 +8,7 @@ import { Select, SelectInput, SelectOptions, SelectOption, Tooltip } from 'mdbre
 //  - tooltip : Tooltip
 //  - selectedValue : String/text value
 //  - data : Data for list >> [{id: 1, text: "one"}, ...]
-//  - filterCallback : callback to send filter value
+//  - callback : callback to send filter value
 
 class _SelectInput extends React.Component {
 
@@ -70,16 +70,16 @@ class _SelectInput extends React.Component {
 
     this.setState({ selectedValue: value })
 
-    let { filterCallback, data } = this.props
-    if (typeof filterCallback !== 'undefined' && typeof data !== 'undefined') {
+    let { callback, data } = this.props
+    if (typeof callback !== 'undefined' && typeof data !== 'undefined') {
 
       let selectedDataItem = data.filter(d => d.text === value)[0]
       if (typeof selectedDataItem !== 'undefined') {
         if (selectedDataItem.id > 0) {
-          filterCallback({ id: selectedDataItem.id, text: value })
+          callback({ id: selectedDataItem.id, text: value })
         }
         else {
-          filterCallback({ id: 0, text: "" })
+          callback({ id: 0, text: "" })
         }
       }
     }

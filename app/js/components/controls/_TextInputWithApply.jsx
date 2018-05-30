@@ -7,7 +7,7 @@ import { Button, Input, Tooltip } from 'mdbreact'
 //  - label : Component label
 //  - tooltip : Tooltip
 //  - value : String/text value
-//  - filterCallback : callback to send filter value
+//  - callback : callback to send filter value
 
 class _TextInputWithApply extends React.Component {
 
@@ -36,10 +36,10 @@ class _TextInputWithApply extends React.Component {
 
   onClick(filterValue, e) {
 
-    let { filterCallback } = this.props
+    let { callback } = this.props
 
-    if (typeof filterCallback !== 'undefined') {
-      filterCallback(filterValue)
+    if (typeof callback !== 'undefined') {
+      callback(filterValue)
     }
   }
 

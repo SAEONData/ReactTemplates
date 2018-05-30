@@ -14,7 +14,7 @@ const TreeNode = Tree.TreeNode
 //  - selectedValue : String/text value
 //  - data : Data for list >> 
 //           [{id: 1, text: "Parent1", children: [{id: 11, text: "Child1"}, {id: 12, text: "Child2"}]}, {id: 2, text: "Parent2"}]
-//  - filterCallback : callback to send filter value
+//  - callback : callback to send filter value
 
 class _TreeInput extends React.Component {
 
@@ -93,13 +93,13 @@ class _TreeInput extends React.Component {
 
     this.setState({ selectedKeys })
 
-    let { filterCallback } = this.props
-    if (typeof filterCallback !== 'undefined') {
+    let { callback } = this.props
+    if (typeof callback !== 'undefined') {
       if (info.selected === true) {
-        filterCallback({ id: parseInt(info.node.props.eventKey), text: info.node.props.title })
+        callback({ id: parseInt(info.node.props.eventKey), text: info.node.props.title })
       }
       else {
-        filterCallback({ id: 0, text: "" })
+        callback({ id: 0, text: "" })
       }
     }
   }
