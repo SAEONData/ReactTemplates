@@ -1,11 +1,28 @@
 'use strict'
 
 import React from 'react'
+import { connect } from 'react-redux'
+
+const mapStateToProps = (state, props) => {
+  return { }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      updateNav: payload => {
+          dispatch({ type: "NAV", payload })
+      }
+  }
+}
 
 class Home extends React.Component {
 
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount(){
+    this.props.updateNav(location.hash)
   }
 
   render() {
@@ -29,4 +46,4 @@ class Home extends React.Component {
   }
 }
 
-export default Home
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

@@ -6,6 +6,7 @@ import { Button, Input } from 'mdbreact'
 import { Navbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink } from 'mdbreact'
 import userManager from '../Authentication/userManager'
 import { ssoBaseURL } from '../../config/ssoBaseURL'
+import { locale } from 'moment';
 
 const mapStateToProps = (state, props) => {
   let user = state.oidc.user
@@ -20,7 +21,8 @@ class MainNavbar extends React.Component {
     this.state = {
       collapse: false,
       isWideEnough: false,
-      dropdownOpen: false
+      dropdownOpen: false,
+      hash: ""
     }
 
     this.onClick = this.onClick.bind(this)
@@ -28,6 +30,10 @@ class MainNavbar extends React.Component {
     this.LoginLogout = this.LoginLogout.bind(this)
     this.GetUser = this.GetUser.bind(this)
     this.Register = this.Register.bind(this)
+  }
+
+  componentDidMount() {
+    this.setState({ hash: location.hash })
   }
 
   onClick() {
@@ -73,7 +79,19 @@ class MainNavbar extends React.Component {
     }
   }
 
+  makeNavLink(href, text) {
+
+    let { hash } = this.state
+
+    return (
+      <NavItem active={hash === href} onClick={() => this.setState({ hash: href })}>
+        <a className="nav-link" href={href}>{text}</a>
+      </NavItem>
+    )
+  }
+
   render() {
+
     return (
       <Navbar size="sm" color="indigo" expand="md" dark >
         {!this.state.isWideEnough && <NavbarToggler onClick={this.onClick} />}
@@ -84,12 +102,8 @@ class MainNavbar extends React.Component {
           </NavbarBrand>
 
           <NavbarNav left>
-            <NavItem>
-              <a className="nav-link" href="#">Home</a>
-            </NavItem>
-            <NavItem>
-              <a className="nav-link" href="#/components">Components</a>
-            </NavItem>
+            {this.makeNavLink("#/", "Home")}
+            {this.makeNavLink("#/components", "Components")}
           </NavbarNav>
 
           <NavbarNav right>

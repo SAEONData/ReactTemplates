@@ -1,12 +1,27 @@
 'use strict'
 
 import React from 'react'
+import { connect } from 'react-redux'
 import { Button, Card, CardBody, CardImage, CardTitle, CardText, InputSwitch, FormInline } from 'mdbreact';
+import _TextInput from '../controls/_TextInput.jsx'
 import _TextInputWithApply from '../controls/_TextInputWithApply.jsx'
+import _TextAreaInput from '../controls/_TextAreaInput.jsx'
 import _SelectInput from '../controls/_SelectInput.jsx'
 import _TreeSelectInput from '../controls/_TreeSelectInput.jsx'
 import _TreeInput from '../controls/_TreeInput.jsx'
 import _LoadingPanel from '../controls/_LoadingPanel.jsx'
+
+const mapStateToProps = (state, props) => {
+  return { }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      updateNav: payload => {
+          dispatch({ type: "NAV", payload })
+      }
+  }
+}
 
 class Components extends React.Component {
 
@@ -14,6 +29,10 @@ class Components extends React.Component {
     super(props);
 
     this.state = { allowEdit: true, showLoader: false }
+  }
+
+  componentDidMount(){
+    this.props.updateNav(location.hash)
   }
 
   textCallbackHandler(text) {
@@ -91,14 +110,13 @@ class Components extends React.Component {
               <div className="col-md-6">
                 <Card>
                   <CardBody style={{ height: "180px" }}>
-                    <CardTitle style={{ color: "#1565c0" }}>Select Input</CardTitle>
+                    <CardTitle style={{ color: "#1565c0" }}>Text Input</CardTitle>
                     <br />
-                    <_SelectInput
-                      label="Make a selection:"
-                      tooltip="Make a selection below"
-                      selectedValue=""
-                      data={[{ id: 1, text: "One" }, { id: 2, text: "Two" }, { id: 3, text: "Three" }]}
-                      callback={this.selectCallbackHandler.bind(this)}
+                    <_TextInput
+                      label="Type something:"
+                      tooltip="Type something below"
+                      value=""
+                      callback={this.textCallbackHandler.bind(this)}
                       allowEdit={allowEdit}
                     />
                   </CardBody>
@@ -111,15 +129,14 @@ class Components extends React.Component {
             <div className="row">
               <div className="col-md-12">
                 <Card>
-                  <CardBody style={{ height: "180px" }}>
-                    <CardTitle style={{ color: "#1565c0" }}>Tree-Select Input</CardTitle>
+                  <CardBody style={{ minHeight: "180px" }}>
+                    <CardTitle style={{ color: "#1565c0" }}>Text-Area Input</CardTitle>
                     <br />
-                    <_TreeSelectInput
-                      label="Select something:"
-                      tooltip="Select something below"
-                      selectedValue=""
-                      data={[{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{ id: 111, text: "SubChild1" }] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]}
-                      callback={this.treeSelectCallbackHandler.bind(this)}
+                    <_TextAreaInput
+                      label="Type something longer:"
+                      tooltip="Type something longer below"
+                      value="This input allows for much longer text and automatically resizes to fit its contents."
+                      callback={this.textCallbackHandler.bind(this)}
                       allowEdit={allowEdit}
                     />
                   </CardBody>
@@ -129,7 +146,7 @@ class Components extends React.Component {
           </div>
           <div className="col-md-4">
             <Card>
-              <CardBody style={{ height: "385px" }}>
+              <CardBody style={{ height: "402px" }}>
                 <CardTitle style={{ color: "#1565c0" }}>Tree Input</CardTitle>
                 <br />
                 <_TreeInput
@@ -147,10 +164,48 @@ class Components extends React.Component {
 
         <br />
 
+        <div className="row">
+          <div className="col-md-8">
+            <Card>
+              <CardBody style={{ height: "180px" }}>
+                <CardTitle style={{ color: "#1565c0" }}>Tree-Select Input</CardTitle>
+                <br />
+                <_TreeSelectInput
+                  label="Select something:"
+                  tooltip="Select something below"
+                  selectedValue=""
+                  data={[{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{ id: 111, text: "SubChild1" }] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]}
+                  callback={this.treeSelectCallbackHandler.bind(this)}
+                  allowEdit={allowEdit}
+                />
+              </CardBody>
+            </Card>
+          </div>
+          <div className="col-md-4">
+            <Card>
+              <CardBody style={{ height: "180px" }}>
+                <CardTitle style={{ color: "#1565c0" }}>Select Input</CardTitle>
+                <br />
+                <_SelectInput
+                  label="Make a selection:"
+                  tooltip="Make a selection below"
+                  selectedValue=""
+                  data={[{ id: 1, text: "One" }, { id: 2, text: "Two" }, { id: 3, text: "Three" }]}
+                  callback={this.selectCallbackHandler.bind(this)}
+                  allowEdit={allowEdit}
+                />
+              </CardBody>
+            </Card>
+          </div>
+        </div>
+
+
+        <br />
+
         <_LoadingPanel header="LOADING" description="Please wait..." enabled={showLoader} />
       </>
     )
   }
 }
 
-export default Components
+export default connect(mapStateToProps, mapDispatchToProps)(Components)

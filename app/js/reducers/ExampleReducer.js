@@ -6,9 +6,9 @@ export default function ExampleReducer(state = {}, action) {
 
     switch (type) {
 
-        case 'ACTION_TYPE': {
+        case 'TEST': {
             return {
-                ...state, exampleData: { value1: payload }
+                ...state, value: payload
             }
         }
 

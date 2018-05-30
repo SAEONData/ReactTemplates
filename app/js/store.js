@@ -10,7 +10,7 @@ import { reducer as oidcReducer } from 'redux-oidc';
 const store = createStore(
     combineReducers({oidc: oidcReducer, ...reducers, router: routerReducer }), {
         exampleData: {
-            value1: 'value1'
+            value: 'example'
         }
     }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )

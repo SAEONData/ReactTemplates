@@ -3,5 +3,5 @@
 import ExampleReducer from './ExampleReducer'
 
 export default {
-    exampleData: ExampleReducer,
+    exampleData : ExampleReducer
 }
