@@ -10,7 +10,7 @@ import SelectInput from '../input/SelectInput.jsx'
 import TreeSelectInput from '../input/TreeSelectInput.jsx'
 import TreeInput from '../input/TreeInput.jsx'
 import LoadingPanel from '../input/LoadingPanel.jsx'
-import SidePanel from '../navigation/SidePanel.jsx'
+import SideNav from '../navigation/SideNav.jsx'
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -70,7 +70,7 @@ class Components extends React.Component {
 
     return (
       <>
-        <SidePanel isOpen={showSideNav} />
+        <SideNav isOpen={showSideNav} />
 
         <div className="row">
           <div className="col-md-12">

@@ -1,10 +1,10 @@
 'use strict'
 
 import React from 'react'
-import { SideNav, SideNavNav, SideNavCat, SideNavItem, Fa } from 'mdbreact'
+import { SideNav as MSBSideNav, SideNavNav, SideNavCat, SideNavItem, Fa } from 'mdbreact'
 
 
-class SidePanel extends React.Component {
+class SideNav extends React.Component {
 
   constructor(props) {
     super(props)
@@ -23,7 +23,7 @@ class SidePanel extends React.Component {
     let { navCat1 } = this.state
 
     return (
-      <SideNav hidden isOpenWithButton={isOpen} breakWidth={1300} className="blue darken-3">
+      <MSBSideNav hidden isOpenWithButton={isOpen} breakWidth={1300} className="blue darken-3">
         <br />
         <div className="text-center">
           <h4>React Boilerplate &amp; Templates</h4>
@@ -37,9 +37,9 @@ class SidePanel extends React.Component {
             <SideNavItem onClick={() => location.hash = "#/components"}>Components</SideNavItem>
           </SideNavCat>
         </SideNavNav>
-      </SideNav>
+      </MSBSideNav>
     )
   }
 }
 
-export default SidePanel
+export default SideNav
