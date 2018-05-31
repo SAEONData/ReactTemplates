@@ -21,13 +21,13 @@ class Footer extends React.Component {
             <Row>
               <Col sm="12">
                 <h5 className="title">Footer Title</h5>
-                <p>Here you can use rows and columns here to organize your footer content.</p>
+                <p>You can use rows and columns here to organize your footer content.</p>
               </Col>
             </Row>
           </Container>
           <div className="footer-copyright text-center">
             <Container fluid>
-              &copy; {(new Date().getFullYear())} Copyright: <a href="https://www.saeon.ac.za"> SAEON </a>
+              &copy; {(new Date().getFullYear())} Copyright: <a href="https://www.saeon.ac.za"> SAEON.ac.za </a>
             </Container>
           </div>
         </MDBFooter>

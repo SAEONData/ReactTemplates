@@ -1,14 +1,14 @@
 'use strict'
 
-export default function ExampleReducer(state = {}, action) {
+export default function NavigationReducer(state = {}, action) {
 
     let { type, payload } = action
 
     switch (type) {
 
-        case 'TEST': {
+        case 'NAV': {
             return {
-                ...state, value: payload
+                ...state, locationHash: payload
             }
         }
 

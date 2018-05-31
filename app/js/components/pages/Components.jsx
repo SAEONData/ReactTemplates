@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Button, Card, CardBody, CardImage, CardTitle, CardText, InputSwitch, FormInline } from 'mdbreact';
+import { Button, Card, CardBody, CardImage, CardTitle, CardText, InputSwitch, FormInline, Fa, Tooltip } from 'mdbreact';
 import TextInput from '../input/TextInput.jsx'
 import TextInputWithApply from '../input/TextInputWithApply.jsx'
 import TextAreaInput from '../input/TextAreaInput.jsx'
@@ -10,16 +10,17 @@ import SelectInput from '../input/SelectInput.jsx'
 import TreeSelectInput from '../input/TreeSelectInput.jsx'
 import TreeInput from '../input/TreeInput.jsx'
 import LoadingPanel from '../input/LoadingPanel.jsx'
+import SidePanel from '../navigation/SidePanel.jsx'
 
 const mapStateToProps = (state, props) => {
-  return { }
+  return {}
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      updateNav: payload => {
-          dispatch({ type: "NAV", payload })
-      }
+    updateNav: payload => {
+      dispatch({ type: "NAV", payload })
+    }
   }
 }
 
@@ -28,10 +29,10 @@ class Components extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { allowEdit: true, showLoader: false }
+    this.state = { allowEdit: true, showLoader: false, showSideNav: false }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.updateNav(location.hash)
   }
 
@@ -59,19 +60,32 @@ class Components extends React.Component {
     this.setState({ showLoader: !this.state.showLoader })
   }
 
+  ToggleSidePanel() {
+    this.setState({ showSideNav: !this.state.showSideNav })
+  }
+
   render() {
 
-    let { allowEdit, showLoader } = this.state
+    let { allowEdit, showLoader, showSideNav } = this.state
 
     return (
       <>
-        <br />
+        <SidePanel isOpen={showSideNav} />
 
         <div className="row">
           <div className="col-md-12">
+            <br />
             <Card>
-              <CardBody style={{ height: "60px" }}>
+              <CardBody>
                 <FormInline>
+                  <Tooltip
+                    placement="top"
+                    component="a"
+                    tooltipContent="Toggle SidePanel">
+                    <Fa style={{ color: "#1e88e5" }} icon="bars" size="2x" onClick={this.ToggleSidePanel.bind(this)}></Fa>
+                  </Tooltip>
+                  <span style={{ width: "20px" }} />
+
                   <label><b>Allow edit:</b>&nbsp;&nbsp;</label>
                   <InputSwitch checked={allowEdit} onChange={this.AllowEditToggle.bind(this)} />
 
@@ -87,12 +101,11 @@ class Components extends React.Component {
           </div>
         </div>
 
-        <br />
-
         <div className="row">
           <div className="col-md-8">
             <div className="row">
               <div className="col-md-6">
+                <br />
                 <Card>
                   <CardBody style={{ height: "180px" }}>
                     <CardTitle style={{ color: "#1565c0" }}>Text Input With Apply</CardTitle>
@@ -107,7 +120,9 @@ class Components extends React.Component {
                   </CardBody>
                 </Card>
               </div>
+
               <div className="col-md-6">
+                <br />
                 <Card>
                   <CardBody style={{ height: "180px" }}>
                     <CardTitle style={{ color: "#1565c0" }}>Text Input</CardTitle>
@@ -124,10 +139,9 @@ class Components extends React.Component {
               </div>
             </div>
 
-            <br />
-
             <div className="row">
               <div className="col-md-12">
+                <br />
                 <Card>
                   <CardBody style={{ minHeight: "180px" }}>
                     <CardTitle style={{ color: "#1565c0" }}>Text-Area Input</CardTitle>
@@ -145,6 +159,7 @@ class Components extends React.Component {
             </div>
           </div>
           <div className="col-md-4">
+            <br />
             <Card>
               <CardBody style={{ height: "402px" }}>
                 <CardTitle style={{ color: "#1565c0" }}>Tree Input</CardTitle>
@@ -162,10 +177,9 @@ class Components extends React.Component {
           </div>
         </div>
 
-        <br />
-
         <div className="row">
           <div className="col-md-8">
+            <br />
             <Card>
               <CardBody style={{ height: "180px" }}>
                 <CardTitle style={{ color: "#1565c0" }}>Tree-Select Input</CardTitle>
@@ -182,6 +196,7 @@ class Components extends React.Component {
             </Card>
           </div>
           <div className="col-md-4">
+            <br />
             <Card>
               <CardBody style={{ height: "180px" }}>
                 <CardTitle style={{ color: "#1565c0" }}>Select Input</CardTitle>
@@ -198,9 +213,6 @@ class Components extends React.Component {
             </Card>
           </div>
         </div>
-
-
-        <br />
 
         <LoadingPanel header="LOADING" description="Please wait..." enabled={showLoader} />
       </>

@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Button, Input } from 'mdbreact'
 import { Navbar as MDBNavbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink } from 'mdbreact'
 import userManager from '../Authentication/userManager'
 import { ssoBaseURL } from '../../config/ssoBaseURL'
@@ -10,7 +9,8 @@ import { locale } from 'moment';
 
 const mapStateToProps = (state, props) => {
   let user = state.oidc.user
-  return { user }
+  let { navData: { locationHash }} = state
+  return { user, locationHash }
 }
 
 class Navbar extends React.Component {
@@ -21,8 +21,7 @@ class Navbar extends React.Component {
     this.state = {
       collapse: false,
       isWideEnough: false,
-      dropdownOpen: false,
-      hash: ""
+      dropdownOpen: false
     }
 
     this.onClick = this.onClick.bind(this)
@@ -30,10 +29,6 @@ class Navbar extends React.Component {
     this.LoginLogout = this.LoginLogout.bind(this)
     this.GetUser = this.GetUser.bind(this)
     this.Register = this.Register.bind(this)
-  }
-
-  componentDidMount() {
-    this.setState({ hash: location.hash })
   }
 
   onClick() {
@@ -79,13 +74,13 @@ class Navbar extends React.Component {
     }
   }
 
-  makeNavLink(href, text) {
+  makeNavLink(hash, text) {
 
-    let { hash } = this.state
+    let { locationHash } = this.props
 
     return (
-      <NavItem active={hash === href} onClick={() => this.setState({ hash: href })}>
-        <a className="nav-link" href={href}>{text}</a>
+      <NavItem active={locationHash === hash}>
+        <a className="nav-link" href={hash}>{text}</a>
       </NavItem>
     )
   }

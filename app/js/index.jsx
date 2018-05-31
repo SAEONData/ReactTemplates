@@ -26,8 +26,8 @@ import Home from './components/Pages/Home.jsx'
 import Components from './components/Pages/Components.jsx'
 import Login from './components/Authentication/Login.jsx'
 import Logout from './components/Authentication/Logout.jsx'
-import Navbar from './components/header_footer/Navbar.jsx'
-import Footer from './components/header_footer/Footer.jsx'
+import Navbar from './components/navigation/Navbar.jsx'
+import Footer from './components/navigation/Footer.jsx'
 import CallbackPage from '../js/components/Authentication/callback.jsx';
 import LoggedOut from './components/Authentication/LoggedOut.jsx';
 import userManager from './components/Authentication/userManager';

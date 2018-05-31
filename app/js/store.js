@@ -9,8 +9,8 @@ import { reducer as oidcReducer } from 'redux-oidc';
 
 const store = createStore(
     combineReducers({oidc: oidcReducer, ...reducers, router: routerReducer }), {
-        exampleData: {
-            value: 'example'
+        navData: {
+            locationHash: "#/"
         }
     }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )

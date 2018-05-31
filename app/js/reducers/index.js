@@ -1,7 +1,7 @@
 'use strict'
 
-import ExampleReducer from './ExampleReducer'
+import NavigationReducer from './NavigationReducer'
 
 export default {
-    exampleData : ExampleReducer
+    navData: NavigationReducer
 }
