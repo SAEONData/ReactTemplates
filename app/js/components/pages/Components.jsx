@@ -2,7 +2,10 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Button, Card, CardBody, CardImage, CardTitle, CardText, InputSwitch, FormInline, Fa, Tooltip } from 'mdbreact';
+import {
+  Button, Card, CardBody, CardImage, CardTitle, CardText, InputSwitch, FormInline, Fa, Tooltip,
+  StickyContainer, Sticky
+} from 'mdbreact';
 import TextInput from '../input/TextInput.jsx'
 import TextInputWithApply from '../input/TextInputWithApply.jsx'
 import TextAreaInput from '../input/TextAreaInput.jsx'
@@ -73,36 +76,35 @@ class Components extends React.Component {
         <SideNav isOpen={showSideNav} />
 
         <div className="row">
-          <div className="col-md-12">
-            <br />
-            <Card>
-              <CardBody>
-                <FormInline>
-                  <Tooltip
-                    placement="top"
-                    component="a"
-                    tooltipContent="Toggle SidePanel">
-                    <Fa style={{ color: "#1e88e5" }} icon="bars" size="2x" onClick={this.ToggleSidePanel.bind(this)}></Fa>
-                  </Tooltip>
-                  <span style={{ width: "20px" }} />
-
-                  <label><b>Allow edit:</b>&nbsp;&nbsp;</label>
-                  <InputSwitch checked={allowEdit} onChange={this.AllowEditToggle.bind(this)} />
-
-                  <span style={{ width: "15px" }} />
-                  <h5>|</h5>
-                  <span style={{ width: "15px" }} />
-
-                  <label><b>Loader:</b>&nbsp;&nbsp;</label>
-                  <InputSwitch checked={showLoader} onChange={this.ShowLoaderToggle.bind(this)} />
-                </FormInline>
-              </CardBody>
-            </Card>
-          </div>
-        </div>
-
-        <div className="row">
           <div className="col-md-8">
+            <div className="row">
+              <div className="col-md-12">
+                <br />
+                <Card>
+                  <CardBody>
+                    <FormInline>
+                      <Tooltip
+                        placement="top"
+                        component="a"
+                        tooltipContent="Toggle SidePanel">
+                        <Fa style={{ color: "#1e88e5" }} icon="bars" size="2x" onClick={this.ToggleSidePanel.bind(this)}></Fa>
+                      </Tooltip>
+                      <span style={{ width: "20px" }} />
+
+                      <label><b>Allow edit:</b>&nbsp;&nbsp;</label>
+                      <InputSwitch checked={allowEdit} onChange={this.AllowEditToggle.bind(this)} />
+
+                      <span style={{ width: "15px" }} />
+                      <h5>|</h5>
+                      <span style={{ width: "15px" }} />
+
+                      <label><b>Loader:</b>&nbsp;&nbsp;</label>
+                      <InputSwitch checked={showLoader} onChange={this.ShowLoaderToggle.bind(this)} />
+                    </FormInline>
+                  </CardBody>
+                </Card>
+              </div>
+            </div>
             <div className="row">
               <div className="col-md-6">
                 <br />
@@ -120,7 +122,6 @@ class Components extends React.Component {
                   </CardBody>
                 </Card>
               </div>
-
               <div className="col-md-6">
                 <br />
                 <Card>
@@ -138,7 +139,6 @@ class Components extends React.Component {
                 </Card>
               </div>
             </div>
-
             <div className="row">
               <div className="col-md-12">
                 <br />
@@ -157,60 +157,97 @@ class Components extends React.Component {
                 </Card>
               </div>
             </div>
+            <div className="row">
+              <div className="col-md-6">
+                <div className="row">
+                  <div className="col-md-12">
+                    <br />
+                    <Card>
+                      <CardBody style={{ height: "180px" }}>
+                        <CardTitle style={{ color: "#1565c0" }}>Select Input</CardTitle>
+                        <br />
+                        <SelectInput
+                          label="Make a selection:"
+                          tooltip="Make a selection below"
+                          selectedValue=""
+                          data={[{ id: 1, text: "One" }, { id: 2, text: "Two" }, { id: 3, text: "Three" }]}
+                          callback={this.selectCallbackHandler.bind(this)}
+                          allowEdit={allowEdit}
+                        />
+                      </CardBody>
+                    </Card>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-12">
+                    <br />
+                    <Card>
+                      <CardBody style={{ height: "180px" }}>
+                        <CardTitle style={{ color: "#1565c0" }}>Tree-Select Input</CardTitle>
+                        <br />
+                        <TreeSelectInput
+                          label="Select something:"
+                          tooltip="Select something below"
+                          selectedValue=""
+                          data={[{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{ id: 111, text: "SubChild1" }] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]}
+                          callback={this.treeSelectCallbackHandler.bind(this)}
+                          allowEdit={allowEdit}
+                        />
+                      </CardBody>
+                    </Card>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-6">
+                <br />
+                <Card>
+                  <CardBody style={{ height: "402px" }}>
+                    <CardTitle style={{ color: "#1565c0" }}>Tree Input</CardTitle>
+                    <br />
+                    <TreeInput
+                      label="Pick from the tree:"
+                      tooltip="Pick from the tree below"
+                      selectedValue="SubChild1"
+                      data={[{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{ id: 111, text: "SubChild1" }] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]}
+                      callback={this.treeCallbackHandler.bind(this)}
+                      allowEdit={allowEdit}
+                    />
+                  </CardBody>
+                </Card>
+              </div>
+            </div>
           </div>
           <div className="col-md-4">
-            <br />
-            <Card>
-              <CardBody style={{ height: "402px" }}>
-                <CardTitle style={{ color: "#1565c0" }}>Tree Input</CardTitle>
-                <br />
-                <TreeInput
-                  label="Pick from the tree:"
-                  tooltip="Pick from the tree below"
-                  selectedValue="SubChild1"
-                  data={[{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{ id: 111, text: "SubChild1" }] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]}
-                  callback={this.treeCallbackHandler.bind(this)}
-                  allowEdit={allowEdit}
-                />
-              </CardBody>
-            </Card>
-          </div>
-        </div>
+            <StickyContainer style={{ background: "black", height: "100%" }}>
+              <Sticky topOffset={20} bottomOffset={20}>
+                {({
+                  isSticky,
+                  wasSticky,
+                  style,
+                  distanceFromTop,
+                  distanceFromBottom,
+                  calculatedHeight
+                }) => {
 
-        <div className="row">
-          <div className="col-md-8">
-            <br />
-            <Card>
-              <CardBody style={{ height: "180px" }}>
-                <CardTitle style={{ color: "#1565c0" }}>Tree-Select Input</CardTitle>
-                <br />
-                <TreeSelectInput
-                  label="Select something:"
-                  tooltip="Select something below"
-                  selectedValue=""
-                  data={[{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{ id: 111, text: "SubChild1" }] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]}
-                  callback={this.treeSelectCallbackHandler.bind(this)}
-                  allowEdit={allowEdit}
-                />
-              </CardBody>
-            </Card>
-          </div>
-          <div className="col-md-4">
-            <br />
-            <Card>
-              <CardBody style={{ height: "180px" }}>
-                <CardTitle style={{ color: "#1565c0" }}>Select Input</CardTitle>
-                <br />
-                <SelectInput
-                  label="Make a selection:"
-                  tooltip="Make a selection below"
-                  selectedValue=""
-                  data={[{ id: 1, text: "One" }, { id: 2, text: "Two" }, { id: 3, text: "Three" }]}
-                  callback={this.selectCallbackHandler.bind(this)}
-                  allowEdit={allowEdit}
-                />
-              </CardBody>
-            </Card>
+                  let stickyHeight = (window.innerHeight - 105)
+                  console.log(isSticky)
+                  
+                  return (
+
+                    <div>
+                      <br />
+                      <Card style={{ ...style }}>
+                        <CardBody style={{ height: stickyHeight }}>
+                          <CardTitle style={{ color: "#1565c0" }}>Side Panel</CardTitle>
+                          <br />
+                          Content...
+                        </CardBody>
+                      </Card>
+                    </div>
+                  );
+                }}
+              </Sticky>
+            </StickyContainer>
           </div>
         </div>
 

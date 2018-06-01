@@ -20,7 +20,6 @@ import { Provider } from 'react-redux'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import store from './store'
 import queryString from 'query-string'
-import { Button } from 'mdbreact/'
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import Home from './components/Pages/Home.jsx'
 import Components from './components/Pages/Components.jsx'
@@ -79,7 +78,8 @@ class App extends React.Component {
               <Route path="/callback" component={CallbackPage} />
             </Switch>
 
-            <Footer />
+            <br/>
+            <Footer id="sticky-stopper" />
 
           </div>
 
