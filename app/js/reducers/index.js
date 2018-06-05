@@ -1,7 +1,9 @@
 'use strict'
 
 import NavigationReducer from './NavigationReducer'
+import ListViewReducer from './ListViewReducer'
 
 export default {
-    navData: NavigationReducer
+    navigation: NavigationReducer,
+    listView: ListViewReducer
 }

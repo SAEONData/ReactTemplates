@@ -219,7 +219,7 @@ class Components extends React.Component {
           </div>
           <div className="col-md-4">
             <StickyContainer style={{ background: "black", height: "100%" }}>
-              <Sticky topOffset={20} bottomOffset={20}>
+              <Sticky topOffset={20} bottomOffset={-20}>
                 {({
                   isSticky,
                   wasSticky,
@@ -230,12 +230,11 @@ class Components extends React.Component {
                 }) => {
 
                   let stickyHeight = (window.innerHeight - 105)
-                  console.log(isSticky)
-                  
+
                   return (
 
                     <div>
-                      <br />
+                      <br />  
                       <Card style={{ ...style }}>
                         <CardBody style={{ height: stickyHeight }}>
                           <CardTitle style={{ color: "#1565c0" }}>Side Panel</CardTitle>

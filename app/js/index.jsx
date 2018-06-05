@@ -22,6 +22,7 @@ import store from './store'
 import queryString from 'query-string'
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import Home from './components/Pages/Home.jsx'
+import ListView from './components/Pages/ListView.jsx'
 import Components from './components/Pages/Components.jsx'
 import Login from './components/Authentication/Login.jsx'
 import Logout from './components/Authentication/Logout.jsx'
@@ -76,6 +77,7 @@ class App extends React.Component {
               <Route path="/logout" component={Logout} exact />
               <Route path="/loggedout" component={LoggedOut} exact />
               <Route path="/callback" component={CallbackPage} />
+              <Route path="/list" component={ListView} />
             </Switch>
 
             <br/>

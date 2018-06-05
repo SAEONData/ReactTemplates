@@ -9,7 +9,7 @@ import { locale } from 'moment';
 
 const mapStateToProps = (state, props) => {
   let user = state.oidc.user
-  let { navData: { locationHash }} = state
+  let { navigation: { locationHash }} = state
   return { user, locationHash }
 }
 
@@ -99,6 +99,7 @@ class Navbar extends React.Component {
           <NavbarNav left>
             {this.makeNavLink("#/", "Home")}
             {this.makeNavLink("#/components", "Components")}
+            {this.makeNavLink("#/list", "List-View")}
           </NavbarNav>
 
           <NavbarNav right>
