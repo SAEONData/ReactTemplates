@@ -2,19 +2,19 @@
 
 export default function ListViewReducer(state = {}, action) {
 
-    let { type, payload } = action
+  let { type, payload } = action
 
-    switch (type) {
+  switch (type) {
 
-        case 'LISTVIEW_LOAD': {
-            return {
-                ...state, data: payload
-            }
-        }
-
-        default: {
-            return state
-        }
-
+    case 'LISTVIEW_LOAD': {
+      return {
+        ...state, data: payload
+      }
     }
+
+    default: {
+      return state
+    }
+
+  }
 }

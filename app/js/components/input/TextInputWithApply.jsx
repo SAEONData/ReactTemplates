@@ -13,12 +13,12 @@ class TextInputWithApply extends React.Component {
 
   constructor(props) {
     super(props);
+    this.setState.bind(this)
 
     this.state = { value: "" }
   }
 
   componentDidMount() {
-
     let { value } = this.props
 
     if (typeof value === 'undefined') {
@@ -43,20 +43,37 @@ class TextInputWithApply extends React.Component {
     }
   }
 
+  fixEmptyValue(value, defaultValue) {
+    if (typeof value === 'undefined') {
+      return defaultValue
+    }
+
+    return value
+  }
+
   render() {
 
     let { label, tooltip, allowEdit } = this.props
     let { value } = this.state
 
+    label = this.fixEmptyValue(label, "Label:")
+    tooltip = this.fixEmptyValue(tooltip, "")
+    allowEdit = this.fixEmptyValue(allowEdit, true)
+
     return (
       <>
-        <Tooltip 
-          placement="top" 
-          component="label" 
-          tooltipContent={tooltip}> 
+        <div hidden={tooltip === ""}>
+          <Tooltip
+            placement="top"
+            component="label"
+            tooltipContent={tooltip}>
             <b>{label}</b>
-        </Tooltip>
-        
+          </Tooltip>
+        </div>
+        <div hidden={tooltip !== ""}>
+          <b>{label}</b>
+        </div>
+
         <table style={{ width: "100%" }}>
           <tbody>
             <tr>

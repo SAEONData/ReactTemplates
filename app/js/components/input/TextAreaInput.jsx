@@ -43,23 +43,36 @@ class TextAreaInput extends React.Component {
     }
   }
 
+  fixEmptyValue(value, defaultValue) {
+    if (typeof value === 'undefined') {
+      return defaultValue
+    }
+
+    return value
+  }
+
   render() {
 
     let { label, tooltip, allowEdit } = this.props
     let { value } = this.state
 
+    label = this.fixEmptyValue(label, "Label:")
+    tooltip = this.fixEmptyValue(tooltip, "")
+    allowEdit = this.fixEmptyValue(allowEdit, true)
+
     return (
       <>
-        <Tooltip
-          placement="top"
-          component="label"
-          tooltipContent={tooltip}>
+        <div hidden={tooltip === ""}>
+          <Tooltip
+            placement="top"
+            component="label"
+            tooltipContent={tooltip}>
+            <b>{label}</b>
+          </Tooltip>
+        </div>
+        <div hidden={tooltip !== ""}>
           <b>{label}</b>
-        </Tooltip>
-
-        {/* <Input disabled={!allowEdit} size="sm" style={{ marginLeft: "0px", marginRight: "0px", marginTop: "-25px", width: "100%", fontSize: "15px" }}
-          onChange={this.onChange.bind(this)} hint="Type value here"
-          value={value} /> */}
+        </div>
 
         <TextareaAutosize
           readOnly={!allowEdit}

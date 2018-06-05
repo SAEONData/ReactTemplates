@@ -12,7 +12,7 @@ const TreeSelectNode = TreeSelect.TreeNode;
 // Properties:
 //  - label : Component label
 //  - tooltip : Tooltip
-//  - selectedValue : String/text value
+//  - value : String/text value
 //  - data : Data for list >> 
 //           [{id: 1, text: "Parent1", children: [{id: 11, text: "Child1"}, {id: 12, text: "Child2"}]}, {id: 2, text: "Parent2"}]
 //  - callback : callback to send filter value
@@ -22,38 +22,40 @@ class TreeSelectInput extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { selectedValue: "" }
+    this.state = { value: "" }
   }
 
   componentDidMount() {
 
     //Init state
-    let { selectedValue } = this.props
+    let { value } = this.props
 
-    if (typeof selectedValue === 'undefined') {
-      selectedValue = ""
+    if (typeof value === 'undefined') {
+      value = ""
     }
 
-    this.setState({ selectedValue: selectedValue })
+    this.setState({ value: value })
   }
 
   renderTreeSelectNodes(data) {
 
-    return data.map((item) => {
-      if (item.children) {
-        return (
-          <TreeSelectNode value={item.text} title={item.text} key={item.id}>
-            {this.renderTreeSelectNodes(item.children)}
-          </TreeSelectNode>
-        )
-      }
-      return <TreeSelectNode value={item.text} title={item.text} key={item.id} />
-    })
+    if (typeof data !== 'undefined') {
+      return data.map((item) => {
+        if (item.children) {
+          return (
+            <TreeSelectNode value={item.text} title={item.text} key={item.id}>
+              {this.renderTreeSelectNodes(item.children)}
+            </TreeSelectNode>
+          )
+        }
+        return <TreeSelectNode value={item.text} title={item.text} key={item.id} />
+      })
+    }
   }
 
   onChange(value, label, extra) {
 
-    this.setState({ selectedValue: value })
+    this.setState({ value: value })
 
     let { callback } = this.props
     if (typeof callback !== 'undefined') {
@@ -66,30 +68,47 @@ class TreeSelectInput extends React.Component {
     }
   }
 
+  fixEmptyValue(value, defaultValue) {
+    if (typeof value === 'undefined') {
+      return defaultValue
+    }
+
+    return value
+  }
+
   render() {
 
     let { label, tooltip, data, allowEdit } = this.props
-    let { selectedValue } = this.state
+    let { value } = this.state
 
-    if (typeof selectedValue === 'undefined' || selectedValue === "" || selectedValue === null) {
-      selectedValue = "Select..."
+    if (typeof value === 'undefined' || value === "" || value === null) {
+      value = "Select..."
     }
+
+    label = this.fixEmptyValue(label, "Label:")
+    tooltip = this.fixEmptyValue(tooltip, "")
+    allowEdit = this.fixEmptyValue(allowEdit, true)
 
     return (
       <>
-        <Tooltip
-          placement="top"
-          component="label"
-          tooltipContent={tooltip}>
+        <div hidden={tooltip === ""}>
+          <Tooltip
+            placement="top"
+            component="label"
+            tooltipContent={tooltip}>
+            <b>{label}</b>
+          </Tooltip>
+        </div>
+        <div hidden={tooltip !== ""}>
           <b>{label}</b>
-        </Tooltip>
+        </div>
 
         <TreeSelect
           disabled={!allowEdit}
           showSearch
           searchPlaceholder="Search..."
           style={{ width: "100%" }}
-          value={selectedValue}
+          value={value}
           dropdownStyle={{ maxHeight: 250, overflow: 'auto' }}
           placeholder="Select..."
           allowClear

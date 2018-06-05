@@ -6,7 +6,7 @@ import { Select, SelectInput as MBDSelectInput, SelectOptions, SelectOption, Too
 // Properties:
 //  - label : Component label
 //  - tooltip : Tooltip
-//  - selectedValue : String/text value
+//  - value : String/text value
 //  - data : Data for list >> [{id: 1, text: "one"}, ...]
 //  - callback : callback to send filter value
 
@@ -18,7 +18,7 @@ class SelectInput extends React.Component {
     this.onClick = this.onClick.bind(this);
     this.otherDropdownsClose = this.otherDropdownsClose.bind(this);
 
-    this.state = { selectedValue: "" }
+    this.state = { value: "" }
   }
 
   onClick(e) {
@@ -30,8 +30,11 @@ class SelectInput extends React.Component {
 
     if (e.target.classList.contains('select-dropdown')) {
       this.otherDropdownsClose();
-      e.target.nextElementSibling.classList.add('fadeIn');
-    } else {
+      if (e.target.nextElementSibling !== null) {
+        e.target.nextElementSibling.classList.add('fadeIn')
+      }
+    }
+    else {
       this.otherDropdownsClose();
     }
   }
@@ -51,24 +54,27 @@ class SelectInput extends React.Component {
 
   componentDidMount() {
 
+    let { value, data } = this.props
+
     document.addEventListener('click', this.onClick);
 
     //Insert "no-selection" entry
-    this.props.data.splice(0, 0, { id: 0, text: "Select..." })
+    if (typeof data === 'undefined') {
+      data = []
+    }
+    data.splice(0, 0, { id: 0, text: "Select..." })
 
     //Init state
-    let { selectedValue } = this.props
-
-    if (typeof selectedValue === 'undefined') {
-      selectedValue = ""
+    if (typeof value === 'undefined') {
+      value = ""
     }
 
-    this.setState({ selectedValue: selectedValue })
+    this.setState({ value: value })
   }
 
   onSelect(value) {
 
-    this.setState({ selectedValue: value })
+    this.setState({ value: value })
 
     let { callback, data } = this.props
     if (typeof callback !== 'undefined' && typeof data !== 'undefined') {
@@ -98,30 +104,52 @@ class SelectInput extends React.Component {
         }
       })
     }
+    else {
+      listOptions.push(
+        <SelectOption disabled key="001">No data supplied, please supply options data</SelectOption>
+      )
+    }
 
     return listOptions
+  }
+
+  fixEmptyValue(value, defaultValue) {
+    if (typeof value === 'undefined') {
+      return defaultValue
+    }
+
+    return value
   }
 
   render() {
 
     let { label, tooltip, data, allowEdit } = this.props
-    let { selectedValue } = this.state
+    let { value } = this.state
 
-    if (typeof selectedValue === 'undefined' || selectedValue === "" || selectedValue === null) {
-      selectedValue = "Select..."
+    if (typeof value === 'undefined' || value === "" || value === null) {
+      value = "Select..."
     }
+
+    label = this.fixEmptyValue(label, "Label:")
+    tooltip = this.fixEmptyValue(tooltip, "")
+    allowEdit = this.fixEmptyValue(allowEdit, true)
 
     return (
       <>
-        <Tooltip
-          placement="top"
-          component="label"
-          tooltipContent={tooltip}>
+        <div hidden={tooltip === ""}>
+          <Tooltip
+            placement="top"
+            component="label"
+            tooltipContent={tooltip}>
+            <b>{label}</b>
+          </Tooltip>
+        </div>
+        <div hidden={tooltip !== ""}>
           <b>{label}</b>
-        </Tooltip>
+        </div>
 
         <Select color="primary">
-          <MBDSelectInput disabled={!allowEdit} style={{ height: "35px" }} value={selectedValue}></MBDSelectInput>
+          <MBDSelectInput disabled={!allowEdit} style={{ height: "35px" }} value={value}></MBDSelectInput>
           <SelectOptions>
             {this.renderSelectOptions(data)}
           </SelectOptions>

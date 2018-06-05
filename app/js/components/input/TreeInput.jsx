@@ -11,7 +11,7 @@ const TreeNode = Tree.TreeNode
 // Properties:
 //  - label : Component label
 //  - tooltip : Tooltip
-//  - selectedValue : String/text value
+//  - value : String/text value
 //  - data : Data for list >> 
 //           [{id: 1, text: "Parent1", children: [{id: 11, text: "Child1"}, {id: 12, text: "Child2"}]}, {id: 2, text: "Parent2"}]
 //  - callback : callback to send filter value
@@ -61,11 +61,11 @@ class TreeInput extends React.Component {
   componentDidMount() {
 
     //Init state
-    let { selectedValue, data } = this.props
+    let { value, data } = this.props
 
-    if (typeof selectedValue !== 'undefined') {
+    if (typeof value !== 'undefined') {
 
-      let dataItem = this.FindDataItem(data, selectedValue)
+      let dataItem = this.FindDataItem(data, value)
       if (typeof dataItem !== 'undefined') {
         this.setState({
           selectedKeys: [dataItem.id.toString()],
@@ -77,16 +77,18 @@ class TreeInput extends React.Component {
 
   renderTreeNodes(data) {
 
-    return data.map((item) => {
-      if (item.children) {
-        return (
-          <TreeNode title={item.text} key={item.id} dataRef={item}>
-            {this.renderTreeNodes(item.children)}
-          </TreeNode>
-        )
-      }
-      return <TreeNode title={item.text} key={item.id} />
-    })
+    if (typeof data !== 'undefined') {
+      return data.map((item) => {
+        if (item.children) {
+          return (
+            <TreeNode title={item.text} key={item.id} dataRef={item}>
+              {this.renderTreeNodes(item.children)}
+            </TreeNode>
+          )
+        }
+        return <TreeNode title={item.text} key={item.id} />
+      })
+    }
   }
 
   onSelect(selectedKeys, info) {
@@ -108,19 +110,38 @@ class TreeInput extends React.Component {
     this.setState({ expandedKeys })
   }
 
+  fixEmptyValue(value, defaultValue) {
+    if (typeof value === 'undefined') {
+      return defaultValue
+    }
+
+    return value
+  }
+
   render() {
 
     let { label, tooltip, data, allowEdit } = this.props
     let { selectedKeys, expandedKeys } = this.state
 
+    label = this.fixEmptyValue(label, "Label:")
+    tooltip = this.fixEmptyValue(tooltip, "")
+    allowEdit = this.fixEmptyValue(allowEdit, true)
+
     return (
       <>
-        <Tooltip
-          placement="top"
-          component="label"
-          tooltipContent={tooltip}>
-          <b>{label}</b>
-        </Tooltip>
+        <div style={{ marginBottom: "8px"}}>
+          <div hidden={tooltip === ""}>
+            <Tooltip
+              placement="top"
+              component="label"
+              tooltipContent={tooltip}>
+              <b>{label}</b>
+            </Tooltip>
+          </div>
+          <div hidden={tooltip !== ""}>
+            <b>{label}</b>
+          </div>
+        </div>
 
         <Tree
           disabled={!allowEdit}

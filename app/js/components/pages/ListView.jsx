@@ -2,9 +2,8 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import {
-  Card, CardBody, CardImage, CardTitle, CardText
-} from 'mdbreact';
+import { Card, CardBody, CardImage, CardTitle, CardText } from 'mdbreact';
+import Filters from '../sections/Filters.jsx'
 
 const mapStateToProps = (state, props) => {
   let { listView: { data } } = state
@@ -43,12 +42,9 @@ class ListView extends React.Component {
       {
         title: "How to use this template component",
         image: null,
-        description: [
-          "This component is designed as a foundation template list-view page",
-          "that you can easily extend to suit your needs. ",
-          "The getData() function is provided to get data for this component. ",
-          "Please use/extend this function to get data."
-        ].join("")
+        description: "This component is designed as a template list-view page that you can easily " +
+        "extend to suit your needs. The getData() function is provided to get data for this component. " +
+        "Please use/extend this function to get data."
       },
       {
         title: "Required data structure",
@@ -78,7 +74,6 @@ class ListView extends React.Component {
 
       items.push(
         <div key={data.indexOf(item)}>
-          <br />
           <Card>
             <CardBody>
               <CardTitle>{item.title}</CardTitle>
@@ -87,6 +82,7 @@ class ListView extends React.Component {
               </CardText>
             </CardBody>
           </Card>
+          <br />
         </div>
       )
     })
@@ -101,32 +97,9 @@ class ListView extends React.Component {
 
     return (
       <>
+        <Filters/>
+      
         {this.renderDataCards(data)}
-
-        {/* <br />
-        <Card>
-          <CardBody>
-            <CardTitle>How to use this template component:</CardTitle>
-            <br />
-            <p>
-              This component is designed as a foundation template list-view page
-              that you can easily extend to suit your needs.
-              <br />
-              The getData() function is provided to get data for this component.
-              Please use/extend this function to get data.
-              <br /><br />
-              Data needs to be in the following JSON structure:
-              <br />
-              [<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&#123;<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;title: "...", <br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;image: ...,&nbsp;&nbsp;&nbsp;&nbsp;//optional<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description: "..."<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&#125;, ...<br />
-              ]
-            </p>
-          </CardBody>
-        </Card> */}
       </>
     )
   }

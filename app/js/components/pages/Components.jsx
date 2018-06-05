@@ -169,7 +169,7 @@ class Components extends React.Component {
                         <SelectInput
                           label="Make a selection:"
                           tooltip="Make a selection below"
-                          selectedValue=""
+                          value=""
                           data={[{ id: 1, text: "One" }, { id: 2, text: "Two" }, { id: 3, text: "Three" }]}
                           callback={this.selectCallbackHandler.bind(this)}
                           allowEdit={allowEdit}
@@ -188,7 +188,7 @@ class Components extends React.Component {
                         <TreeSelectInput
                           label="Select something:"
                           tooltip="Select something below"
-                          selectedValue=""
+                          value=""
                           data={[{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{ id: 111, text: "SubChild1" }] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]}
                           callback={this.treeSelectCallbackHandler.bind(this)}
                           allowEdit={allowEdit}
@@ -207,7 +207,7 @@ class Components extends React.Component {
                     <TreeInput
                       label="Pick from the tree:"
                       tooltip="Pick from the tree below"
-                      selectedValue="SubChild1"
+                      value="SubChild1"
                       data={[{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{ id: 111, text: "SubChild1" }] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]}
                       callback={this.treeCallbackHandler.bind(this)}
                       allowEdit={allowEdit}
