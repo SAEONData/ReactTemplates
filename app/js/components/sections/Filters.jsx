@@ -90,7 +90,9 @@ class Filters extends React.Component {
     return (
       <>
         <ActiveFilters />
+
         <hr />
+        
         <div className="row" style={{ marginTop: "-15px", marginBottom: "-13px" }}>
           <div className="col-md-3">
             {/* This is an example filter toggle button */}

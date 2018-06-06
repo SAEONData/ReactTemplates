@@ -218,8 +218,9 @@ class Components extends React.Component {
             </div>
           </div>
           <div className="col-md-4">
-            <StickyContainer style={{ background: "black", height: "100%" }}>
-              <Sticky topOffset={20} bottomOffset={-20}>
+            <br/>
+            <StickyContainer style={{ height: "100%" }}>
+              <Sticky topOffset={20}>
                 {({
                   isSticky,
                   wasSticky,
@@ -233,17 +234,17 @@ class Components extends React.Component {
 
                   return (
 
-                    <div>
-                      <br />  
+                    // <div> //This div caused the sticky to move past the bottom of the container. MDB investigating...
                       <Card style={{ ...style }}>
+                        <br/>
                         <CardBody style={{ height: stickyHeight }}>
                           <CardTitle style={{ color: "#1565c0" }}>Side Panel</CardTitle>
                           <br />
                           Content...
                         </CardBody>
                       </Card>
-                    </div>
-                  );
+                    // </div>
+                  )
                 }}
               </Sticky>
             </StickyContainer>
