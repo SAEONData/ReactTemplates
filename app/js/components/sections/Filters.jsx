@@ -4,6 +4,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Button, Collapse } from 'mdbreact';
 import ActiveFilters from '../sections/ActiveFilters.jsx'
+import FilterToggleButton from '../input/FilterToggleButton.jsx'
+import FilterButtonsPanel from '../layout/FilterButtonsPanel.jsx'
+import FilterCollapsePanel from '../layout/FilterCollapsePanel.jsx'
 
 //Filter input components
 import SelectInput from '../input/SelectInput.jsx'
@@ -23,7 +26,10 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: "SET_FILTER", payload: { key, value } })
     },
     clearFilters: () => {
-      dispatch({ type: "CLEAR_FILTERS", payload: {  } })
+      dispatch({ type: "CLEAR_FILTERS", payload: null })
+    },
+    resetBatchCount: () => {
+      dispatch({ type: "RESET_BATCH_COUNT", payload: null })
     }
   }
 }
@@ -32,31 +38,33 @@ class Filters extends React.Component {
 
   constructor(props) {
     super(props);
-    this.toggle = this.toggle.bind(this)
+    // this.toggle = this.toggle.bind(this)
     this.getFilterValue = this.getFilterValue.bind(this)
     this.getFilterKey = this.getFilterKey.bind(this)
 
-    this.state = {
-      collapse: false,
-    };
+    this.state = { collapse: "" };
   }
 
-  // componentDidUpdate() {
-  //   console.log("Active filters:", ...this.props.activeFilters)
-  // }
+  toggle(value) {
 
-  toggle() {
-    this.setState({ collapse: !this.state.collapse });
+    if (this.state.collapse !== value) {
+      this.setState({ collapse: value });
+    }
+    else {
+      this.setState({ collapse: "" });
+    }
   }
 
   setTextFilter(key, value) {
     if (typeof key !== 'undefined' && typeof value !== 'undefined') {
+      this.props.resetBatchCount()
       this.props.setFilter(key, value)
     }
   }
 
   setListFilter(key, value) {
     if (typeof key !== 'undefined' && typeof value !== 'undefined') {
+      this.props.resetBatchCount()
       this.props.setFilter(key, value.text)
     }
   }
@@ -79,7 +87,10 @@ class Filters extends React.Component {
   }
 
   clearFilters() {
-    this.props.clearFilters()
+    if (this.props.activeFilters.length > 0) {
+      this.props.resetBatchCount()
+      this.props.clearFilters()
+    }
   }
 
   render() {
@@ -90,25 +101,47 @@ class Filters extends React.Component {
     return (
       <>
         <ActiveFilters />
-
-        <hr />
-        
-        <div className="row" style={{ marginTop: "-15px", marginBottom: "-13px" }}>
-          <div className="col-md-3">
-            {/* This is an example filter toggle button */}
-            <Button size="sm" color="secondary" onClick={this.toggle} style={filterButtonStyle}>Toggle Example filters</Button>
-          </div>
-          <div className="col-md-3"></div>
-          <div className="col-md-3"></div>
-          <div className="col-md-3">
-            <Button size="sm" color="warning" onClick={this.clearFilters.bind(this)} style={filterButtonStyle}>Clear Filters</Button>
-          </div>
-        </div>
         <hr />
 
-        {/* This is an example collapsable filter panel */}
-        <Collapse isOpen={this.state.collapse}>
+        {/*
+        ##################################################
+        Change the code below by creating your own toggle 
+        buttons and corresponding collapse areas.
+        ##################################################
+        */}
 
+        <FilterButtonsPanel>
+          <div className="row">
+            <div className="col-md-3">
+              {/* 
+              ########################################
+              This is an example filter toggle button.
+              Replace with your own.
+              ########################################
+              */}
+              <FilterToggleButton label="Toggle example filters" callback={this.toggle.bind(this, "#1")} />
+            </div>
+            <div className="col-md-3">
+              <FilterToggleButton label="Toggle non-existing filters" callback={this.toggle.bind(this, "#2")} />
+            </div>
+            <div className="col-md-3">
+              {/* Nothing here yet */}
+            </div>
+            <div className="col-md-3">
+              {/* Please keep this button  */}
+              <FilterToggleButton label="Clear Filters" color="warning" callback={this.clearFilters.bind(this)} />
+            </div>
+          </div>
+        </FilterButtonsPanel>
+
+        {/* 
+        ###############################################################
+        This is an example collapsable (filter) panel. 
+        Replace with your own.
+        Make use of the filter-input components to simplify your work.
+        ###############################################################
+        */}
+        <FilterCollapsePanel isOpen={this.state.collapse === "#1"}>
           <div className="row">
             <div className="col-md-4">
               <TextInputWithApply
@@ -137,9 +170,7 @@ class Filters extends React.Component {
               />
             </div>
           </div>
-
-          <hr style={{ marginTop: "-10px" }} />
-        </Collapse>
+        </FilterCollapsePanel>
       </>
     )
   }

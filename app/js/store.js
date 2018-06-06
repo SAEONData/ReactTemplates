@@ -9,15 +9,20 @@ import { reducer as oidcReducer } from 'redux-oidc';
 
 const store = createStore(
     combineReducers({oidc: oidcReducer, ...reducers, router: routerReducer }), {
+
         navigation: {
             locationHash: "#/"
         },
         listView:{
+            batchSize: 25,
+            batchCount: 1,
             data: []
         },
         filters:{
-            activeFilters: []
+            activeFilters: [],
+            filtersChanged: false
         }
+        
     }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 loadUser(store, userManager)

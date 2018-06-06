@@ -81,7 +81,7 @@ class App extends React.Component {
             </Switch>
 
             <br/>
-            <Footer id="sticky-stopper" />
+            <Footer/>
 
           </div>
 

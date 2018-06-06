@@ -6,15 +6,24 @@ export default function ListViewReducer(state = {}, action) {
 
   switch (type) {
 
-    case 'LISTVIEW_LOAD': {
+    case 'LISTVIEW_LOAD':
       return {
         ...state, data: payload
       }
-    }
 
-    default: {
+    case 'NEXT_BATCH':
+      return {
+        ...state, batchCount: (state.batchCount + 1)
+      }
+
+    case 'NAV':
+    case 'RESET_BATCH_COUNT':
+      return {
+        ...state, batchCount: 1
+      }
+
+    default:
       return state
-    }
 
   }
 }

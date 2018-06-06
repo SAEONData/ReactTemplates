@@ -6,37 +6,61 @@ export default function FiltersReducer(state = {}, action) {
 
   switch (type) {
 
-    case 'SET_FILTER': {
+    case 'SET_FILTER':
 
       let { key, value } = payload
       if (typeof key === 'undefined' || typeof value === 'undefined') {
         return state
       }
 
+      let searchFilters = state.activeFilters.filter(x => x.key === key)
+
       if (value !== "" && value !== 0 && value !== null) {
-        //ADD/SET      
-        return {
-          ...state, activeFilters: [...state.activeFilters.filter(x => x.key !== key), { key, value }]
+
+        if (searchFilters.length === 0 || (searchFilters.length > 0 && searchFilters[0].value !== value)) {
+          //ADD/SET      
+          return {
+            ...state, activeFilters: [...state.activeFilters.filter(x => x.key !== key), { key, value }],
+            filtersChanged: true
+          }
+        }
+        else {
+          return state
         }
       }
       else {
-        //REMOVE
-        return {
-          ...state, activeFilters: state.activeFilters.filter(x => x.key !== key)
+
+        if (searchFilters.length > 0) {
+          //REMOVE
+          return {
+            ...state, activeFilters: state.activeFilters.filter(x => x.key !== key), filtersChanged: true
+          }
+        }
+        else {
+          return state
         }
       }
-    }
 
-    case 'CLEAR_FILTERS': {
+    case 'CLEAR_FILTERS':
+
+      if (state.activeFilters.length > 0) {
+        //CLEAR
+        return {
+          ...state, activeFilters: [], filtersChanged: true
+        }
+      }
+      else {
+        return state
+      }
+
+    case 'RESET_CHANGE_STATE':
 
       return {
-        ...state, activeFilters: []
+        ...state, filtersChanged: false
       }
-    }
 
-    default: {
+    default:
       return state
-    }
 
   }
 }
