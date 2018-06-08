@@ -85,44 +85,27 @@ class ListView extends React.Component {
     data.push(
       {
         id: 1,
-        title: "How to use this template component",
-        description: "This component is designed as a template list-view page that you can easily " +
-          "extend to suit your needs. The getData() function is provided to get data for this component. " +
-          "Please use/extend this function to get data."
+        title: "How to use this template site",
+        description: "This site consits of 3 main components: filter, list-view and details-view. " +
+          "You may customise/extend these components as needed in your own site."
       },
       {
         id: 2,
-        title: "Required data structure",
-        description: [
-          "Data needs to be in the following JSON structure: ",
-          "[",
-          "   {",
-          "      id: ...,",
-          "      title: \"...\",",
-          "      description: \"...\",",
-          "   } ",
-          "]"
-        ].join("")
+        title: "Getting data",
+        description: "Each of the three main components implements a getData() function that you can " +
+          "customise to suit your needs."
       },
       {
-        id: 99,
-        title: "...",
-        description: "....."
+        id: 3,
+        title: "Default required data structure for list-view",
+        description: "Data needs to be in the following JSON structure: " +
+          "[ { id: ..., title: \"...\", description: \"...\" } ]"
       },
       {
-        id: 99,
-        title: "...",
-        description: "....."
-      },
-      {
-        id: 99,
-        title: "...",
-        description: "....."
-      },
-      {
-        id: 99,
-        title: "...",
-        description: "....."
+        id: 4,
+        title: "Default required data structure for filters and details-view",
+        description: "There is no default required data structure for these two components, " +
+          "you are free to implement this however you like."
       }
     )
 
@@ -203,7 +186,7 @@ class ListView extends React.Component {
         <ButtonFixed
           hidden={this.state.showBackToTop === false}
           topSection="#list"
-          floating 
+          floating
           color="red"
           icon="arrow-up"
           style={{ bottom: '45px', right: '24px' }}
