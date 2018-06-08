@@ -120,12 +120,12 @@ class DetailsView extends React.Component {
           <StyledTabsNav>
             <NavItem>
               <NavLink to="#" className={classnames({ active: this.state.activeTab === '1' })} onClick={() => { this.toggleTabs('1'); }}>
-                Primary Tab
+                Example Tab
               </NavLink>
             </NavItem>
             <NavItem>
               <NavLink to="#" className={classnames({ active: this.state.activeTab === '2' })} onClick={() => { this.toggleTabs('2'); }}>
-                Another example tab
+                Another example tab with a longer title
               </NavLink>
             </NavItem>
           </StyledTabsNav>
