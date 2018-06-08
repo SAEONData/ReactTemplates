@@ -10,10 +10,14 @@ import { reducer as oidcReducer } from 'redux-oidc';
 const store = createStore(
     combineReducers({oidc: oidcReducer, ...reducers, router: routerReducer }), {
 
+        general: {
+            loading: false
+        },
         navigation: {
             locationHash: "#/"
         },
         filters: {
+            data: [],
             activeFilters: [],
             filtersChanged: false
         },

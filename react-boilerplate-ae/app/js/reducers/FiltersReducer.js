@@ -6,6 +6,12 @@ export default function FiltersReducer(state = {}, action) {
 
   switch (type) {
 
+    case 'FILTERS_LOAD':
+
+    return {
+      ...state, data: payload
+    }
+
     case 'SET_FILTER':
 
       let { key, value } = payload

@@ -27,6 +27,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setScrollPos: payload => {
       dispatch({ type: "SET_SCROLL_POS", payload })
+    },
+    setLoading: payload => {
+      dispatch({ type: "SET_LOADING", payload })
     }
   }
 }
@@ -60,29 +63,15 @@ class ListView extends React.Component {
       resetChangeState()
       this.getData()
     }
-
-  }
-
-  handleScroll() {
-    const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
-    const body = document.body;
-    const html = document.documentElement;
-    const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-    const windowBottom = windowHeight + window.pageYOffset;
-
-    if (Math.ceil(windowBottom) >= docHeight && (new Date() - this.state.batchUpdateTime) > 100) {
-      this.props.nextBatch()
-      this.setState({ batchUpdateTime: new Date() })
-      this.getData()
-    }
-
-    this.setState({ showBackToTop: (window.pageYOffset > 250) })
   }
 
   getData() {
 
-    let { batchSize, batchCount } = this.props
+    let { batchSize, batchCount, setLoading, listViewLoad } = this.props
     let data = []
+
+    //Toggle loading panel on
+    setLoading(true)
 
     //################################################################################//
     //Use batchCount and batchSize to fetch only the next batch of items from yout API//
@@ -137,6 +126,9 @@ class ListView extends React.Component {
       }
     )
 
+    //Toggle loading panel off (remember to do this when you have received your data)
+    setLoading(false)
+
     //###########################//
     //Please keep this part below//
     //###########################//
@@ -150,7 +142,23 @@ class ListView extends React.Component {
     }
 
     //return data
-    this.props.listViewLoad(data)
+    listViewLoad(data)
+  }
+
+  handleScroll() {
+    const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+    const body = document.body;
+    const html = document.documentElement;
+    const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+    const windowBottom = windowHeight + window.pageYOffset;
+
+    if (Math.ceil(windowBottom) >= docHeight && (new Date() - this.state.batchUpdateTime) > 100) {
+      this.props.nextBatch()
+      this.setState({ batchUpdateTime: new Date() })
+      this.getData()
+    }
+
+    this.setState({ showBackToTop: (window.pageYOffset > 250) })
   }
 
   renderDataCards(data) {
@@ -188,7 +196,7 @@ class ListView extends React.Component {
     return (
       <>
         <Filters id="#top-section" />
-        
+
         {this.renderDataCards(data)}
 
         {/* BACK TO TOP BUTTON */}

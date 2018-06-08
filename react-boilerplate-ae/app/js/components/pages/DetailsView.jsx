@@ -27,6 +27,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     detailsViewLoad: payload => {
       dispatch({ type: "DETAILSVIEW_LOAD", payload })
+    },
+    setLoading: payload => {
+      dispatch({ type: "SET_LOADING", payload })
     }
   }
 }
@@ -49,8 +52,12 @@ class DetailsView extends React.Component {
 
   getData() {
 
+    let { setLoading, detailsViewLoad } = this.props
     let { id } = this.state
     let data = {}
+
+    //Toggle loading panel on
+    setLoading(true)
 
     //#######################################################################//
     //Replace sample data with your own data fetched from an API or elsewhere//
@@ -60,8 +67,20 @@ class DetailsView extends React.Component {
     data.exampleValue1 = ("ID: " + id)
     data.exampleValue2 = "Nothing here"
 
+    //Toggle loading panel off (remember to do this when you have received your data)
+    setLoading(false)
+
     //return data
-    this.props.detailsViewLoad(data)
+    detailsViewLoad(data)
+  }
+
+  sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+      if ((new Date().getTime() - start) > milliseconds) {
+        break;
+      }
+    }
   }
 
   toggleTabs(tab) {
