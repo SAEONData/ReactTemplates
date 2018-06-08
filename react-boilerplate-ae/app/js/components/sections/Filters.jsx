@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Button, Collapse } from 'mdbreact';
 import ActiveFilters from '../sections/ActiveFilters.jsx'
 import FilterToggleButton from '../input/FilterToggleButton.jsx'
 import FilterButtonsPanel from '../layout/FilterButtonsPanel.jsx'
@@ -16,12 +15,15 @@ import TreeSelectInput from '../input/TreeSelectInput.jsx'
 //Filter input components
 
 const mapStateToProps = (state, props) => {
-  let { filters: { activeFilters } } = state
-  return { activeFilters }
+  let { filters: { data, activeFilters } } = state
+  return { data, activeFilters }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    filtersLoad: payload => {
+      dispatch({ type: "FILTERS_LOAD", payload })
+    },
     setFilter: (key, value) => {
       dispatch({ type: "SET_FILTER", payload: { key, value } })
     },
@@ -30,6 +32,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     resetBatchCount: () => {
       dispatch({ type: "RESET_BATCH_COUNT", payload: null })
+    },
+    setLoading: payload => {
+      dispatch({ type: "SET_LOADING", payload })
     }
   }
 }
@@ -38,11 +43,37 @@ class Filters extends React.Component {
 
   constructor(props) {
     super(props);
-    // this.toggle = this.toggle.bind(this)
     this.getFilterValue = this.getFilterValue.bind(this)
     this.getFilterKey = this.getFilterKey.bind(this)
 
     this.state = { collapse: "" };
+  }
+
+  componentDidMount(){
+    this.getData()
+  }
+
+  getData() {
+
+    let { setLoading, filtersLoad } = this.props
+    let data = []
+
+    //Toggle loading panel on
+    setLoading(true)
+
+    //#######################################################################//
+    //Replace sample data with your own data fetched from an API or elsewhere//
+    //#######################################################################//
+
+    //Sample data
+    data.push("unused value 1")
+    data.push("unused value 2")
+
+    //Toggle loading panel off (remember to do this when you have received your data)
+    setLoading(false)
+
+    //return data
+    filtersLoad(data)
   }
 
   toggle(value) {
@@ -95,8 +126,7 @@ class Filters extends React.Component {
 
   render() {
 
-    let { activeFilters } = this.props
-    let filterButtonStyle = { marginLeft: "0px", width: "100%" }
+    let { data } = this.props
 
     return (
       <>
@@ -129,7 +159,7 @@ class Filters extends React.Component {
             </div>
             <div className="col-md-3">
               {/* Please keep this button  */}
-              <FilterToggleButton label="Clear Filters" color="warning" callback={this.clearFilters.bind(this)} />
+              <FilterToggleButton label="Clear Filters" color="secondary" callback={this.clearFilters.bind(this)} />
             </div>
           </div>
         </FilterButtonsPanel>

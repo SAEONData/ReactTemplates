@@ -10,17 +10,25 @@ import { reducer as oidcReducer } from 'redux-oidc';
 const store = createStore(
     combineReducers({oidc: oidcReducer, ...reducers, router: routerReducer }), {
 
+        general: {
+            loading: false
+        },
         navigation: {
             locationHash: "#/"
         },
-        listView:{
+        filters: {
+            data: [],
+            activeFilters: [],
+            filtersChanged: false
+        },
+        listView: {
+            scrollPos: 0,
             batchSize: 25,
             batchCount: 1,
             data: []
         },
-        filters:{
-            activeFilters: [],
-            filtersChanged: false
+        detailsView: {
+            data: []
         }
         
     }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()

@@ -22,6 +22,12 @@ export default function ListViewReducer(state = {}, action) {
         ...state, batchCount: 1
       }
 
+    case 'SET_SCROLL_POS':
+      return {
+        ...state, scrollPos: payload
+      }
+
+
     default:
       return state
 

@@ -32,7 +32,7 @@ class FilterToggleButton extends React.Component {
     let { label, size, color, callback, children } = this.props
 
     size = this.fixEmptyValue(size, "sm")
-    color = this.fixEmptyValue(color, "secondary")
+    color = this.fixEmptyValue(color, "primary")
 
     return (
       <Button size={size} color={color} onClick={this.toggle} style={filterButtonStyle}>
