@@ -2,13 +2,13 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Card, CardBody, CardImage, CardTitle, CardText } from 'mdbreact';
+import { Button, ButtonFixed, Card, CardBody, CardImage, CardTitle, CardText, Fa } from 'mdbreact';
 import Filters from '../sections/Filters.jsx'
 
 const mapStateToProps = (state, props) => {
-  let { listView: { data, batchSize, batchCount } } = state
+  let { listView: { data, batchSize, batchCount, scrollPos } } = state
   let { filters: { filtersChanged, activeFilters } } = state
-  return { data, batchSize, batchCount, filtersChanged, activeFilters }
+  return { data, batchSize, batchCount, filtersChanged, activeFilters, scrollPos }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -24,6 +24,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     resetChangeState: () => {
       dispatch({ type: "RESET_CHANGE_STATE", payload: null })
+    },
+    setScrollPos: payload => {
+      dispatch({ type: "SET_SCROLL_POS", payload })
     }
   }
 }
@@ -34,17 +37,19 @@ class ListView extends React.Component {
     super(props);
     this.getData = this.getData.bind(this)
     this.handleScroll = this.handleScroll.bind(this);
-    this.state = { batchUpdateTime: new Date() }
+    this.state = { batchUpdateTime: new Date(), showBackToTop: false }
   }
 
   componentDidMount() {
     window.addEventListener("scroll", this.handleScroll);
     this.props.updateNav(location.hash)
     this.getData()
+    window.scrollTo(0, this.props.scrollPos);
   }
 
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
+    this.props.setScrollPos(window.pageYOffset)
   }
 
   componentDidUpdate() {
@@ -70,6 +75,8 @@ class ListView extends React.Component {
       this.setState({ batchUpdateTime: new Date() })
       this.getData()
     }
+
+    this.setState({ showBackToTop: (window.pageYOffset > 250) })
   }
 
   getData() {
@@ -88,25 +95,45 @@ class ListView extends React.Component {
     //Sample data
     data.push(
       {
+        id: 1,
         title: "How to use this template component",
-        image: null,
         description: "This component is designed as a template list-view page that you can easily " +
           "extend to suit your needs. The getData() function is provided to get data for this component. " +
           "Please use/extend this function to get data."
       },
       {
+        id: 2,
         title: "Required data structure",
-        image: null,
         description: [
           "Data needs to be in the following JSON structure: ",
           "[",
           "   {",
+          "      id: ...,",
           "      title: \"...\",",
-          "      image: ...,",
           "      description: \"...\",",
           "   } ",
           "]"
         ].join("")
+      },
+      {
+        id: 99,
+        title: "...",
+        description: "....."
+      },
+      {
+        id: 99,
+        title: "...",
+        description: "....."
+      },
+      {
+        id: 99,
+        title: "...",
+        description: "....."
+      },
+      {
+        id: 99,
+        title: "...",
+        description: "....."
       }
     )
 
@@ -137,9 +164,13 @@ class ListView extends React.Component {
           <Card>
             <CardBody>
               <CardTitle>{item.title}</CardTitle>
-              <CardText>
-                {item.description}
-              </CardText>
+              <CardText>{item.description}</CardText>
+              <Button
+                color="primary"
+                size="sm"
+                onClick={() => { location.hash = "/details/" + item.id }}
+                style={{ marginLeft: "0px" }}
+              > View </Button>
             </CardBody>
           </Card>
           <br />
@@ -156,9 +187,20 @@ class ListView extends React.Component {
 
     return (
       <>
-        <Filters />
-
+        <Filters id="#top-section" />
+        
         {this.renderDataCards(data)}
+
+        {/* BACK TO TOP BUTTON */}
+        <ButtonFixed
+          hidden={this.state.showBackToTop === false}
+          topSection="#list"
+          floating 
+          color="red"
+          icon="arrow-up"
+          style={{ bottom: '45px', right: '24px' }}
+          onClick={() => window.scroll({ top: 0, left: 0, behavior: 'smooth' })}>
+        </ButtonFixed>
       </>
     )
   }

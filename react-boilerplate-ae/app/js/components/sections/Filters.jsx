@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Button, Collapse } from 'mdbreact';
 import ActiveFilters from '../sections/ActiveFilters.jsx'
 import FilterToggleButton from '../input/FilterToggleButton.jsx'
 import FilterButtonsPanel from '../layout/FilterButtonsPanel.jsx'
@@ -38,7 +37,6 @@ class Filters extends React.Component {
 
   constructor(props) {
     super(props);
-    // this.toggle = this.toggle.bind(this)
     this.getFilterValue = this.getFilterValue.bind(this)
     this.getFilterKey = this.getFilterKey.bind(this)
 
@@ -129,7 +127,7 @@ class Filters extends React.Component {
             </div>
             <div className="col-md-3">
               {/* Please keep this button  */}
-              <FilterToggleButton label="Clear Filters" color="warning" callback={this.clearFilters.bind(this)} />
+              <FilterToggleButton label="Clear Filters" color="secondary" callback={this.clearFilters.bind(this)} />
             </div>
           </div>
         </FilterButtonsPanel>

@@ -13,14 +13,18 @@ const store = createStore(
         navigation: {
             locationHash: "#/"
         },
-        listView:{
+        filters: {
+            activeFilters: [],
+            filtersChanged: false
+        },
+        listView: {
+            scrollPos: 0,
             batchSize: 25,
             batchCount: 1,
             data: []
         },
-        filters:{
-            activeFilters: [],
-            filtersChanged: false
+        detailsView: {
+            data: []
         }
         
     }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
