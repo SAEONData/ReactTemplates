@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { Button, Input, Tooltip } from 'mdbreact'
+import * as globalFunctions from '../../globalFunctions'
 
 // Properties:
 //  - label : Component label
@@ -13,15 +14,27 @@ class TextInputWithApply extends React.Component {
 
   constructor(props) {
     super(props);
-    this.setState.bind(this)
 
     this.state = { value: "" }
   }
 
   componentDidMount() {
+
+    this.setInternalValue()
+  }
+
+  componentDidUpdate() {
+
+    if (globalFunctions.isEmptyValue(this.state.value) && !globalFunctions.isEmptyValue(this.props.value)) {
+      this.setInternalValue()
+    }
+  }
+
+  setInternalValue() {
+
     let { value } = this.props
 
-    if (typeof value === 'undefined') {
+    if (globalFunctions.isEmptyValue(value)) {
       value = ""
     }
 
@@ -43,22 +56,15 @@ class TextInputWithApply extends React.Component {
     }
   }
 
-  fixEmptyValue(value, defaultValue) {
-    if (typeof value === 'undefined') {
-      return defaultValue
-    }
-
-    return value
-  }
-
   render() {
 
     let { label, tooltip, allowEdit } = this.props
     let { value } = this.state
 
-    label = this.fixEmptyValue(label, "Label:")
-    tooltip = this.fixEmptyValue(tooltip, "")
-    allowEdit = this.fixEmptyValue(allowEdit, true)
+    label = globalFunctions.fixEmptyValue(label, "Label:")
+    tooltip = globalFunctions.fixEmptyValue(tooltip, "")
+    allowEdit = globalFunctions.fixEmptyValue(allowEdit, true)
+    value = globalFunctions.fixEmptyValue(value, "")
 
     return (
       <>
@@ -67,18 +73,19 @@ class TextInputWithApply extends React.Component {
             placement="top"
             component="label"
             tooltipContent={tooltip}>
-            <b>{label}</b>
+            <b style={{ color: globalFunctions.getFontColour(allowEdit) }}>{label}</b>
           </Tooltip>
         </div>
         <div hidden={tooltip !== ""}>
-          <b>{label}</b>
+          <b style={{ color: globalFunctions.getFontColour(allowEdit) }}>{label}</b>
         </div>
 
         <table style={{ width: "100%" }}>
           <tbody>
             <tr>
               <td>
-                <Input disabled={!allowEdit} size="sm" style={{ marginLeft: "0px", marginRight: "0px", marginTop: "-25px", width: "100%", fontSize: "15px" }}
+                <Input disabled={!allowEdit} size="sm"
+                  style={{ marginLeft: "0px", marginRight: "0px", marginTop: "-25px", width: "100%", fontSize: "15px" }}
                   onChange={this.onChange.bind(this)} hint="Type value here"
                   value={value} />
               </td>

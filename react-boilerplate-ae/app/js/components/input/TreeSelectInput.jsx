@@ -1,7 +1,8 @@
 'use strict'
 
 import React from 'react'
-import { Tooltip } from 'mdbreact';
+import { Tooltip } from 'mdbreact'
+import * as globalFunctions from '../../globalFunctions'
 
 //AntD Tree-Select
 import TreeSelect from 'antd/lib/tree-select'
@@ -27,10 +28,21 @@ class TreeSelectInput extends React.Component {
 
   componentDidMount() {
 
+    this.setInternalValue()
+  }
+
+  componentDidUpdate() {
+
+    if(globalFunctions.isEmptyValue(this.state.value) && !globalFunctions.isEmptyValue(this.props.value)){
+      this.setInternalValue()
+    }
+  }
+
+  setInternalValue() {
     //Init state
     let { value } = this.props
 
-    if (typeof value === 'undefined') {
+    if (globalFunctions.isEmptyValue(value)) {
       value = ""
     }
 
@@ -68,14 +80,6 @@ class TreeSelectInput extends React.Component {
     }
   }
 
-  fixEmptyValue(value, defaultValue) {
-    if (typeof value === 'undefined') {
-      return defaultValue
-    }
-
-    return value
-  }
-
   render() {
 
     let { label, tooltip, data, allowEdit } = this.props
@@ -85,9 +89,9 @@ class TreeSelectInput extends React.Component {
       value = "Select..."
     }
 
-    label = this.fixEmptyValue(label, "Label:")
-    tooltip = this.fixEmptyValue(tooltip, "")
-    allowEdit = this.fixEmptyValue(allowEdit, true)
+    label = globalFunctions.fixEmptyValue(label, "Label:")
+    tooltip = globalFunctions.fixEmptyValue(tooltip, "")
+    allowEdit = globalFunctions.fixEmptyValue(allowEdit, true)
 
     return (
       <>
@@ -96,11 +100,11 @@ class TreeSelectInput extends React.Component {
             placement="top"
             component="label"
             tooltipContent={tooltip}>
-            <b>{label}</b>
+            <b style={{ color: globalFunctions.getFontColour(allowEdit) }}>{label}</b>
           </Tooltip>
         </div>
         <div hidden={tooltip !== ""}>
-          <b>{label}</b>
+          <b style={{ color: globalFunctions.getFontColour(allowEdit) }}>{label}</b>
         </div>
 
         <TreeSelect

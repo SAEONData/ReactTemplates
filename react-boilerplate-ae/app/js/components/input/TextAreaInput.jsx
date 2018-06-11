@@ -1,8 +1,9 @@
 'use strict'
 
 import React from 'react'
-import { Input, Tooltip } from 'mdbreact'
+import { Tooltip } from 'mdbreact'
 import TextareaAutosize from "react-textarea-autosize"
+import * as globalFunctions from '../../globalFunctions'
 
 //Requires: react-textarea-autosize
 
@@ -22,9 +23,21 @@ class TextAreaInput extends React.Component {
 
   componentDidMount() {
 
+    this.setInternalValue()
+  }
+
+  componentDidUpdate() {
+
+    if (globalFunctions.isEmptyValue(this.state.value) && !globalFunctions.isEmptyValue(this.props.value)) {
+      this.setInternalValue()
+    }
+  }
+
+  setInternalValue() {
+
     let { value } = this.props
 
-    if (typeof value === 'undefined') {
+    if (globalFunctions.isEmptyValue(value)) {
       value = ""
     }
 
@@ -43,22 +56,14 @@ class TextAreaInput extends React.Component {
     }
   }
 
-  fixEmptyValue(value, defaultValue) {
-    if (typeof value === 'undefined') {
-      return defaultValue
-    }
-
-    return value
-  }
-
   render() {
 
     let { label, tooltip, allowEdit } = this.props
     let { value } = this.state
 
-    label = this.fixEmptyValue(label, "Label:")
-    tooltip = this.fixEmptyValue(tooltip, "")
-    allowEdit = this.fixEmptyValue(allowEdit, true)
+    label = globalFunctions.fixEmptyValue(label, "Label:")
+    tooltip = globalFunctions.fixEmptyValue(tooltip, "")
+    allowEdit = globalFunctions.fixEmptyValue(allowEdit, true)
 
     return (
       <>
@@ -67,11 +72,11 @@ class TextAreaInput extends React.Component {
             placement="top"
             component="label"
             tooltipContent={tooltip}>
-            <b>{label}</b>
+            <b style={{ color: globalFunctions.getFontColour(allowEdit) }}>{label}</b>
           </Tooltip>
         </div>
         <div hidden={tooltip !== ""}>
-          <b>{label}</b>
+          <b style={{ color: globalFunctions.getFontColour(allowEdit) }}>{label}</b>
         </div>
 
         <TextareaAutosize
