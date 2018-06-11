@@ -1,7 +1,8 @@
 'use strict'
 
 import React from 'react'
-import { Tooltip } from 'mdbreact';
+import { Tooltip } from 'mdbreact'
+import * as globalFunctions from '../../globalFunctions'
 
 //AntD Tree
 import Tree from 'antd/lib/tree'
@@ -60,10 +61,22 @@ class TreeInput extends React.Component {
 
   componentDidMount() {
 
+    this.setInternalValue()
+  }
+
+  componentDidUpdate() {
+
+    if(globalFunctions.isEmptyValue(this.state.selectedKeys) && !globalFunctions.isEmptyValue(this.props.value)){
+      this.setInternalValue()
+    }
+  }
+
+  setInternalValue() {
+
     //Init state
     let { value, data } = this.props
 
-    if (typeof value !== 'undefined') {
+    if (!globalFunctions.isEmptyValue(value)) {
 
       let dataItem = this.FindDataItem(data, value)
       if (typeof dataItem !== 'undefined') {
@@ -110,36 +123,28 @@ class TreeInput extends React.Component {
     this.setState({ expandedKeys })
   }
 
-  fixEmptyValue(value, defaultValue) {
-    if (typeof value === 'undefined') {
-      return defaultValue
-    }
-
-    return value
-  }
-
   render() {
 
     let { label, tooltip, data, allowEdit } = this.props
     let { selectedKeys, expandedKeys } = this.state
 
-    label = this.fixEmptyValue(label, "Label:")
-    tooltip = this.fixEmptyValue(tooltip, "")
-    allowEdit = this.fixEmptyValue(allowEdit, true)
+    label = globalFunctions.fixEmptyValue(label, "Label:")
+    tooltip = globalFunctions.fixEmptyValue(tooltip, "")
+    allowEdit = globalFunctions.fixEmptyValue(allowEdit, true)
 
     return (
       <>
-        <div style={{ marginBottom: "8px"}}>
+        <div style={{ marginBottom: "8px" }}>
           <div hidden={tooltip === ""}>
             <Tooltip
               placement="top"
               component="label"
               tooltipContent={tooltip}>
-              <b>{label}</b>
+              <b style={{ color: globalFunctions.getFontColour(allowEdit) }}>{label}</b>
             </Tooltip>
           </div>
           <div hidden={tooltip !== ""}>
-            <b>{label}</b>
+            <b style={{ color: globalFunctions.getFontColour(allowEdit) }}>{label}</b>
           </div>
         </div>
 

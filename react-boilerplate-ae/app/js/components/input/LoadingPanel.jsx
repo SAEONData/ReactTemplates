@@ -1,7 +1,8 @@
 'use strict'
 
 import React from 'react'
-import { Spinner, Tooltip } from 'mdbreact'
+import { Spinner } from 'mdbreact'
+import * as globalFunctions from '../../globalFunctions'
 
 // Properties:
 //  - header : Component header
@@ -13,22 +14,15 @@ class LoadingPanel extends React.Component {
     super(props);
   }
 
-  fixEmptyValue(value, defaultValue) {
-    if (typeof value === 'undefined') {
-      return defaultValue
-    }
-    return value
-  }
-
   render() {
 
     let { enabled, header, description } = this.props
     let loaderWidth = 350 //default=350
     let loaderHeight = 210 //default=210
 
-    header = this.fixEmptyValue(header, "Loading")
-    description = this.fixEmptyValue(description, "Please wait...")
-    enabled = this.fixEmptyValue(enabled, false)
+    header = globalFunctions.fixEmptyValue(header, "Loading")
+    description = globalFunctions.fixEmptyValue(description, "Please wait...")
+    enabled = globalFunctions.fixEmptyValue(enabled, false)
 
     return (
       <>

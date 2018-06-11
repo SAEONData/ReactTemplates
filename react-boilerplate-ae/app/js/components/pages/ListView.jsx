@@ -185,7 +185,7 @@ class ListView extends React.Component {
         {/* BACK TO TOP BUTTON */}
         <ButtonFixed
           hidden={this.state.showBackToTop === false}
-          topSection="#list"
+          topSection={location.hash}
           floating
           color="red"
           icon="arrow-up"

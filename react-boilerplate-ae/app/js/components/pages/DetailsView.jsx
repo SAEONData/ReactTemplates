@@ -2,7 +2,10 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Button, Container, TabPane, NavItem, NavLink } from 'mdbreact'
+import {
+  Button, ButtonFixed, Container, TabPane, NavItem, NavLink, Modal, ModalHeader, ModalBody,
+  ModalFooter, Row, Col
+} from 'mdbreact'
 import classnames from 'classnames';
 import StyledTabsNav from '../layout/StyledTabsNav.jsx'
 import StyledTabsContent from '../layout/StyledTabsContent.jsx'
@@ -17,7 +20,8 @@ import TreeSelectInput from '../input/TreeSelectInput.jsx'
 
 const mapStateToProps = (state, props) => {
   let { detailsView: { data } } = state
-  return { data }
+  let user = state.oidc.user
+  return { data, user }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -42,7 +46,13 @@ class DetailsView extends React.Component {
     this.togglePills = this.toggleTabs.bind(this);
     this.backToList = this.backToList.bind(this);
 
-    this.state = { activeTab: '1', editMode: false, id: this.props.match.params.id }
+    this.state = {
+      activeTab: '1',
+      editMode: false,
+      id: this.props.match.params.id,
+      saveModal: false,
+      discardModal: false
+    }
   }
 
   componentDidMount() {
@@ -100,9 +110,48 @@ class DetailsView extends React.Component {
     location.hash = "/list"
   }
 
+  editClick() {
+
+    //Enable EditMode
+    this.setState({ editMode: true })
+  }
+
+  saveClick() {
+
+    //Confirm save
+    this.setState({ saveModal: true })
+  }
+
+  save() {
+
+    //############################################//
+    //Add your code here to save (persist) changes//
+    //############################################//
+
+    //Disable EditMode and close modal
+    this.setState({ editMode: false, saveModal: false })
+  }
+
+  discardClick() {
+
+    //Confirm discard
+    this.setState({ discardModal: true })
+  }
+
+  discard() {
+
+    //#####################################//
+    //Add your code here to discard changes//
+    //#####################################//
+
+    //Disable EditMode and close modal
+    this.setState({ editMode: false, discardModal: false })
+  }
+
   render() {
 
-    let { data } = this.props
+    let { data, user } = this.props
+    let { editMode, activeTab, id } = this.state
 
     return (
       <>
@@ -112,33 +161,111 @@ class DetailsView extends React.Component {
 
         {/* 
         #############################################################################
-        The content beloe is for example only, please replace with your own.
+        The content below is for example only, please replace with your own.
         Make use of the input- and the styled-tabs components to simplify your work.
         #############################################################################
         */}
         <Container className="mt-2">
           <StyledTabsNav>
             <NavItem>
-              <NavLink to="#" className={classnames({ active: this.state.activeTab === '1' })} onClick={() => { this.toggleTabs('1'); }}>
+              <NavLink to="#" className={classnames({ active: activeTab === '1' })} onClick={() => { this.toggleTabs('1'); }}>
                 Example Tab
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink to="#" className={classnames({ active: this.state.activeTab === '2' })} onClick={() => { this.toggleTabs('2'); }}>
+              <NavLink to="#" className={classnames({ active: activeTab === '2' })} onClick={() => { this.toggleTabs('2'); }}>
                 Another example tab with a longer title
               </NavLink>
             </NavItem>
           </StyledTabsNav>
 
-          <StyledTabsContent activeItem={this.state.activeTab}>
+          <StyledTabsContent activeItem={activeTab}>
             <TabPane tabId="1">
-              {data.exampleValue1}
+              <Row>
+                <Col md="4">
+                  <TextInput label="Example 1" value={data.exampleValue1} allowEdit={editMode} />
+                </Col>
+              </Row>
             </TabPane>
             <TabPane tabId="2">
-              {data.exampleValue2}
+              <Row>
+                <Col md="4">
+                  <SelectInput label="Example 2" allowEdit={editMode} value={data.exampleValue2}
+                    data={[{ id: 1, text: data.exampleValue1 }, { id: 2, text: data.exampleValue2 }]} />
+                </Col>
+              </Row>
             </TabPane>
           </StyledTabsContent>
         </Container>
+
+        {/* Enable the line below to allow editing for all users */}
+        <div>
+
+          {/* Enable the line below to only allow editing for authenticated users */}
+          {/* <div hidden={!user || user.expired}> */}
+
+          {/* EDIT BUTTON */}
+          <ButtonFixed
+            topSection={location.hash}
+            hidden={editMode}
+            floating
+            color="red"
+            icon="pencil"
+            style={{ bottom: '45px', right: '24px' }}
+            onClick={this.editClick.bind(this)}>
+          </ButtonFixed>
+
+          {/* DISCARD BUTTON */}
+          <ButtonFixed
+            topSection={location.hash}
+            hidden={!editMode}
+            floating
+            color="red"
+            icon="trash"
+            style={{ bottom: '45px', right: '24px' }}
+            onClick={this.discardClick.bind(this)}>
+          </ButtonFixed>
+
+          {/* SAVE BUTTON */}
+          <ButtonFixed
+            topSection={location.hash}
+            hidden={!editMode}
+            floating
+            color="red"
+            icon="save"
+            style={{ bottom: '45px', right: '84px' }}
+            onClick={this.saveClick.bind(this)}>
+          </ButtonFixed>
+        </div>
+
+        {/* SAVE CONFIRMATION MODAL */}
+        <Container>
+          <Modal isOpen={this.state.saveModal} backdrop={false}>
+            <ModalHeader toggle={this.toggle}>Confirm Save</ModalHeader>
+            <ModalBody>
+              Are you sure you want to save all changes?
+            </ModalBody>
+            <ModalFooter>
+              <Button size="sm" style={{ width: "100px" }} color="warning" onClick={this.save.bind(this)} >Save</Button>
+              <Button size="sm" style={{ width: "100px" }} color="secondary" onClick={() => this.setState({ saveModal: false })} >Cancel</Button>{' '}
+            </ModalFooter>
+          </Modal>
+        </Container>
+
+        {/* DISCARD CONFIRMATION MODAL */}
+        <Container>
+          <Modal isOpen={this.state.discardModal} backdrop={false}>
+            <ModalHeader toggle={this.toggle}>Confirm Discard</ModalHeader>
+            <ModalBody>
+              Are you sure you want to discard all changes?
+            </ModalBody>
+            <ModalFooter>
+              <Button size="sm" style={{ width: "100px" }} color="warning" onClick={this.discard.bind(this)} >Discard</Button>
+              <Button size="sm" style={{ width: "100px" }} color="secondary" onClick={() => this.setState({ discardModal: false })} >Cancel</Button>{' '}
+            </ModalFooter>
+          </Modal>
+        </Container>
+
       </>
     )
   }

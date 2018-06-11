@@ -1,7 +1,8 @@
 'use strict'
 
 import React from 'react'
-import { Button } from 'mdbreact';
+import { Button } from 'mdbreact'
+import * as globalFunctions from '../../globalFunctions'
 
 const filterButtonStyle = { marginLeft: "0px", marginRight: "0px", width: "100%" }
 
@@ -19,20 +20,12 @@ class FilterToggleButton extends React.Component {
     }
   }
 
-  fixEmptyValue(value, defaultValue) {
-    if (typeof value === 'undefined') {
-      return defaultValue
-    }
-
-    return value
-  }
-
   render() {
 
-    let { label, size, color, callback, children } = this.props
+    let { label, size, color } = this.props
 
-    size = this.fixEmptyValue(size, "sm")
-    color = this.fixEmptyValue(color, "primary")
+    size = globalFunctions.fixEmptyValue(size, "sm")
+    color = globalFunctions.fixEmptyValue(color, "primary")
 
     return (
       <Button size={size} color={color} onClick={this.toggle} style={filterButtonStyle}>
