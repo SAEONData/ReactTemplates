@@ -21,7 +21,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin'
 import store from './store'
 import { HashRouter as Router, Switch, Route } from 'react-router-dom'
 import Home from './components/Pages/Home.jsx'
-import CardListView from './components/Pages/CardListView.jsx'
+import ListView from './components/Pages/ListView.jsx'
 import DetailsView from './components/Pages/DetailsView.jsx'
 import Components from './components/Pages/Components.jsx'
 import Login from './components/Authentication/Login.jsx'
@@ -85,7 +85,7 @@ class App extends React.Component {
               <Route path="/logout" component={Logout} exact />
               <Route path="/loggedout" component={LoggedOut} exact />
               <Route path="/callback" component={CallbackPage} />
-              <Route path="/list" component={CardListView} />
+              <Route path="/list" component={ListView} />
               <Route path="/details/:id" component={DetailsView} exact />
             </Switch>
 

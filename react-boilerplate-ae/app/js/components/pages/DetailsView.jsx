@@ -46,10 +46,12 @@ class DetailsView extends React.Component {
     this.togglePills = this.toggleTabs.bind(this);
     this.backToList = this.backToList.bind(this);
 
+    let id = this.props.match.params.id
+
     this.state = {
       activeTab: '1',
       editMode: false,
-      id: this.props.match.params.id,
+      id,
       saveModal: false,
       discardModal: false
     }
@@ -183,7 +185,7 @@ class DetailsView extends React.Component {
             <TabPane tabId="1">
               <Row>
                 <Col md="4">
-                  <TextInput label="Example 1" value={data.exampleValue1} allowEdit={editMode} />
+                  <TextInput key={data.exampleValue1} label="Example 1" value={data.exampleValue1} allowEdit={editMode} />
                 </Col>
               </Row>
             </TabPane>

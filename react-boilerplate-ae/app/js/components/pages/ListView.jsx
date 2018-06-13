@@ -2,13 +2,16 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Button, ButtonFixed, Card, CardBody, CardImage, CardTitle, CardText, Fa } from 'mdbreact';
+import {
+  Button, ButtonFixed, Card, CardBody, CardImage, CardTitle, CardText, Fa,
+  ListGroup, ListGroupItem
+} from 'mdbreact';
 import Filters from '../sections/Filters.jsx'
 
 const mapStateToProps = (state, props) => {
-  let { listView: { data, batchSize, batchCount, scrollPos } } = state
+  let { listView: { type, data, batchSize, batchCount, scrollPos } } = state
   let { filters: { filtersChanged, activeFilters } } = state
-  return { data, batchSize, batchCount, filtersChanged, activeFilters, scrollPos }
+  return { type, data, batchSize, batchCount, filtersChanged, activeFilters, scrollPos }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -34,7 +37,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-class CardListView extends React.Component {
+class ListView extends React.Component {
 
   constructor(props) {
     super(props);
@@ -144,7 +147,27 @@ class CardListView extends React.Component {
     this.setState({ showBackToTop: (window.pageYOffset > 250) })
   }
 
-  renderDataCards(data) {
+  renderSimpleList(data) {
+
+    return (
+      <ListGroup>
+        {
+          data.map(item => {
+            return (
+              <ListGroupItem key={"li_" + item.id} hover href={"#/details/" + item.id}>
+                <h5>{item.title}</h5>
+                <p>{item.description}</p>
+              </ListGroupItem>
+            )
+          })
+        }
+      </ListGroup>
+    )
+
+    return items
+  }
+
+  renderCardList(data) {
 
     let items = []
 
@@ -172,6 +195,29 @@ class CardListView extends React.Component {
     return items
   }
 
+  renderList(data) {
+
+    let { type } = this.props
+
+    if (typeof data === 'undefined' || data === null) {
+      return null
+    }
+
+    switch (type) {
+      case "simple":
+        return this.renderSimpleList(data)
+
+      case "card":
+        return this.renderCardList(data)
+
+      case "tables":
+        return null
+
+      case "carousel":
+        return null
+    }
+  }
+
   render() {
 
     let { data } = this.props
@@ -180,7 +226,7 @@ class CardListView extends React.Component {
       <>
         <Filters id="#top-section" />
 
-        {this.renderDataCards(data)}
+        {this.renderList(data)}
 
         {/* BACK TO TOP BUTTON */}
         <ButtonFixed
@@ -197,4 +243,4 @@ class CardListView extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CardListView)
+export default connect(mapStateToProps, mapDispatchToProps)(ListView)
