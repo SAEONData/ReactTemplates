@@ -1,7 +1,7 @@
 'use strict'
 
-import { createStore, combineReducers, applyMiddleware } from 'redux'
-import { routerReducer, routerMiddleware } from 'react-router-redux'
+import { createStore, combineReducers } from 'redux'
+import { routerReducer } from 'react-router-redux'
 import reducers from './reducers'
 import { loadUser } from 'redux-oidc'
 import userManager from './components/Authentication/userManager'

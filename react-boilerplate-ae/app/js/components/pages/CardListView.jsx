@@ -34,7 +34,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-class ListView extends React.Component {
+class CardListView extends React.Component {
 
   constructor(props) {
     super(props);
@@ -197,4 +197,4 @@ class ListView extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListView)
+export default connect(mapStateToProps, mapDispatchToProps)(CardListView)
