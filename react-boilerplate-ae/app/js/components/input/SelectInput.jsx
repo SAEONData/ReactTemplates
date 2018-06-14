@@ -10,6 +10,7 @@ import * as globalFunctions from '../../globalFunctions'
 //  - value : String/text value
 //  - data : Data for list >> [{id: 1, text: "one"}, ...]
 //  - callback : callback to send filter value
+//  - allowEdit : Toggle enabled/disabled
 
 class SelectInput extends React.Component {
 

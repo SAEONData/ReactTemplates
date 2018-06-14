@@ -11,6 +11,13 @@ import '../../../css/antd.time-picker.css'
 import '../../../css/antd.input.css'
 //const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 
+// Properties:
+//  - label : Component label
+//  - tooltip : Tooltip
+//  - value : String/text value
+//  - callback : callback to send filter value
+//  - allowEdit : Toggle enabled/disabled
+
 class DateInput extends React.Component {
 
   constructor(props) {
