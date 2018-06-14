@@ -1,8 +1,9 @@
 export function fixEmptyValue(value, defaultValue) {
-  if (typeof value === 'undefined') {
+
+  if (isEmptyValue(value)) {
     return defaultValue
   }
-
+  
   return value
 }
 

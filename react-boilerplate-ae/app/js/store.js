@@ -22,7 +22,7 @@ const store = createStore(
       filtersChanged: false
     },
     listView: {
-      type: "simple", //options: simple|card|tables|carousel
+      type: "card", //options: simple|card|tables|carousel
       scrollPos: 0,
       batchSize: 25,
       batchCount: 1,
