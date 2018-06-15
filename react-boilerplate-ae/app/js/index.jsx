@@ -24,6 +24,7 @@ import Home from './components/Pages/Home.jsx'
 import ListView from './components/Pages/ListView.jsx'
 import DetailsView from './components/Pages/DetailsView.jsx'
 import Components from './components/Pages/Components.jsx'
+import Dashboard from './components/Pages/Dashboard.jsx'
 import Login from './components/Authentication/Login.jsx'
 import Logout from './components/Authentication/Logout.jsx'
 import Navbar from './components/navigation/Navbar.jsx'
@@ -80,13 +81,14 @@ class App extends React.Component {
 
             <Switch>
               <Route path="/" component={Home} exact />
-              <Route path="/components" component={Components} />
               <Route path="/login" component={Login} exact />
               <Route path="/logout" component={Logout} exact />
               <Route path="/loggedout" component={LoggedOut} exact />
               <Route path="/callback" component={CallbackPage} />
+              <Route path="/comp" component={Components} />
               <Route path="/list" component={ListView} />
               <Route path="/details/:id" component={DetailsView} exact />
+              <Route path="/dash" component={Dashboard} />
             </Switch>
 
             <br />

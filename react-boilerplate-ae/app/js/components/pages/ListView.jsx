@@ -97,38 +97,19 @@ class ListView extends React.Component {
     //#######################################################################//
 
     //Sample data
-    data.push(
-      {
-        id: 1,
-        title: "How to use this template site",
-        description: "This site consits of 3 main components: filters, list-view and details-view. " +
-          "You may customise/extend these components as needed in your own site."
-      },
-      {
-        id: 2,
-        title: "Getting data",
-        description: "Each of the three main components implements a getData() function that you can " +
-          "customise to suit your needs."
-      },
-      {
-        id: 3,
-        title: "Default required data structure for list-view",
-        description: "Data needs to be in the following JSON structure: " +
-          "[ { id: ..., title: \"...\", description: \"...\" } ]"
-      },
-      {
-        id: 4,
-        title: "Default required data structure for filters and details-view",
-        description: "There is no default required data structure for these two components, " +
-          "you are free to implement this however you like."
-      },
-      {
-        id: 5,
-        title: "Components page",
-        description: "There is also a components page to demo some of the other template components " +
-          "available in the project."
-      }
-    )
+    for (let i = 1; i <= 10; i++) {
+      data.push(
+        {
+          id: i,
+          title: "Item #" + i,
+          description: "Item #" + i + " description ... " + "Item #" + i + " description ... " +
+            "Item #" + i + " description ... " + "Item #" + i + " description ... " + "Item #" + i + " description ... " +
+            "Item #" + i + " description ... " + "Item #" + i + " description ... " + "Item #" + i + " description ... " +
+            "Item #" + i + " description ... " + "Item #" + i + " description ... " + "Item #" + i + " description ... " +
+            "Item #" + i + " description ... " + "Item #" + i + " description ... "
+        }
+      )
+    }
 
     //Toggle loading panel off (remember to do this when you have received your data)
     setLoading(false)
@@ -173,8 +154,8 @@ class ListView extends React.Component {
           data.map(item => {
             return (
               <ListGroupItem key={"li_" + item.id} hover href={"#/details/" + item.id}>
-                <h5>{item.title}</h5>
-                <p>{item.description}</p>
+                <h4 style={{ color: "#1976d2" }}><b>{item.title}</b></h4>
+                <p style={{ color: "dimgrey" }}>{item.description}</p>
               </ListGroupItem>
             )
           })
@@ -195,7 +176,7 @@ class ListView extends React.Component {
         <div key={data.indexOf(item)}>
           <Card>
             <CardBody>
-              <CardTitle>{item.title}</CardTitle>
+              <CardTitle style={{ color: "#1976d2", marginLeft: "-1px" }}>{item.title}</CardTitle>
               <CardText>{item.description}</CardText>
               <Button
                 color="primary"
