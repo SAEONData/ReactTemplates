@@ -64,14 +64,17 @@ class SelectInput extends React.Component {
     if (typeof data === 'undefined') {
       data = []
     }
-    data.splice(0, 0, { id: 0, text: "Select..." })
+
+    if (data.filter(d => d.text === "Select...").length === 0) {
+      data.splice(0, 0, { id: 0, text: "Select..." })
+    }
 
     this.setInternalValue()
   }
 
   componentDidUpdate() {
 
-    if(globalFunctions.isEmptyValue(this.state.value) && !globalFunctions.isEmptyValue(this.props.value)){
+    if (globalFunctions.isEmptyValue(this.state.value) && !globalFunctions.isEmptyValue(this.props.value)) {
       this.setInternalValue()
     }
   }

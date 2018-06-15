@@ -14,6 +14,7 @@ import SelectInput from '../input/SelectInput.jsx'
 import TextInputWithApply from '../input/TextInputWithApply.jsx'
 import TreeInput from '../input/TreeInput.jsx'
 import TreeSelectInput from '../input/TreeSelectInput.jsx'
+import DateInput from '../input/DateInput.jsx'
 //Filter input components
 
 const queryString = require('query-string')
@@ -49,26 +50,27 @@ class Filters extends React.Component {
     super(props);
     this.getFilterValue = this.getFilterValue.bind(this)
     this.getFilterKey = this.getFilterKey.bind(this)
+    this.generateFilters = this.generateFilters.bind(this)
 
     this.state = { collapse: "" };
     this.processURLFilters()
   }
 
   componentDidMount() {
-    this.getData() 
+    this.getData()
   }
 
-  processURLFilters(){
+  processURLFilters() {
 
     //Read filters from URL
     const parsedHash = globalFunctions.readFiltersFromURL()
-    
+
     //Process URL filters
     Object.keys(parsedHash).forEach(key => {
 
       //Replace with less hardcoded method eventually.
       //When filters are loaded from config/data this should be more doable.
-      const validFilters = ["text", "list", "tree"] 
+      const validFilters = ["text", "list", "tree"]
 
       if (validFilters.filter(x => x === key) != null) {
         this.props.setFilter(key, parsedHash[key])
@@ -86,11 +88,48 @@ class Filters extends React.Component {
 
     //#######################################################################//
     //Replace sample data with your own data fetched from an API or elsewhere//
+    //The end result data needs to be an array of: {type, key, label, data}  //
     //#######################################################################//
 
-    //Sample data
-    data.push("unused value 1")
-    data.push("unused value 2")
+    //Text filter example
+    data.push({
+      type: "text",
+      key: "textFilter",
+      label: "Example text filter:",
+      data: []
+    })
+
+    //Select filter example
+    data.push({
+      type: "select",
+      key: "selectFilter",
+      label: "Example select filter:",
+      data: [{ id: 1, text: "One" }, { id: 2, text: "Two" }, { id: 3, text: "Three" }]
+    })
+
+    //Tree-select filter example
+    data.push({
+      type: "tree-select",
+      key: "treeSelectFilter",
+      label: "Example tree-select filter:",
+      data: [{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{ id: 111, text: "SubChild1" }] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]
+    })
+
+    //Tree filter example
+    data.push({
+      type: "tree",
+      key: "treeFilter",
+      label: "Example tree filter:",
+      data: [{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{ id: 111, text: "SubChild1" }] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]
+    })
+
+    //Date filter example
+    data.push({
+      type: "date",
+      key: "dateFilter",
+      label: "Example date filter:",
+      data: []
+    })
 
     //Toggle loading panel off (remember to do this when you have received your data)
     setLoading(false)
@@ -109,18 +148,26 @@ class Filters extends React.Component {
     }
   }
 
-  setTextFilter(key, value) {
+  setFilter(key, value) {
+
+    let { resetBatchCount, setFilter } = this.props
+
     if (typeof key !== 'undefined' && typeof value !== 'undefined') {
-      this.props.resetBatchCount()
-      this.props.setFilter(key, value)
+
+      resetBatchCount()
+
+      if (typeof value === 'string') {
+        setFilter(key, value)
+      }
+      else if (typeof value.id !== 'undefined' && typeof value.text !== 'undefined') {
+        setFilter(key, value.text)
+      }
     }
+
   }
 
-  setListFilter(key, value) {
-    if (typeof key !== 'undefined' && typeof value !== 'undefined') {
-      this.props.resetBatchCount()
-      this.props.setFilter(key, value.text)
-    }
+  getFilterKey(key) {
+    return key + "_" + this.getFilterValue(key)
   }
 
   getFilterValue(key) {
@@ -136,10 +183,6 @@ class Filters extends React.Component {
     return value
   }
 
-  getFilterKey(key) {
-    return key + "_" + this.getFilterValue(key)
-  }
-
   clearFilters() {
     if (this.props.activeFilters.length > 0) {
       this.props.resetBatchCount()
@@ -147,9 +190,82 @@ class Filters extends React.Component {
     }
   }
 
-  render() {
+  generateFilters() {
 
     let { data } = this.props
+    let filters = []
+
+    data.forEach(item => {
+
+      switch (item.type) {
+
+        case "text":
+          filters.push(
+            <TextInputWithApply
+              key={this.getFilterKey(item.key)}
+              label={item.label}
+              callback={this.setFilter.bind(this, item.key)}
+              value={this.getFilterValue(item.key)}
+            />
+          )
+          break;
+
+        case "select":
+          filters.push(
+            <SelectInput
+              key={this.getFilterKey(item.key)}
+              label={item.label}
+              callback={this.setFilter.bind(this, item.key)}
+              value={this.getFilterValue(item.key)}
+              data={item.data}
+            />
+          )
+          break;
+
+        case "tree":
+          filters.push(
+            <TreeInput
+              key={this.getFilterKey(item.key)}
+              label={item.label}
+              callback={this.setFilter.bind(this, item.key)}
+              value={this.getFilterValue(item.key)}
+              data={item.data}
+            />
+          )
+          break;
+
+        case "tree-select":
+          filters.push(
+            <TreeSelectInput
+              key={this.getFilterKey(item.key)}
+              label={item.label}
+              callback={this.setFilter.bind(this, item.key)}
+              value={this.getFilterValue(item.key)}
+              data={item.data}
+            />
+          )
+          break;
+
+        case "date":
+          filters.push(
+            <DateInput
+              key={this.getFilterKey(item.key)}
+              label={item.label}
+              callback={this.setFilter.bind(this, item.key)}
+              value={this.getFilterValue(item.key)}
+            />
+          )
+          break;
+      }
+    })
+
+    return filters
+
+  }
+
+  render() {
+
+    let filters = this.generateFilters()
 
     return (
       <>
@@ -175,10 +291,10 @@ class Filters extends React.Component {
               <FilterToggleButton label="Toggle example filters" callback={this.toggle.bind(this, "#1")} />
             </Col>
             <Col md="3">
-              <FilterToggleButton label="Toggle non-existing filters" callback={this.toggle.bind(this, "#2")} />
+              <FilterToggleButton label="Toggle more example filters" callback={this.toggle.bind(this, "#2")} />
             </Col>
             <Col md="3">
-              {/* Nothing here yet */}
+              {/* Nothing here */}
             </Col>
             <Col md="3">
               {/* Please keep this button  */}
@@ -197,30 +313,27 @@ class Filters extends React.Component {
         <FilterCollapsePanel isOpen={this.state.collapse === "#1"}>
           <Row>
             <Col md="4">
-              <TextInputWithApply
-                key={this.getFilterKey("text")}
-                label="Example text filter:"
-                callback={this.setTextFilter.bind(this, "text")}
-                value={this.getFilterValue("text")}
-              />
+              {filters[0]}
             </Col>
             <Col md="4">
-              <SelectInput
-                key={this.getFilterKey("list")}
-                label="Example select/list filter:"
-                callback={this.setListFilter.bind(this, "list")}
-                data={[{ id: 1, text: "One" }, { id: 2, text: "Two" }, { id: 3, text: "Three" }]}
-                value={this.getFilterValue("list")}
-              />
+              {filters[1]}
             </Col>
             <Col md="4">
-              <TreeSelectInput
-                key={this.getFilterKey("tree")}
-                label="Example tree-select filter:"
-                callback={this.setListFilter.bind(this, "tree")}
-                data={[{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{ id: 111, text: "SubChild1" }] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]}
-                value={this.getFilterValue("tree")}
-              />
+              {filters[2]}
+            </Col>
+          </Row>
+        </FilterCollapsePanel>
+
+        <FilterCollapsePanel isOpen={this.state.collapse === "#2"}>
+          <Row>
+            <Col md="4">
+              {filters[3]}
+            </Col>
+            <Col md="4">
+              {filters[4]}
+            </Col>
+            <Col md="4">
+              {/* Nothing here */}
             </Col>
           </Row>
         </FilterCollapsePanel>

@@ -16,7 +16,7 @@ class FilterCollapsePanel extends React.Component {
     return (
       <Collapse isOpen={isOpen}>
         {children}
-        <hr style={{ marginTop: "-10px" }} />
+        <hr style={{ marginTop: "0px" }} />
       </Collapse>
     )
   }

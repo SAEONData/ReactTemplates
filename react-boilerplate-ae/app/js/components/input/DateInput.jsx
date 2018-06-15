@@ -41,7 +41,7 @@ class DateInput extends React.Component {
     label = globalFunctions.fixEmptyValue(label, "Label:")
     tooltip = globalFunctions.fixEmptyValue(tooltip, "")
     allowEdit = globalFunctions.fixEmptyValue(allowEdit, true)
-    value = globalFunctions.fixEmptyValue(value, new Date().toLocaleDateString("en-ZA", { year: 'numeric', month: 'numeric', day: 'numeric' }))
+    value = globalFunctions.fixEmptyValue(value, null) //globalFunctions.fixEmptyValue(value, new Date().toLocaleDateString("en-ZA", { year: 'numeric', month: 'numeric', day: 'numeric' }))
 
     return (
       <>
@@ -61,7 +61,7 @@ class DateInput extends React.Component {
 
         <DatePicker
           disabled={!allowEdit}
-          defaultValue={moment(value, 'YYYY/MM/DD')}
+          defaultValue={value !== null ? moment(value, 'YYYY/MM/DD') : value}
           style={{ width: "100%" }}
           onChange={this.onChange}
         />

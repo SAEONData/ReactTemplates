@@ -24,5 +24,13 @@ export function getFontColour(editMode) {
 }
 
 export function readFiltersFromURL(){
-  return queryString.parse(location.hash.substring(location.hash.indexOf("?") + 1, location.hash.length))
+
+  let params = []
+
+  let subStart = location.hash.indexOf("?")
+  if(subStart >= 0){
+    params = queryString.parse(location.hash.substring(location.hash.indexOf("?") + 1, location.hash.length))
+  }
+
+  return params
 }
