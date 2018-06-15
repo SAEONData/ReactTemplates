@@ -1,3 +1,5 @@
+const queryString = require('query-string')
+
 export function fixEmptyValue(value, defaultValue) {
 
   if (isEmptyValue(value)) {
@@ -19,4 +21,8 @@ export function getFontColour(editMode) {
   else {
     return "black"
   }
+}
+
+export function readFiltersFromURL(){
+  return queryString.parse(location.hash.substring(location.hash.indexOf("?") + 1, location.hash.length))
 }

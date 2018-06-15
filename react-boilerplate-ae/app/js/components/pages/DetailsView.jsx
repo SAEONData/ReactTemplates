@@ -81,7 +81,7 @@ class DetailsView extends React.Component {
 
     //Sample data
     data.exampleValue1 = ("ID: " + id)
-    data.exampleValue2 = "Nothing here"
+    data.exampleValue2 = "Other example value"
 
     //Toggle loading panel off (remember to do this when you have received your data)
     setLoading(false)

@@ -1,11 +1,13 @@
 'use strict'
 
 import React from 'react'
+import { Row, Col } from 'mdbreact'
 import { connect } from 'react-redux'
 import ActiveFilters from '../sections/ActiveFilters.jsx'
 import FilterToggleButton from '../input/FilterToggleButton.jsx'
 import FilterButtonsPanel from '../layout/FilterButtonsPanel.jsx'
 import FilterCollapsePanel from '../layout/FilterCollapsePanel.jsx'
+import * as globalFunctions from '../../globalFunctions'
 
 //Filter input components
 import SelectInput from '../input/SelectInput.jsx'
@@ -13,6 +15,8 @@ import TextInputWithApply from '../input/TextInputWithApply.jsx'
 import TreeInput from '../input/TreeInput.jsx'
 import TreeSelectInput from '../input/TreeSelectInput.jsx'
 //Filter input components
+
+const queryString = require('query-string')
 
 const mapStateToProps = (state, props) => {
   let { filters: { data, activeFilters } } = state
@@ -47,10 +51,29 @@ class Filters extends React.Component {
     this.getFilterKey = this.getFilterKey.bind(this)
 
     this.state = { collapse: "" };
+    this.processURLFilters()
   }
 
-  componentDidMount(){
-    this.getData()
+  componentDidMount() {
+    this.getData() 
+  }
+
+  processURLFilters(){
+
+    //Read filters from URL
+    const parsedHash = globalFunctions.readFiltersFromURL()
+    
+    //Process URL filters
+    Object.keys(parsedHash).forEach(key => {
+
+      //Replace with less hardcoded method eventually.
+      //When filters are loaded from config/data this should be more doable.
+      const validFilters = ["text", "list", "tree"] 
+
+      if (validFilters.filter(x => x === key) != null) {
+        this.props.setFilter(key, parsedHash[key])
+      }
+    })
   }
 
   getData() {
@@ -141,8 +164,8 @@ class Filters extends React.Component {
         */}
 
         <FilterButtonsPanel>
-          <div className="row">
-            <div className="col-md-3">
+          <Row>
+            <Col md="3">
               {/* 
               ########################################
               This is an example filter toggle button.
@@ -150,18 +173,18 @@ class Filters extends React.Component {
               ########################################
               */}
               <FilterToggleButton label="Toggle example filters" callback={this.toggle.bind(this, "#1")} />
-            </div>
-            <div className="col-md-3">
+            </Col>
+            <Col md="3">
               <FilterToggleButton label="Toggle non-existing filters" callback={this.toggle.bind(this, "#2")} />
-            </div>
-            <div className="col-md-3">
+            </Col>
+            <Col md="3">
               {/* Nothing here yet */}
-            </div>
-            <div className="col-md-3">
+            </Col>
+            <Col md="3">
               {/* Please keep this button  */}
               <FilterToggleButton label="Clear Filters" color="secondary" callback={this.clearFilters.bind(this)} />
-            </div>
-          </div>
+            </Col>
+          </Row>
         </FilterButtonsPanel>
 
         {/* 
@@ -172,16 +195,16 @@ class Filters extends React.Component {
         ###############################################################
         */}
         <FilterCollapsePanel isOpen={this.state.collapse === "#1"}>
-          <div className="row">
-            <div className="col-md-4">
+          <Row>
+            <Col md="4">
               <TextInputWithApply
                 key={this.getFilterKey("text")}
                 label="Example text filter:"
                 callback={this.setTextFilter.bind(this, "text")}
                 value={this.getFilterValue("text")}
               />
-            </div>
-            <div className="col-md-4">
+            </Col>
+            <Col md="4">
               <SelectInput
                 key={this.getFilterKey("list")}
                 label="Example select/list filter:"
@@ -189,8 +212,8 @@ class Filters extends React.Component {
                 data={[{ id: 1, text: "One" }, { id: 2, text: "Two" }, { id: 3, text: "Three" }]}
                 value={this.getFilterValue("list")}
               />
-            </div>
-            <div className="col-md-4">
+            </Col>
+            <Col md="4">
               <TreeSelectInput
                 key={this.getFilterKey("tree")}
                 label="Example tree-select filter:"
@@ -198,8 +221,8 @@ class Filters extends React.Component {
                 data={[{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{ id: 111, text: "SubChild1" }] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]}
                 value={this.getFilterValue("tree")}
               />
-            </div>
-          </div>
+            </Col>
+          </Row>
         </FilterCollapsePanel>
       </>
     )

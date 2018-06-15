@@ -4,9 +4,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import {
   Button, ButtonFixed, Card, CardBody, CardImage, CardTitle, CardText, Fa,
-  ListGroup, ListGroupItem
+  ListGroup, ListGroupItem, Input, Row, Col, FormInline
 } from 'mdbreact';
 import Filters from '../sections/Filters.jsx'
+import * as globalFunctions from '../../globalFunctions'
+
+const queryString = require('query-string')
 
 const mapStateToProps = (state, props) => {
   let { listView: { type, data, batchSize, batchCount, scrollPos } } = state
@@ -43,19 +46,23 @@ class ListView extends React.Component {
     super(props);
     this.getData = this.getData.bind(this)
     this.handleScroll = this.handleScroll.bind(this);
-    this.state = { batchUpdateTime: new Date(), showBackToTop: false }
+    this.state = { batchUpdateTime: new Date(), showBackToTop: false, type: props.type }
   }
 
   componentDidMount() {
     window.addEventListener("scroll", this.handleScroll);
     this.props.updateNav(location.hash)
-    this.getData()
     window.scrollTo(0, this.props.scrollPos);
-  }
 
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
-    this.props.setScrollPos(window.pageYOffset)
+    //Read filters from URL
+    const parsedHash = globalFunctions.readFiltersFromURL()
+
+    //Only getData here if there are no URL filters,
+    //else wait for URL filters to be processed first.
+    if (Object.keys(parsedHash).length === 0) {
+
+      this.getData()
+    }
   }
 
   componentDidUpdate() {
@@ -68,9 +75,14 @@ class ListView extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+    this.props.setScrollPos(window.pageYOffset)
+  }
+
   getData() {
 
-    let { batchSize, batchCount, setLoading, listViewLoad } = this.props
+    let { batchSize, batchCount, setLoading, listViewLoad, activeFilters } = this.props
     let data = []
 
     //Toggle loading panel on
@@ -89,7 +101,7 @@ class ListView extends React.Component {
       {
         id: 1,
         title: "How to use this template site",
-        description: "This site consits of 3 main components: filter, list-view and details-view. " +
+        description: "This site consits of 3 main components: filters, list-view and details-view. " +
           "You may customise/extend these components as needed in your own site."
       },
       {
@@ -109,6 +121,12 @@ class ListView extends React.Component {
         title: "Default required data structure for filters and details-view",
         description: "There is no default required data structure for these two components, " +
           "you are free to implement this however you like."
+      },
+      {
+        id: 5,
+        title: "Components page",
+        description: "There is also a components page to demo some of the other template components " +
+          "available in the project."
       }
     )
 
@@ -195,9 +213,7 @@ class ListView extends React.Component {
     return items
   }
 
-  renderList(data) {
-
-    let { type } = this.props
+  renderList(data, type) {
 
     if (typeof data === 'undefined' || data === null) {
       return null
@@ -221,12 +237,30 @@ class ListView extends React.Component {
   render() {
 
     let { data } = this.props
+    let { type } = this.state
 
     return (
       <>
-        <Filters id="#top-section" />
+        <Filters />
 
-        {this.renderList(data)}
+        {/* Simply for demo purposes */}
+        <Row style={{ marginTop: "-25px" }}>
+          <Col md="12">
+            <FormInline>
+              <label><b>&nbsp;List style:</b></label>
+              <Input onClick={() => this.setState({ type: "simple" })} checked={this.state.type === "simple"} label="Simple" type="radio" id="radioSimple" />
+              <Input onClick={() => this.setState({ type: "card" })} checked={this.state.type === "card"} label="Card" type="radio" id="radioCard" />
+            </FormInline>
+          </Col>
+        </Row>
+        <hr style={{ marginTop: "-10px" }} />
+        {/* Simply for demo purposes */}
+
+        <Row>
+          <Col md="12">
+            {this.renderList(data, type)}
+          </Col>
+        </Row>
 
         {/* BACK TO TOP BUTTON */}
         <ButtonFixed
