@@ -9,6 +9,7 @@ import * as globalFunctions from '../../globalFunctions'
 //  - tooltip : Tooltip
 //  - value : String/text value
 //  - callback : callback to send filter value
+//  - allowEdit : Toggle enabled/disabled
 
 class TextInputWithApply extends React.Component {
 

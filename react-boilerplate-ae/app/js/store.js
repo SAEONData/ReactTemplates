@@ -1,7 +1,7 @@
 'use strict'
 
-import { createStore, combineReducers, applyMiddleware } from 'redux'
-import { routerReducer, routerMiddleware } from 'react-router-redux'
+import { createStore, combineReducers } from 'redux'
+import { routerReducer } from 'react-router-redux'
 import reducers from './reducers'
 import { loadUser } from 'redux-oidc'
 import userManager from './components/Authentication/userManager'
@@ -22,6 +22,7 @@ const store = createStore(
       filtersChanged: false
     },
     listView: {
+      type: "card", //options: simple|card|tables|carousel
       scrollPos: 0,
       batchSize: 25,
       batchCount: 1,

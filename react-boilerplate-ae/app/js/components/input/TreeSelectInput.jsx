@@ -17,6 +17,7 @@ const TreeSelectNode = TreeSelect.TreeNode;
 //  - data : Data for list >> 
 //           [{id: 1, text: "Parent1", children: [{id: 11, text: "Child1"}, {id: 12, text: "Child2"}]}, {id: 2, text: "Parent2"}]
 //  - callback : callback to send filter value
+//  - allowEdit : Toggle enabled/disabled
 
 class TreeSelectInput extends React.Component {
 

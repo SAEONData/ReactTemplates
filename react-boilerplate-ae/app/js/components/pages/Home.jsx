@@ -37,9 +37,6 @@ class Home extends React.Component {
             contains some generic template components for reuse in other 
             projects.
           </p>
-          <p className="lead">
-            See the <a href="/#/components" >Components</a> page for more details.
-          </p>
         </div>
       </>
     )

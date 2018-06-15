@@ -4,8 +4,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import {
   Button, Card, CardBody, CardImage, CardTitle, CardText, InputSwitch, FormInline, Fa, Tooltip,
-  StickyContainer, Sticky
-} from 'mdbreact';
+  StickyContainer, Sticky, Row, Col
+} from 'mdbreact'
 import TextInput from '../input/TextInput.jsx'
 import TextInputWithApply from '../input/TextInputWithApply.jsx'
 import TextAreaInput from '../input/TextAreaInput.jsx'
@@ -13,6 +13,7 @@ import SelectInput from '../input/SelectInput.jsx'
 import TreeSelectInput from '../input/TreeSelectInput.jsx'
 import TreeInput from '../input/TreeInput.jsx'
 import LoadingPanel from '../input/LoadingPanel.jsx'
+import DateInput from '../input/DateInput.jsx'
 import SideNav from '../navigation/SideNav.jsx'
 
 const mapStateToProps = (state, props) => {
@@ -55,6 +56,10 @@ class Components extends React.Component {
     console.log("Tree input - selected node:", selectedNode)
   }
 
+  dateCallbackHandler(date){
+    console.log("Date input - selected date:", date)
+  }
+
   AllowEditToggle() {
     this.setState({ allowEdit: !this.state.allowEdit })
   }
@@ -75,10 +80,10 @@ class Components extends React.Component {
       <>
         <SideNav isOpen={showSideNav} />
 
-        <div className="row">
-          <div className="col-md-8">
-            <div className="row">
-              <div className="col-md-12">
+        <Row>
+          <Col md="8">
+            <Row>
+              <Col md="12">
                 <br />
                 <Card>
                   <CardBody>
@@ -103,10 +108,10 @@ class Components extends React.Component {
                     </FormInline>
                   </CardBody>
                 </Card>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-md-6">
+              </Col>
+            </Row>
+            <Row>
+              <Col md="6">
                 <br />
                 <Card>
                   <CardBody style={{ height: "180px" }}>
@@ -121,8 +126,8 @@ class Components extends React.Component {
                     />
                   </CardBody>
                 </Card>
-              </div>
-              <div className="col-md-6">
+              </Col>
+              <Col md="6">
                 <br />
                 <Card>
                   <CardBody style={{ height: "180px" }}>
@@ -137,10 +142,10 @@ class Components extends React.Component {
                     />
                   </CardBody>
                 </Card>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-md-12">
+              </Col>
+            </Row>
+            <Row>
+              <Col md="12">
                 <br />
                 <Card>
                   <CardBody style={{ minHeight: "180px" }}>
@@ -155,12 +160,12 @@ class Components extends React.Component {
                     />
                   </CardBody>
                 </Card>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-md-6">
-                <div className="row">
-                  <div className="col-md-12">
+              </Col>
+            </Row>
+            <Row>
+              <Col md="6">
+                <Row>
+                  <Col md="12">
                     <br />
                     <Card>
                       <CardBody style={{ height: "180px" }}>
@@ -176,10 +181,10 @@ class Components extends React.Component {
                         />
                       </CardBody>
                     </Card>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-12">
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md="12">
                     <br />
                     <Card>
                       <CardBody style={{ height: "180px" }}>
@@ -195,13 +200,13 @@ class Components extends React.Component {
                         />
                       </CardBody>
                     </Card>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6">
+                  </Col>
+                </Row>
+              </Col>
+              <Col md="6">
                 <br />
                 <Card>
-                  <CardBody style={{ height: "402px" }}>
+                  <CardBody style={{ height: "384px" }}>
                     <CardTitle style={{ color: "#1565c0" }}>Tree Input</CardTitle>
                     <br />
                     <TreeInput
@@ -214,12 +219,12 @@ class Components extends React.Component {
                     />
                   </CardBody>
                 </Card>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <br/>
-            <StickyContainer style={{ height: "100%" }}>
+              </Col>
+            </Row>
+          </Col>
+          <Col md="4">
+            <br />
+            <StickyContainer style={{ height: "97.7%" }}>
               <Sticky topOffset={20}>
                 {({
                   isSticky,
@@ -235,21 +240,39 @@ class Components extends React.Component {
                   return (
 
                     // <div> //This div caused the sticky to move past the bottom of the container. MDB investigating...
-                      <Card style={{ ...style }}>
-                        <br/>
-                        <CardBody style={{ height: stickyHeight }}>
-                          <CardTitle style={{ color: "#1565c0" }}>Side Panel</CardTitle>
-                          <br />
-                          Content...
+                    <Card style={{ ...style }}>
+                      <br />
+                      <CardBody style={{ height: stickyHeight }}>
+                        <CardTitle style={{ color: "#1565c0" }}>Side Panel</CardTitle>
+                        <br />
+                        Content...
                         </CardBody>
-                      </Card>
+                    </Card>
                     // </div>
                   )
                 }}
               </Sticky>
             </StickyContainer>
-          </div>
-        </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col md="4">
+            <br />
+            <Card>
+              <CardBody>
+                <CardTitle style={{ color: "#1565c0" }}>Date Input</CardTitle>
+                <br />
+                <DateInput
+                  label="Select a date:"
+                  tooltip="Select a date below"
+                  value=""
+                  callback={this.dateCallbackHandler.bind(this)}
+                  allowEdit={allowEdit}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
 
         <LoadingPanel header="LOADING" description="Please wait..." enabled={showLoader} />
       </>

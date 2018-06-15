@@ -1,8 +1,11 @@
+const queryString = require('query-string')
+
 export function fixEmptyValue(value, defaultValue) {
-  if (typeof value === 'undefined') {
+
+  if (isEmptyValue(value)) {
     return defaultValue
   }
-
+  
   return value
 }
 
@@ -18,4 +21,16 @@ export function getFontColour(editMode) {
   else {
     return "black"
   }
+}
+
+export function readFiltersFromURL(){
+
+  let params = []
+
+  let subStart = location.hash.indexOf("?")
+  if(subStart >= 0){
+    params = queryString.parse(location.hash.substring(location.hash.indexOf("?") + 1, location.hash.length))
+  }
+
+  return params
 }

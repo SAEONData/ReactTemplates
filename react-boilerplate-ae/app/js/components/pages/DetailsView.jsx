@@ -18,6 +18,10 @@ import TreeInput from '../input/TreeInput.jsx'
 import TreeSelectInput from '../input/TreeSelectInput.jsx'
 //Input components
 
+//Layout components
+import HostedContentFrame from '../layout/HostedContentFrame.jsx'
+//Layout components
+
 const mapStateToProps = (state, props) => {
   let { detailsView: { data } } = state
   let user = state.oidc.user
@@ -46,10 +50,12 @@ class DetailsView extends React.Component {
     this.togglePills = this.toggleTabs.bind(this);
     this.backToList = this.backToList.bind(this);
 
+    let id = this.props.match.params.id
+
     this.state = {
       activeTab: '1',
       editMode: false,
-      id: this.props.match.params.id,
+      id,
       saveModal: false,
       discardModal: false
     }
@@ -75,7 +81,7 @@ class DetailsView extends React.Component {
 
     //Sample data
     data.exampleValue1 = ("ID: " + id)
-    data.exampleValue2 = "Nothing here"
+    data.exampleValue2 = "Other example value"
 
     //Toggle loading panel off (remember to do this when you have received your data)
     setLoading(false)
@@ -183,15 +189,22 @@ class DetailsView extends React.Component {
             <TabPane tabId="1">
               <Row>
                 <Col md="4">
-                  <TextInput label="Example 1" value={data.exampleValue1} allowEdit={editMode} />
+                  <TextInput key={data.exampleValue1} label="Example 1" value={data.exampleValue1} allowEdit={editMode} />
+                </Col>
+                <Col md="4">
+                  <SelectInput label="Example 2" allowEdit={editMode} value={data.exampleValue2}
+                    data={[{ id: 1, text: data.exampleValue1 }, { id: 2, text: data.exampleValue2 }]} />
                 </Col>
               </Row>
             </TabPane>
             <TabPane tabId="2">
               <Row>
-                <Col md="4">
-                  <SelectInput label="Example 2" allowEdit={editMode} value={data.exampleValue2}
-                    data={[{ id: 1, text: data.exampleValue1 }, { id: 2, text: data.exampleValue2 }]} />
+                <Col md="12">
+                  <HostedContentFrame 
+                    source="http://www.example.com"
+                    height="450px"
+                    showSource={true}
+                  />
                 </Col>
               </Row>
             </TabPane>

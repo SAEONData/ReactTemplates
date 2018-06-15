@@ -1,7 +1,7 @@
 'use strict'
 
 import React from 'react'
-import { Spinner } from 'mdbreact'
+import { Spinner, Row } from 'mdbreact'
 import * as globalFunctions from '../../globalFunctions'
 
 // Properties:
@@ -27,7 +27,7 @@ class LoadingPanel extends React.Component {
     return (
       <>
         <div className="container-fluid">
-          <div className="row">
+          <Row>
             <div
               hidden={!enabled}
               className="card"
@@ -44,7 +44,7 @@ class LoadingPanel extends React.Component {
                 </span>
               </div>
             </div>
-          </div>
+          </Row>
         </div>
 
       </>
