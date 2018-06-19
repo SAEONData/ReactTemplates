@@ -99,8 +99,9 @@ class Navbar extends React.Component {
           <NavbarNav left>
             {this.makeNavLink("#/", "Home")}
             {this.makeNavLink("#/comp", "Components")}
-            {this.makeNavLink("#/list", "List-View")}
             {this.makeNavLink("#/dash", "Dashboard")}
+            {this.makeNavLink("#/list", "List-View")}
+            {this.makeNavLink("#/table", "Table-View")}
           </NavbarNav>
 
           <NavbarNav right>

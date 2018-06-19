@@ -28,6 +28,12 @@ const store = createStore(
       batchCount: 1,
       data: []
     },
+    tableView: {
+      // scrollPos: 0,
+      // batchSize: 25,
+      // batchCount: 1,
+      data: []
+    },
     detailsView: {
       data: []
     }
