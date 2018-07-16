@@ -36,6 +36,9 @@ const store = createStore(
     },
     detailsView: {
       data: []
+    },
+    carouselView: {
+      data: []
     }
 
   }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()

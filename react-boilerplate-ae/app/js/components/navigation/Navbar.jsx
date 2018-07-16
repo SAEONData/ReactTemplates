@@ -102,6 +102,7 @@ class Navbar extends React.Component {
             {this.makeNavLink("#/dash", "Dashboard")}
             {this.makeNavLink("#/list", "List-View")}
             {this.makeNavLink("#/table", "Table-View")}
+            {this.makeNavLink("#/carousel", "Carousel-View")}
           </NavbarNav>
 
           <NavbarNav right>

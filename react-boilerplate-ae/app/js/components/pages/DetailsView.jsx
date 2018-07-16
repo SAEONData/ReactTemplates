@@ -113,7 +113,7 @@ class DetailsView extends React.Component {
       //Confirm discard changes...
     }
 
-    location.hash = "/list"
+    location.hash = "#/list"
   }
 
   editClick() {
@@ -161,7 +161,7 @@ class DetailsView extends React.Component {
 
     return (
       <>
-        <Button style={{ width: "100px", margin: "8px 0px 8px 0px" }} color="secondary" size="sm" id="btnBackToList" onTouchTap={this.backToList}>
+        <Button style={{ width: "100px", margin: "8px 0px 8px 0px" }} color="secondary" size="sm" id="btnBackToList" onClick={this.backToList}>
           <i className="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Back
         </Button>
 
@@ -180,7 +180,7 @@ class DetailsView extends React.Component {
             </NavItem>
             <NavItem>
               <NavLink to="#" className={classnames({ active: activeTab === '2' })} onClick={() => { this.toggleTabs('2'); }}>
-                Another example tab with a longer title
+                Another example tab with externally hosted content
               </NavLink>
             </NavItem>
           </StyledTabsNav>

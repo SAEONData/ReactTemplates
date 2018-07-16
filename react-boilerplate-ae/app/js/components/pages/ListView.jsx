@@ -162,8 +162,6 @@ class ListView extends React.Component {
         }
       </ListGroup>
     )
-
-    return items
   }
 
   renderCardList(data) {

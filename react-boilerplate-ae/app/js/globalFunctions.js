@@ -34,3 +34,7 @@ export function readFiltersFromURL(){
 
   return params
 }
+
+export function GetUID() {
+  return Math.random().toString().substr(2, 9)
+}

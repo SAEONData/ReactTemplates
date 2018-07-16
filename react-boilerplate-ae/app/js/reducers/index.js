@@ -6,6 +6,7 @@ import FiltersReducer from './FiltersReducer'
 import DetailsViewReducer from './DetailsViewReducer'
 import GeneralReducer from './GeneralReducer'
 import TableViewReducer from './TableViewReducer'
+import CarouselViewReducer from './CarouselViewReducer'
 
 export default {
     navigation: NavigationReducer,
@@ -13,5 +14,6 @@ export default {
     listView: ListViewReducer,
     detailsView: DetailsViewReducer,
     general: GeneralReducer,
-    tableView: TableViewReducer
+    tableView: TableViewReducer,
+    carouselView: CarouselViewReducer
 }

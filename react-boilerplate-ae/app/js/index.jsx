@@ -26,6 +26,7 @@ import DetailsView from './components/Pages/DetailsView.jsx'
 import Components from './components/Pages/Components.jsx'
 import Dashboard from './components/Pages/Dashboard.jsx'
 import TableView from './components/Pages/TableView.jsx'
+import CarouselView from './components/Pages/CarouselView.jsx'
 import Login from './components/Authentication/Login.jsx'
 import Logout from './components/Authentication/Logout.jsx'
 import Navbar from './components/navigation/Navbar.jsx'
@@ -91,6 +92,7 @@ class App extends React.Component {
               <Route path="/details/:id" component={DetailsView} exact />
               <Route path="/dash" component={Dashboard} />
               <Route path="/table" component={TableView} />
+              <Route path="/carousel" component={CarouselView} />
             </Switch>
 
             <br />

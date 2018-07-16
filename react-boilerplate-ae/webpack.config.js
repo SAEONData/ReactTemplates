@@ -5,13 +5,13 @@ const cwd = process.cwd()
 
 const mode = 'production'
 
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+// const CopyWebpackPlugin = require('copy-webpack-plugin')
 
-const config = {
-  plugins: [
-    new CopyWebpackPlugin([ { from: 'source', to: 'dest' } ])
-  ]
-}
+// const config = {
+//   plugins: [
+//     new CopyWebpackPlugin([ { from: 'source', to: 'dest' } ])
+//   ]
+// }
 
 /**
  * Config
@@ -89,12 +89,12 @@ module.exports = {
       }
     }),
     new webpack.IgnorePlugin(/^(fs|ipc|cfg)$/),
-    new CopyWebpackPlugin([
-      {
-        from: 'js/constants/ui_config.cfg',
-        to: 'ui_config.cfg',
-        toType: 'file'
-      }
-    ])
+    // new CopyWebpackPlugin([
+    //   {
+    //     from: 'js/constants/ui_config.cfg',
+    //     to: 'ui_config.cfg',
+    //     toType: 'file'
+    //   }
+    // ])
   ]
 }
