@@ -3,8 +3,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
-  Carousel, CarouselCaption, CarouselControl, CarouselInner, CarouselItem, CarouselIndicators, Fa,
-  CarouselIndicator, View, Mask, Container, Row, Col, Card, CardImage, CardBody, CardTitle, CardText, Button
+  Carousel, CarouselControl, CarouselInner, CarouselItem, CarouselIndicator, CarouselIndicators, Container, Row, Col
 } from 'mdbreact';
 import { GetUID } from '../../globalFunctions'
 

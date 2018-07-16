@@ -1,19 +1,12 @@
 'use strict'
 
 import React from 'react'
-import { connect } from 'react-redux'
+import { Card, CardBody, CardTitle } from 'mdbreact';
 
-const mapStateToProps = (state, props) => {
-  return { }
-}
+import SimpleTable from '../layout/SimpleTable.jsx'
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-      updateNav: payload => {
-          dispatch({ type: "NAV", payload })
-      }
-  }
-}
+//Get test data
+const testTableData = require('../../../data/tableViewData.js')
 
 class Dashboard extends React.Component {
 
@@ -21,21 +14,20 @@ class Dashboard extends React.Component {
     super(props);
   }
 
-  componentDidMount(){
-    this.props.updateNav(location.hash)
-  }
-
   render() {
 
     return (
       <>
         <br />
-        <div className="jumbotron">
-          <h1>Dashboard</h1>
-        </div>
+        <Card>
+          <CardBody>
+            <CardTitle>Table-View:</CardTitle>
+            <SimpleTable data={testTableData.data} defaultSortedId="ID" defaultSortedDir="DESC"/>
+          </CardBody>
+        </Card>
       </>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+export default Dashboard

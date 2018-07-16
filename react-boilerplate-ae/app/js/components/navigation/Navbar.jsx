@@ -2,14 +2,17 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Navbar as MDBNavbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink } from 'mdbreact'
+import {
+  Navbar as MDBNavbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink,
+  Dropdown, DropdownToggle, DropdownMenu, DropdownItem
+} from 'mdbreact'
 import userManager from '../Authentication/userManager'
 import { ssoBaseURL } from '../../config/ssoBaseURL'
 import { locale } from 'moment';
 
 const mapStateToProps = (state, props) => {
   let user = state.oidc.user
-  let { navigation: { locationHash }} = state
+  let { navigation: { locationHash } } = state
   return { user, locationHash }
 }
 
@@ -21,11 +24,11 @@ class Navbar extends React.Component {
     this.state = {
       collapse: false,
       isWideEnough: false,
-      dropdownOpen: false
+      listsDropOpen: false
     }
 
     this.onClick = this.onClick.bind(this)
-    this.toggle = this.toggle.bind(this)
+    this.listsDropToggle = this.listsDropToggle.bind(this)
     this.LoginLogout = this.LoginLogout.bind(this)
     this.GetUser = this.GetUser.bind(this)
     this.Register = this.Register.bind(this)
@@ -37,9 +40,9 @@ class Navbar extends React.Component {
     });
   }
 
-  toggle() {
+  listsDropToggle() {
     this.setState({
-      dropdownOpen: !this.state.dropdownOpen
+      listsDropOpen: !this.state.listsDropOpen
     });
   }
 
@@ -87,6 +90,8 @@ class Navbar extends React.Component {
 
   render() {
 
+    let { locationHash } = this.props
+
     return (
       <MDBNavbar size="sm" color="blue darken-2" expand="md" dark >
         {!this.state.isWideEnough && <NavbarToggler onClick={this.onClick} />}
@@ -100,9 +105,18 @@ class Navbar extends React.Component {
             {this.makeNavLink("#/", "Home")}
             {this.makeNavLink("#/comp", "Components")}
             {this.makeNavLink("#/dash", "Dashboard")}
-            {this.makeNavLink("#/list", "List-View")}
-            {this.makeNavLink("#/table", "Table-View")}
-            {this.makeNavLink("#/carousel", "Carousel-View")}
+
+            <NavItem>
+              <Dropdown isOpen={this.state.listsDropOpen} toggle={this.listsDropToggle}>
+                <DropdownToggle nav caret>List Views</DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem active={locationHash === "#/list"} href="#/list">List-View</DropdownItem>
+                  <DropdownItem active={locationHash === "#/table"} href="#/table">Table-View</DropdownItem>
+                  <DropdownItem active={locationHash === "#/carousel"} href="#/carousel">Carousel-View</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </NavItem>
+
           </NavbarNav>
 
           <NavbarNav right>

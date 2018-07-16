@@ -2,9 +2,14 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
+import { fixEmptyValue } from '../../globalFunctions'
+
 // Import React Table
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+
+//Get test data
+const testData = require('../../../data/tableViewData.js')
 
 const mapStateToProps = (state, props) => {
   let { tableView: { data } } = state
@@ -26,6 +31,11 @@ class TableView extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      defaultSortedId: "Surname",
+      defaultSortedDir: "DESC"
+    }
   }
 
   componentDidMount() {
@@ -36,23 +46,32 @@ class TableView extends React.Component {
   getData() {
 
     let { tableviewLoad } = this.props
+    tableviewLoad(testData.data)
+  }
 
-    let data = [
-      { ID: 46852148624, Name: "Andre", Surname: "Engelbrecht", Email: "andre@saeon.ac.za" },
-      { ID: 46821321864, Name: "Mark", Surname: "Jacobson", Email: "mark@saeon.ac.za" },
-      { ID: 65432186132, Name: "St.John", Surname: "Giddy", Email: "stjohn@saeon.ac.za" },
-      { ID: 86132158658, Name: "Wim", Surname: "Hugo", Email: "wim@saeon.ac.za" },
-      { ID: 12354321564, Name: "Tim", Surname: "Parker-Nance", Email: "timpn@saeon.ac.za" },
-      { ID: 65413216845, Name: "Alex", Surname: "Pfeiffer", Email: "alex@saeon.ac.za" },
-      { ID: 65432186231, Name: "Graham", Surname: "Traas", Email: "graham@saeon.ac.za" },
-    ]
+  setupColumns(data) {
+    let columns = []
 
-    tableviewLoad(data)
+    if (typeof data !== 'undefined' && data.length > 0) {
+
+      Object.keys(data[0]).map(key => {
+        columns.push({
+          Header: key,
+          accessor: key,
+          headerStyle: { textAlign: "left", fontWeight: "bold" }
+        })
+      })
+    }
+
+    return columns
   }
 
   render() {
 
-    let { data } = this.props
+    let { data, filterable } = this.props
+    let { defaultSortedId, defaultSortedDir } = this.state
+
+    filterable = fixEmptyValue(filterable, true)
 
     if (data.length > 0) {
       return (
@@ -61,36 +80,15 @@ class TableView extends React.Component {
           <ReactTable
             data={data}
             showPagination={false}
-            filterable
+            filterable={filterable}
             defaultFilterMethod={(filter, row) =>
               row[filter.id].toString().toLowerCase().indexOf(filter.value.toLowerCase()) >= 0}
-            columns={[
-              {
-                Header: "ID",
-                accessor: "ID",
-                headerStyle: { textAlign: "left", fontWeight: "bold" }
-              },
-              {
-                Header: "Name",
-                accessor: "Name",
-                headerStyle: { textAlign: "left", fontWeight: "bold" }
-              },
-              {
-                Header: "Surname",
-                accessor: "Surname",
-                headerStyle: { textAlign: "left", fontWeight: "bold" }
-              },
-              {
-                Header: "Email",
-                accessor: "Email",
-                headerStyle: { textAlign: "left", fontWeight: "bold" }
-              }
-            ]}
+            columns={this.setupColumns(data)}
             defaultPageSize={data.length}
             defaultSorted={[
               {
-                id: "Surname",
-                desc: false
+                id: defaultSortedId,
+                desc: (defaultSortedDir == "ASC")
               }
             ]}
             className="-striped -highlight"
@@ -101,7 +99,7 @@ class TableView extends React.Component {
     else {
       return (
         < div >
-          <br/>
+          <br />
           &nbsp;No data found
         </div >
       )
