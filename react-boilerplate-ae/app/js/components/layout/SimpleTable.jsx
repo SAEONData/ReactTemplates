@@ -7,11 +7,9 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 
 // Properties:
-//  - label : Component label
-//  - tooltip : Tooltip
-//  - value : String/text value
-//  - callback : callback to send filter value
-//  - allowEdit : Toggle enabled/disabled
+//  - data : Component data
+//  - defaultSortedId : Default sorted column name
+//  - defaultSortedDir : Default sorted column direction (ASC/DESC)
 
 class TextInput extends React.Component {
 
@@ -47,9 +45,6 @@ class TextInput extends React.Component {
           <ReactTable
             data={data}
             showPagination={false}
-            // filterable={false}
-            // defaultFilterMethod={(filter, row) =>
-            //   row[filter.id].toString().toLowerCase().indexOf(filter.value.toLowerCase()) >= 0}
             columns={this.setupColumns(data)}
             defaultPageSize={data.length}
             defaultSorted={[
