@@ -14,6 +14,7 @@ import TreeSelectInput from '../input/TreeSelectInput.jsx'
 import TreeInput from '../input/TreeInput.jsx'
 import LoadingPanel from '../input/LoadingPanel.jsx'
 import DateInput from '../input/DateInput.jsx'
+import VocabularyLookup from '../input/VocabularyLookup.jsx'
 import SideNav from '../navigation/SideNav.jsx'
 
 const mapStateToProps = (state, props) => {
@@ -56,7 +57,7 @@ class Components extends React.Component {
     console.log("Tree input - selected node:", selectedNode)
   }
 
-  dateCallbackHandler(date){
+  dateCallbackHandler(date) {
     console.log("Date input - selected date:", date)
   }
 
@@ -243,7 +244,7 @@ class Components extends React.Component {
                     <Card style={{ ...style }}>
                       <br />
                       <CardBody style={{ height: stickyHeight }}>
-                        <CardTitle style={{ color: "#1565c0" }}>Side Panel</CardTitle>
+                        <CardTitle style={{ color: "#1565c0" }}>Sticky Panel</CardTitle>
                         <br />
                         Content...
                         </CardBody>
@@ -259,7 +260,7 @@ class Components extends React.Component {
           <Col md="4">
             <br />
             <Card>
-              <CardBody>
+              <CardBody style={{ height: "180px" }}>
                 <CardTitle style={{ color: "#1565c0" }}>Date Input</CardTitle>
                 <br />
                 <DateInput
@@ -267,6 +268,23 @@ class Components extends React.Component {
                   tooltip="Select a date below"
                   value=""
                   callback={this.dateCallbackHandler.bind(this)}
+                  allowEdit={allowEdit}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+          <Col md="8">
+            <br />
+            <Card>
+              <CardBody style={{ height: "180px" }}>
+                <CardTitle style={{ color: "#1565c0" }}>Vocabulary Lookup</CardTitle>
+                <br />
+                <VocabularyLookup
+                  label="Select or search:"
+                  tooltip="Select or search something below"
+                  value=""
+                  data={[{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{ id: 111, text: "SubChild1" }] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]}
+                  callback={this.treeSelectCallbackHandler.bind(this)}
                   allowEdit={allowEdit}
                 />
               </CardBody>
