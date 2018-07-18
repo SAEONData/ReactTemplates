@@ -3,9 +3,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
-  Carousel, CarouselControl, CarouselInner, CarouselItem, CarouselIndicator, CarouselIndicators, Container, Row, Col
+  Carousel, CarouselControl, CarouselInner, CarouselItem, CarouselIndicator, CarouselIndicators, Container, Row, Col,
+  CarouselCaption, View, Mask
 } from 'mdbreact';
 import { GetUID } from '../../globalFunctions'
+
+import '../../../css/mdbreact-carousel.css' //Overrides default carousel css
 
 const _ = require('lodash')
 
@@ -46,12 +49,6 @@ class CarouselView extends React.Component {
 
   constructor(props) {
     super(props);
-    this.next = this.next.bind(this);
-    this.prev = this.prev.bind(this);
-    this.state = {
-      activeItem: 1,
-      maxLength: 1
-    };
   }
 
   componentDidMount() {
@@ -114,32 +111,6 @@ class CarouselView extends React.Component {
     return items
   }
 
-  next() {
-    let nextItem = this.state.activeItem + 1;
-    if (nextItem > this.state.maxLength) {
-      this.setState({ activeItem: 1 });
-    } else {
-      this.setState({ activeItem: nextItem });
-    }
-  }
-
-  prev() {
-    let prevItem = this.state.activeItem - 1;
-    if (prevItem < 1) {
-      this.setState({ activeItem: this.state.maxLength });
-    } else {
-      this.setState({ activeItem: prevItem });
-    }
-  }
-
-  goToIndex(item) {
-    if (this.state.activeItem !== item) {
-      this.setState({
-        activeItem: item
-      });
-    }
-  }
-
   renderItems() {
 
     let { data } = this.props
@@ -164,7 +135,7 @@ class CarouselView extends React.Component {
                   </tbody>
                 </table>
               </Col>
-              <Col md="8" style={{ borderLeft: "1px solid grey" }}>
+              <Col md="8" >
                 <h4>
                   {item.title}
                 </h4>
@@ -181,67 +152,38 @@ class CarouselView extends React.Component {
     return items
   }
 
-  renderIndicators() {
-
-    let { data } = this.props
-    let { activeItem } = this.state
-    let indicators = []
-
-    if (typeof data !== 'undefined') {
-      data.map(item => {
-
-        let index = _.indexOf(data, item) + 1
-
-        indicators.push(
-          <CarouselIndicator
-            key={"carouselIndicator_" + index.toString()}
-            style={indStyle(activeItem === index)}
-            active={activeItem === index ? true : false}
-            onClick={() => { this.goToIndex(index); }}
-          ></CarouselIndicator>
-        )
-      })
-    }
-
-    return indicators
-  }
-
   render() {
 
-    const { activeItem } = this.state;
+    let { data } = this.props
 
-    return (
-      <Container>
-        <br />
-        <Carousel style={{ padding: "10px" }}
-          activeItem={this.state.activeItem}
-          next={this.next}
-          className="z-depth-1">
-          <Row>
-            <Col xs="6">
-              <CarouselControl iconLeft className="btn-floating btn-primary btn-sm" direction="prev" role="button" onClick={() => { this.prev(); }} />
-            </Col>
-            <Col xs="6" className="text-right">
-              <CarouselControl iconRight className="btn-floating btn-primary btn-sm" direction="next" role="button" onClick={() => { this.next(); }} />
-            </Col>
-          </Row>
-          <Row>
-            <Col md="12">
-              <CarouselInner>
-                {this.renderItems()}
-              </CarouselInner>
-            </Col>
-          </Row>
-          <Row style={{ marginTop: "70px" }}>
-            <Col md="12">
-              <CarouselIndicators>
-                {this.renderIndicators()}
-              </CarouselIndicators>
-            </Col>
-          </Row>
-        </Carousel>
-      </Container >
-    );
+    if (data.length > 0) {
+      return (
+          <Container>
+            <br />
+            <Carousel style={{ padding: "10px" }}
+              interval={false}
+              activeItem={1}
+              length={data.length}
+              slide={true}
+              showControls={true}
+              showIndicators={true}
+              className="z-depth-1">
+              <Row>
+                <Col md="12">
+                  <CarouselInner style={{paddingLeft: "100px", paddingRight: "100px"}}>
+                    {this.renderItems()}
+                  </CarouselInner>
+                  <br/>
+                  <br/>
+                </Col>
+              </Row>
+            </Carousel>
+          </Container >
+      );
+    }
+    else {
+      return (<h4>No data!</h4>)
+    }
   }
 }
 

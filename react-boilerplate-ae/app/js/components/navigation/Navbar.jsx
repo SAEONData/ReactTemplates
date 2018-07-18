@@ -3,12 +3,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
-  Navbar as MDBNavbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink,
+  Navbar as MDBNavbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem,
   Dropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from 'mdbreact'
-import userManager from '../Authentication/userManager'
 import { ssoBaseURL } from '../../config/ssoBaseURL'
-import { locale } from 'moment';
 
 const mapStateToProps = (state, props) => {
   let user = state.oidc.user
@@ -107,7 +105,7 @@ class Navbar extends React.Component {
             {this.makeNavLink("#/dash", "Dashboard")}
 
             <NavItem>
-              <Dropdown isOpen={this.state.listsDropOpen} toggle={this.listsDropToggle}>
+              <Dropdown toggle={this.listsDropToggle}>
                 <DropdownToggle nav caret>List Views</DropdownToggle>
                 <DropdownMenu>
                   <DropdownItem active={locationHash === "#/list"} href="#/list">List-View</DropdownItem>
