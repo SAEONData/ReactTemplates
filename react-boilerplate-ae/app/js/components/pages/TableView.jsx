@@ -56,28 +56,48 @@ class TableView extends React.Component {
   GetDataType(data, key) {
 
     let dateCount = 0
+    let numberCount = 0
     let stringCount = 0
 
     data.forEach(row => {
-      if (this.isDate(row[key])) {
-        dateCount += 1
-      }
-      else {
-        stringCount += 1
+
+      let type = this.GetValueType(row[key])
+
+      switch (type) {
+        case "date":
+          dateCount += 1
+          break;
+
+        case "number":
+          numberCount += 1
+          break;
+
+        default:
+          stringCount += 1
+          break;
       }
     });
 
     let list = [
       { key: "date", value: dateCount },
+      { key: "number", value: numberCount },
       { key: "string", value: stringCount }
     ]
 
-    list = list.sort((curr, next) => next.value - curr.value )
+    list = list.sort((curr, next) => next.value - curr.value)
     return list[0].key
   }
 
-  isDate(value) {
-    return !isNaN(Date.parse(value))
+  GetValueType(value) {
+    if (!isNaN(Date.parse(value))) {
+      return "date"
+    }
+    else if (!isNaN(value)) {
+      return "number"
+    }
+    else {
+      return "string"
+    }
   }
 
   setupColumns(data) {
@@ -92,17 +112,31 @@ class TableView extends React.Component {
           headerStyle: { textAlign: "left", fontWeight: "bold" },
           filterMethod: (filter, row) => {
 
-            if (this.isDate(row[filter.id])) {
+            let value = row[filter.id]
+            let IsDate = (value) => this.GetValueType(value) === "date"
+            let IsNumeric = (value) => this.GetValueType(value) === "number" && value !== ""
 
-              let fromDate = this.isDate(filter.value.from) ? new Date(filter.value.from) : new Date("1900", "01", "01")
-              let toDate = this.isDate(filter.value.to) ? new Date(filter.value.to) : new Date("2199", "12", "31")
+            if (IsDate(value)) {
 
-              if (this.isDate((row[filter.id].toString()))) {
-                let value = new Date(row[filter.id].toString())
+              let fromDate = IsDate(filter.value.from) ? new Date(filter.value.from) : new Date("1900", "01", "01")
+              let toDate = IsDate(filter.value.to) ? new Date(filter.value.to) : new Date("2199", "12", "31")
+
+              if (IsDate((value))) {
+                value = new Date(value)
                 return (value >= fromDate && value <= toDate)
               }
-
               return false
+            }
+            else if(IsNumeric(value)){
+
+              let fromNum = IsNumeric(filter.value.from) ? Number(filter.value.from) : Number.MIN_VALUE
+              let toNum = IsNumeric(filter.value.to) ? Number(filter.value.to) : Number.MAX_VALUE
+
+              if (IsNumeric((value))) {
+                value = Number(value)
+                return (value >= fromNum && value <= toNum)
+              }
+              return false     
             }
             else {
 
@@ -120,9 +154,9 @@ class TableView extends React.Component {
           },
           Filter: ({ filter, row, onChange }) => {
 
-            this.GetDataType(data, key)
+            let type = this.GetDataType(data, key)
 
-            if (this.GetDataType(data, key) === 'date') {
+            if (type === 'date') {
 
               if (typeof filter === 'undefined' || filter.value === 'undefined') {
                 filter = { value: { from: "", to: "" } }
@@ -141,13 +175,34 @@ class TableView extends React.Component {
                   />
                 </div>)
             }
+            else if (type === 'number') {
+
+              if (typeof filter === 'undefined' || filter.value === 'undefined') {
+                filter = { value: { from: "", to: "" } }
+              }
+
+              return (
+                <div>
+                  <Input onChange={event => onChange(event.target.value)}
+                    type="number"
+                    style={{ height: "24.5px", marginLeft: "-4px", marginRight: "auto", marginTop: "-24px", marginBottom: "-25px", width: "95%", fontSize: "15px" }}
+                    onChange={event => onChange({ ...filter.value, from: event.target.value })}
+                    hint="From" />
+                  <Input onChange={event => onChange(event.target.value)}
+                    type="number"
+                    style={{ height: "24.5px", marginLeft: "-4px", marginRight: "auto", marginTop: "-24px", marginBottom: "-25px", width: "95%", fontSize: "15px" }}
+                    onChange={event => onChange({ ...filter.value, to: event.target.value })}
+                    hint="To" />
+                </div>)
+            }
             else {
+
               return (
                 <div>
                   <Input onChange={event => onChange(event.target.value)}
                     style={{ height: "24.5px", marginLeft: "-4px", marginRight: "auto", marginTop: "-24px", marginBottom: "-25px", width: "95%", fontSize: "15px" }}
                     value={filter ? filter.value : ""} />
-                </div>)
+                </div >)
             }
 
 
