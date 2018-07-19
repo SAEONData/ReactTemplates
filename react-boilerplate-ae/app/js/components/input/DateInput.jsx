@@ -36,30 +36,36 @@ class DateInput extends React.Component {
 
   render() {
 
-    let { label, tooltip, value, allowEdit } = this.props
+    let { label, tooltip, value, allowEdit, placeholder } = this.props
 
-    label = globalFunctions.fixEmptyValue(label, "Label:")
+    placeholder = globalFunctions.fixEmptyValue(placeholder, "Select date...")
+    label = globalFunctions.fixEmptyValue(label, "")
     tooltip = globalFunctions.fixEmptyValue(tooltip, "")
     allowEdit = globalFunctions.fixEmptyValue(allowEdit, true)
     value = globalFunctions.fixEmptyValue(value, null) //globalFunctions.fixEmptyValue(value, new Date().toLocaleDateString("en-ZA", { year: 'numeric', month: 'numeric', day: 'numeric' }))
 
     return (
       <>
-        <div style={{ marginBottom: "8px" }}>
-          <div hidden={tooltip === ""}>
-            <Tooltip
-              placement="top"
-              component="label"
-              tooltipContent={tooltip}>
-              <b style={{ color: globalFunctions.getFontColour(allowEdit) }}>{label}</b>
-            </Tooltip>
-          </div>
-          <div hidden={tooltip !== ""}>
-            <b style={{ color: globalFunctions.getFontColour(allowEdit) }}>{label}</b>
-          </div>
-        </div>
+        {(() => {
+          if (label !== "") {
+            <div style={{ marginBottom: "8px" }}>
+              <div hidden={tooltip === ""}>
+                <Tooltip
+                  placement="top"
+                  component="label"
+                  tooltipContent={tooltip}>
+                  <b style={{ color: globalFunctions.getFontColour(allowEdit) }}>{label}</b>
+                </Tooltip>
+              </div>
+              <div hidden={tooltip !== ""}>
+                <b style={{ color: globalFunctions.getFontColour(allowEdit) }}>{label}</b>
+              </div>
+            </div>
+          }
+        })()}
 
         <DatePicker
+          placeholder={placeholder}
           disabled={!allowEdit}
           defaultValue={value !== null ? moment(value, 'YYYY/MM/DD') : value}
           style={{ width: "100%" }}
