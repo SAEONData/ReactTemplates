@@ -54,35 +54,46 @@ class TableView extends React.Component {
   }
 
   GetDataType(data, key) {
+    if (typeof data !== 'undefined' && data.length > 0) {
+      return data[0][key]
+    }
 
-    let dateCount = 0
-    let numberCount = 0
-    let stringCount = 0
-
-    data.forEach(row => {
-
-      let value = row[key]
-
-      if (this.IsDate(value)) {
-        dateCount += 1
-      }
-      else if (this.IsNumeric(value)) {
-        numberCount += 1
-      }
-      else {
-        stringCount += 1
-      }
-    });
-
-    let list = [
-      { key: "date", value: dateCount },
-      { key: "number", value: numberCount },
-      { key: "string", value: stringCount }
-    ]
-
-    list = list.sort((curr, next) => next.value - curr.value)
-    return list[0].key
+    return "string"
   }
+
+  // GetDataType(data, key) {
+
+  //   let dateCount = 0
+  //   let numberCount = 0
+  //   let stringCount = 0
+
+  //   //let uniqueValues = _.uniqBy(data, key)
+  //   //console.log(uniqueValues.length / data.length)
+
+  //   data.forEach(row => {
+
+  //     let value = row[key]
+
+  //     if (this.IsDate(value)) {
+  //       dateCount += 1
+  //     }
+  //     else if (this.IsNumeric(value)) {
+  //       numberCount += 1
+  //     }
+  //     else {
+  //       stringCount += 1
+  //     }
+  //   });
+
+  //   let list = [
+  //     { key: "date", value: dateCount },
+  //     { key: "number", value: numberCount },
+  //     { key: "string", value: stringCount }
+  //   ]
+
+  //   list = list.sort((curr, next) => next.value - curr.value)
+  //   return list[0].key
+  // }
 
   IsDate(value) {
     return !isNaN(Date.parse(value))
@@ -90,6 +101,96 @@ class TableView extends React.Component {
 
   IsNumeric(value) {
     return !isNaN(value) && value.toString().trim() !== ""
+  }
+
+  filterMethodDate(filter, row, value) {
+
+    let fromDate = this.IsDate(filter.value.from) ? new Date(filter.value.from) : new Date("1900", "01", "01")
+    let toDate = this.IsDate(filter.value.to) ? new Date(filter.value.to) : new Date("2199", "12", "31")
+
+    if (this.IsDate((value))) {
+      value = new Date(value)
+      return (value >= fromDate && value <= toDate)
+    }
+    return false
+  }
+
+  FilterDate(filter, row, onChange) {
+    if (typeof filter === 'undefined' || filter.value === 'undefined') {
+      filter = { value: { from: "", to: "" } }
+    }
+
+    return (
+      <div>
+        <div style={{ marginBottom: "2px" }}>
+          <DateInput
+            placeholder={"From"}
+            callback={dateString => onChange({ ...filter.value, from: dateString })}
+          />
+        </div>
+        <div style={{ marginBottom: "-2px" }}>
+          <DateInput
+            placeholder={"To"}
+            callback={dateString => onChange({ ...filter.value, to: dateString })}
+          />
+        </div>
+      </div>
+    )
+  }
+
+  filterMethodNumber(filter, row, value) {
+    let fromNum = this.IsNumeric(filter.value.from) ? Number(filter.value.from) : Number.MIN_VALUE
+    let toNum = this.IsNumeric(filter.value.to) ? Number(filter.value.to) : Number.MAX_VALUE
+
+    if (this.IsNumeric((value))) {
+      value = Number(value)
+      return (value >= fromNum && value <= toNum)
+    }
+    return false
+  }
+
+  FilterNumber(filter, row, onChange) {
+    if (typeof filter === 'undefined' || filter.value === 'undefined') {
+      filter = { value: { from: "", to: "" } }
+    }
+
+    return (
+      <div>
+        <Input onChange={event => onChange(event.target.value)}
+          type="number"
+          style={{ height: "24.5px", marginLeft: "-4px", marginRight: "auto", marginTop: "-24px", marginBottom: "0px", width: "95%", fontSize: "15px" }}
+          onChange={event => onChange({ ...filter.value, from: event.target.value })}
+          hint="From" />
+
+        <Input onChange={event => onChange(event.target.value)}
+          type="number"
+          style={{ height: "24.5px", marginLeft: "-4px", marginRight: "auto", marginTop: "-22px", marginBottom: "-28px", width: "95%", fontSize: "15px" }}
+          onChange={event => onChange({ ...filter.value, to: event.target.value })}
+          hint="To" />
+      </div>
+    )
+  }
+
+  filterMethodString(filter, row, value) {
+    if (filter.value === "" || _.isEqual(filter.value, { from: "", to: "" })) {
+      return true
+    }
+    else {
+      try {
+        return row[filter.id].toString().toLowerCase().indexOf(filter.value.toLowerCase()) >= 0
+      } catch (error) {
+        return false
+      }
+    }
+  }
+
+  FilterString(filter, row, onChange) {
+    return (
+      <div>
+        <Input onChange={event => onChange(event.target.value)}
+          style={{ height: "24.5px", marginLeft: "-4px", marginRight: "auto", marginTop: "-24px", marginBottom: "-25px", width: "95%", fontSize: "15px" }}
+          value={filter ? filter.value : ""} />
+      </div >)
   }
 
   setupColumns(data) {
@@ -102,108 +203,36 @@ class TableView extends React.Component {
           Header: key,
           accessor: key,
           headerStyle: { textAlign: "left", fontWeight: "bold" },
+
           filterMethod: (filter, row) => {
 
-            let value = row[filter.id]
+            let type = this.GetDataType(data, key)
+            switch (type) {
+              case "date":
+                return this.filterMethodDate(filter, row, value)
 
-            if (this.IsDate(value)) {
+              case "number":
+                return this.filterMethodNumber(filter, row, value)
 
-              let fromDate = this.IsDate(filter.value.from) ? new Date(filter.value.from) : new Date("1900", "01", "01")
-              let toDate = this.IsDate(filter.value.to) ? new Date(filter.value.to) : new Date("2199", "12", "31")
-
-              if (this.IsDate((value))) {
-                value = new Date(value)
-                return (value >= fromDate && value <= toDate)
-              }
-              return false
-            }
-            else if (this.IsNumeric(value)) {
-
-              let fromNum = this.IsNumeric(filter.value.from) ? Number(filter.value.from) : Number.MIN_VALUE
-              let toNum = this.IsNumeric(filter.value.to) ? Number(filter.value.to) : Number.MAX_VALUE
-
-              if (this.IsNumeric((value))) {
-                value = Number(value)
-                return (value >= fromNum && value <= toNum)
-              }
-              return false
-            }
-            else {
-
-              if (filter.value === "" || _.isEqual(filter.value, { from: "", to: "" })) {
-                return true
-              }
-              else {
-                try {
-                  return row[filter.id].toString().toLowerCase().indexOf(filter.value.toLowerCase()) >= 0
-                } catch (error) {
-                  return false
-                }
-              }
+              default:
+                return this.filterMethodString(filter, row, value)
             }
           },
+
           Filter: ({ filter, row, onChange }) => {
 
             let type = this.GetDataType(data, key)
+            switch (type) {
+              case "date":
+                return this.FilterDate(filter, row, onChange)
 
-            if (type === 'date') {
+              case "number":
+                return this.FilterNumber(filter, row, onChange)
 
-              if (typeof filter === 'undefined' || filter.value === 'undefined') {
-                filter = { value: { from: "", to: "" } }
-              }
-
-              return (
-                <div>
-                  <div style={{ marginBottom: "2px" }}>
-                    <DateInput
-                      placeholder={"From"}
-                      callback={dateString => onChange({ ...filter.value, from: dateString })}
-                    />
-                  </div>
-                  <div style={{ marginBottom: "-2px" }}>
-                    <DateInput
-                      placeholder={"To"}
-                      callback={dateString => onChange({ ...filter.value, to: dateString })}
-                    />
-                  </div>
-                </div>
-              )
+              default:
+                return this.FilterString(filter, row, onChange)
             }
-            else if (type === 'number') {
-
-              if (typeof filter === 'undefined' || filter.value === 'undefined') {
-                filter = { value: { from: "", to: "" } }
-              }
-
-              return (
-                <div>
-                  <Input onChange={event => onChange(event.target.value)}
-                    type="number"
-                    style={{ height: "24.5px", marginLeft: "-4px", marginRight: "auto", marginTop: "-24px", marginBottom: "0px", width: "95%", fontSize: "15px" }}
-                    onChange={event => onChange({ ...filter.value, from: event.target.value })}
-                    hint="From" />
-
-                  <Input onChange={event => onChange(event.target.value)}
-                    type="number"
-                    style={{ height: "24.5px", marginLeft: "-4px", marginRight: "auto", marginTop: "-22px", marginBottom: "-28px", width: "95%", fontSize: "15px" }}
-                    onChange={event => onChange({ ...filter.value, to: event.target.value })}
-                    hint="To" />
-                </div>
-              )
-            }
-            else {
-
-              return (
-                <div>
-                  <Input onChange={event => onChange(event.target.value)}
-                    style={{ height: "24.5px", marginLeft: "-4px", marginRight: "auto", marginTop: "-24px", marginBottom: "-25px", width: "95%", fontSize: "15px" }}
-                    value={filter ? filter.value : ""} />
-                </div >)
-            }
-
-
           }
-
         })
       })
     }
@@ -217,13 +246,13 @@ class TableView extends React.Component {
     let { defaultSortedId, defaultSortedDir } = this.state
 
     filterable = fixEmptyValue(filterable, true)
-
-    if (data.length > 0) {
+  
+    if (data.length > 0) {  
       return (
         <div>
           <br />
           <ReactTable
-            data={data}
+            data={data.slice(1)}
             showPagination={false}
             filterable={filterable}
             defaultFilterMethod={(filter, row) => row[filter.id].toString().toLowerCase().indexOf(filter.value.toLowerCase()) >= 0}
