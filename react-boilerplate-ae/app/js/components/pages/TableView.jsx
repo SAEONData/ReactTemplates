@@ -61,20 +61,16 @@ class TableView extends React.Component {
 
     data.forEach(row => {
 
-      let type = this.GetValueType(row[key])
+      let value = row[key]
 
-      switch (type) {
-        case "date":
-          dateCount += 1
-          break;
-
-        case "number":
-          numberCount += 1
-          break;
-
-        default:
-          stringCount += 1
-          break;
+      if (this.IsDate(value)) {
+        dateCount += 1
+      }
+      else if (this.IsNumeric(value)) {
+        numberCount += 1
+      }
+      else {
+        stringCount += 1
       }
     });
 
@@ -88,16 +84,12 @@ class TableView extends React.Component {
     return list[0].key
   }
 
-  GetValueType(value) {
-    if (!isNaN(Date.parse(value))) {
-      return "date"
-    }
-    else if (!isNaN(value)) {
-      return "number"
-    }
-    else {
-      return "string"
-    }
+  IsDate(value) {
+    return !isNaN(Date.parse(value))
+  }
+
+  IsNumeric(value) {
+    return !isNaN(value) && value.toString().trim() !== ""
   }
 
   setupColumns(data) {
@@ -113,30 +105,28 @@ class TableView extends React.Component {
           filterMethod: (filter, row) => {
 
             let value = row[filter.id]
-            let IsDate = (value) => this.GetValueType(value) === "date"
-            let IsNumeric = (value) => this.GetValueType(value) === "number" && value !== ""
 
-            if (IsDate(value)) {
+            if (this.IsDate(value)) {
 
-              let fromDate = IsDate(filter.value.from) ? new Date(filter.value.from) : new Date("1900", "01", "01")
-              let toDate = IsDate(filter.value.to) ? new Date(filter.value.to) : new Date("2199", "12", "31")
+              let fromDate = this.IsDate(filter.value.from) ? new Date(filter.value.from) : new Date("1900", "01", "01")
+              let toDate = this.IsDate(filter.value.to) ? new Date(filter.value.to) : new Date("2199", "12", "31")
 
-              if (IsDate((value))) {
+              if (this.IsDate((value))) {
                 value = new Date(value)
                 return (value >= fromDate && value <= toDate)
               }
               return false
             }
-            else if(IsNumeric(value)){
+            else if (this.IsNumeric(value)) {
 
-              let fromNum = IsNumeric(filter.value.from) ? Number(filter.value.from) : Number.MIN_VALUE
-              let toNum = IsNumeric(filter.value.to) ? Number(filter.value.to) : Number.MAX_VALUE
+              let fromNum = this.IsNumeric(filter.value.from) ? Number(filter.value.from) : Number.MIN_VALUE
+              let toNum = this.IsNumeric(filter.value.to) ? Number(filter.value.to) : Number.MAX_VALUE
 
-              if (IsNumeric((value))) {
+              if (this.IsNumeric((value))) {
                 value = Number(value)
                 return (value >= fromNum && value <= toNum)
               }
-              return false     
+              return false
             }
             else {
 
@@ -164,16 +154,20 @@ class TableView extends React.Component {
 
               return (
                 <div>
-                  <DateInput
-                    placeholder={"From"}
-                    callback={dateString => onChange({ ...filter.value, from: dateString })}
-                  />
-                  <br />
-                  <DateInput
-                    placeholder={"To"}
-                    callback={dateString => onChange({ ...filter.value, to: dateString })}
-                  />
-                </div>)
+                  <div style={{ marginBottom: "2px" }}>
+                    <DateInput
+                      placeholder={"From"}
+                      callback={dateString => onChange({ ...filter.value, from: dateString })}
+                    />
+                  </div>
+                  <div style={{ marginBottom: "-2px" }}>
+                    <DateInput
+                      placeholder={"To"}
+                      callback={dateString => onChange({ ...filter.value, to: dateString })}
+                    />
+                  </div>
+                </div>
+              )
             }
             else if (type === 'number') {
 
@@ -185,15 +179,17 @@ class TableView extends React.Component {
                 <div>
                   <Input onChange={event => onChange(event.target.value)}
                     type="number"
-                    style={{ height: "24.5px", marginLeft: "-4px", marginRight: "auto", marginTop: "-24px", marginBottom: "-25px", width: "95%", fontSize: "15px" }}
+                    style={{ height: "24.5px", marginLeft: "-4px", marginRight: "auto", marginTop: "-24px", marginBottom: "0px", width: "95%", fontSize: "15px" }}
                     onChange={event => onChange({ ...filter.value, from: event.target.value })}
                     hint="From" />
+
                   <Input onChange={event => onChange(event.target.value)}
                     type="number"
-                    style={{ height: "24.5px", marginLeft: "-4px", marginRight: "auto", marginTop: "-24px", marginBottom: "-25px", width: "95%", fontSize: "15px" }}
+                    style={{ height: "24.5px", marginLeft: "-4px", marginRight: "auto", marginTop: "-22px", marginBottom: "-28px", width: "95%", fontSize: "15px" }}
                     onChange={event => onChange({ ...filter.value, to: event.target.value })}
                     hint="To" />
-                </div>)
+                </div>
+              )
             }
             else {
 
