@@ -147,36 +147,55 @@ class TableView extends React.Component {
   }
 
   filterMethodSelect(filter, row, value) {
-    return true
+    if (filter.value === "" || filter.value === "Show All") {
+      return true
+    }
+    else {
+      try {
+        return row[filter.id].toString().toLowerCase().indexOf(filter.value.toLowerCase()) >= 0
+      } catch (error) {
+        return false
+      }
+    }
   }
 
-  FilterSelect(filter, row, onChange) {
-    return (
-      // <div style={{zIndex: "0"}}>
-      // <SelectInput
-      //   callback={selectedItem => onChange(selectedItem.text)}
-      //   data={[{ id: 1, text: "One" }, { id: 2, text: "Two" }, { id: 3, text: "Three" }]}
-      // />
-      // </div>
+  onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+  }
 
+  renderSelectOption(data, key) {
+    let options = []
+
+    let values = data.map(row => row[key]).filter(this.onlyUnique)
+
+    values.map(value => {
+      options.push(<option key={value} value={value}>{value}</option>)
+    })
+    return options
+  }
+
+  FilterSelect(key, row, onChange) {
+
+    let { data } = this.props
+
+    // if (typeof filter === 'undefined' || filter.id === 'undefined') {
+    //   filter = { value: "", id: "" }
+    // }
+
+    return (
       <div className="row">
         <div className="col-md-12">
-          <select>
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
+          <select
+            className="browser-default"
+            style={{ width: "100%" }}
+            defaultValue="Show All"
+            onChange={event => onChange(event.target.value)}
+          >
+            <option value="Show All">Show All</option>
+            {this.renderSelectOption(data.slice(1), key)}
           </select>
         </div>
       </div>
-
-      //   <SelectInput
-      //   label="Make a selection:"
-      //   tooltip="Make a selection below"
-      //   value=""
-      //   data={[{ id: 1, text: "One" }, { id: 2, text: "Two" }, { id: 3, text: "Three" }]}
-      //   callback={this.selectCallbackHandler.bind(this)}
-      //   allowEdit={allowEdit}
-      // />
     )
   }
 
@@ -245,7 +264,7 @@ class TableView extends React.Component {
                 return this.FilterNumber(filter, row, onChange)
 
               case "select":
-                return this.FilterSelect(filter, row, onChange)
+                return this.FilterSelect(key, row, onChange)
 
               default:
                 return this.FilterString(filter, row, onChange)
