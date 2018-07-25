@@ -141,25 +141,28 @@ class SelectInput extends React.Component {
       value = "Select..."
     }
 
-    label = globalFunctions.fixEmptyValue(label, "Label:")
+    label = globalFunctions.fixEmptyValue(label, "")
     tooltip = globalFunctions.fixEmptyValue(tooltip, "")
     allowEdit = globalFunctions.fixEmptyValue(allowEdit, true)
 
     return (
       <>
-        <div hidden={tooltip === ""}>
-          <Tooltip
-            placement="top"
-            component="label"
-            tooltipContent={tooltip}>
+        {label !== "" && <div style={{ marginBottom: "8px" }}>
+          <div hidden={tooltip === ""}>
+            <Tooltip
+              placement="top"
+              component="label"
+              tooltipContent={tooltip}>
+              <b style={{ color: globalFunctions.getFontColour(allowEdit) }}>{label}</b>
+            </Tooltip>
+          </div>
+          <div hidden={tooltip !== ""}>
             <b style={{ color: globalFunctions.getFontColour(allowEdit) }}>{label}</b>
-          </Tooltip>
-        </div>
-        <div hidden={tooltip !== ""}>
-          <b style={{ color: globalFunctions.getFontColour(allowEdit) }}>{label}</b>
-        </div>
+          </div>
+        </div>}
 
-        <Select color="primary">
+
+        <Select color="primary" >
           <MBDSelectInput disabled={!allowEdit} style={{ height: "35px" }} value={value}></MBDSelectInput>
           <SelectOptions>
             {this.renderSelectOptions(data)}

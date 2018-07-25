@@ -3,12 +3,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
-  Carousel, CarouselControl, CarouselInner, CarouselItem, CarouselIndicator, CarouselIndicators, Container, Row, Col,
-  CarouselCaption, View, Mask
+  /*Carousel, CarouselControl, CarouselInner, CarouselItem, CarouselIndicator, CarouselIndicators, CarouselCaption, */
+  Container, Row, Col, View, Mask, Button, Fa
 } from 'mdbreact';
-import { GetUID } from '../../globalFunctions'
+import { isEmptyValue } from '../../globalFunctions'
 
-import '../../../css/mdbreact-carousel.css' //Overrides default carousel css
+//import '../../../css/mdbreact-carousel.css' //Overrides default carousel css
+
+//AntD Carousel
+import Carousel from 'antd/lib/carousel'
+import 'antd/lib/carousel/style/css'
+import '../../../css/antd.carousel.css'
 
 const _ = require('lodash')
 
@@ -49,6 +54,9 @@ class CarouselView extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.next = this.next.bind(this)
+    this.prev = this.prev.bind(this)
   }
 
   componentDidMount() {
@@ -62,10 +70,10 @@ class CarouselView extends React.Component {
     let transData = []
 
     //Dirisa test data
-    transData = this.transformDirisaData(testDataDirisa.data)
+    //transData = this.transformDirisaData(testDataDirisa.data)
 
     //MindMup test data
-    //transData = this.transformMindMupData(testDataMindMup.data)
+    transData = this.transformMindMupData(testDataMindMup.data)
 
     this.props.carouselViewLoad(transData)
     this.setState({ maxLength: transData.length })
@@ -99,7 +107,7 @@ class CarouselView extends React.Component {
 
           if (typeof ideas[key].attr.note !== 'undefined') {
             let textJS = JSON.parse(ideas[key].attr.note.text)
-            newItem.description = "\nNode: " + textJS.node + '\n' + "Position: " + textJS.position + '\n' + "Groups: " + '\n' + "Bio: " + textJS.groups + textJS.bio
+            newItem.description = "\nNode: " + textJS.node + '\n' + "Position: " + textJS.position + '\n' + "Groups: " + textJS.groups + '\n' + "Bio: " + textJS.bio
           }
 
           items.push(newItem)
@@ -120,36 +128,57 @@ class CarouselView extends React.Component {
       data.map(item => {
 
         let index = _.indexOf(data, item) + 1
+        let contentCol = isEmptyValue(item.imageSrc) ? "12" : "8"
+        let descriptionItems = []
+
+        let testVal = item.description.split("\n").filter(x => x !== "" && x !== "\r")  
+        if(testVal.length > 0) {
+          descriptionItems = testVal
+        }
+        else {
+          descriptionItems.push(item.description)
+        }
 
         items.push(
-          <CarouselItem key={"carouselItem_" + index.toString()} itemId={index}>
+          <div key={"carouselItem_" + index.toString()} id={index}>
             <Row>
-              <Col md="4" style={{ marginBottom: "10px" }}>
-                <table height="100%">
-                  <tbody>
-                    <tr>
-                      <td valign="middle">
-                        <img style={{ verticalAlign: "middle", width: "100%" }} src={item.imageSrc} alt={"slide " + index.toString()} />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </Col>
-              <Col md="8" >
+              {!isEmptyValue(item.imageSrc) &&
+                <Col md="4" style={{ marginBottom: "10px" }}>
+                  <table height="100%">
+                    <tbody>
+                      <tr>
+                        <td valign="middle">
+                          <img style={{ verticalAlign: "middle", width: "100%" }} src={item.imageSrc} />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </Col>}
+
+              <Col md={contentCol} >
                 <h4>
                   {item.title}
                 </h4>
                 <div>
-                  {item.description.split("\n").map(i => <p key={GetUID()}>{i}</p>)}
+                  {descriptionItems.map(i => <p key={"descr_" + _.indexOf(descriptionItems, i).toString()}>{i}</p>)}
                 </div>
               </Col>
             </Row>
-          </CarouselItem>
+            <br />
+          </div>
         )
       })
     }
 
     return items
+  }
+
+  next() {
+    this.slider.next()
+  }
+
+  prev() {
+    this.slider.prev()
   }
 
   render() {
@@ -158,27 +187,19 @@ class CarouselView extends React.Component {
 
     if (data.length > 0) {
       return (
-          <Container>
+        <Container>
+          <br />
+          <Carousel ref={slider => (this.slider = slider)} autoplay >
+            {this.renderItems()}
+          </Carousel>
+
+          <div style={{ textAlign: "center" }}>
+            <Button color="elegant" tag="a" size="sm" floating onClick={this.prev}><Fa icon="step-backward" /></Button>
+            <Button color="elegant" tag="a" size="sm" floating onClick={this.next}><Fa icon="step-forward" /></Button>
             <br />
-            <Carousel style={{ padding: "10px" }}
-              interval={false}
-              activeItem={1}
-              length={data.length}
-              slide={true}
-              showControls={true}
-              showIndicators={true}
-              className="z-depth-1">
-              <Row>
-                <Col md="12">
-                  <CarouselInner style={{paddingLeft: "100px", paddingRight: "100px"}}>
-                    {this.renderItems()}
-                  </CarouselInner>
-                  <br/>
-                  <br/>
-                </Col>
-              </Row>
-            </Carousel>
-          </Container >
+            Hover slide to pause
+          </div>
+        </Container >
       );
     }
     else {

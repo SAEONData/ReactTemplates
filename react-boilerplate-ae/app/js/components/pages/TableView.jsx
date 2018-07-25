@@ -1,14 +1,16 @@
 'use strict'
 
+// Import React Table
+import ReactTable from "react-table";
+//import "react-table/react-table.css";
+
 import React from 'react'
 import { connect } from 'react-redux'
 import { fixEmptyValue } from '../../globalFunctions'
-import { Input } from 'mdbreact'
-import DateInput from '../input/DateInput.jsx'
 
-// Import React Table
-import ReactTable from "react-table";
-import "react-table/react-table.css";
+import TextInput from '../input/TextInput.jsx'
+import DateInput from '../input/DateInput.jsx'
+import SelectInput from '../input/SelectInput.jsx'
 
 const _ = require('lodash')
 
@@ -61,40 +63,6 @@ class TableView extends React.Component {
     return "string"
   }
 
-  // GetDataType(data, key) {
-
-  //   let dateCount = 0
-  //   let numberCount = 0
-  //   let stringCount = 0
-
-  //   //let uniqueValues = _.uniqBy(data, key)
-  //   //console.log(uniqueValues.length / data.length)
-
-  //   data.forEach(row => {
-
-  //     let value = row[key]
-
-  //     if (this.IsDate(value)) {
-  //       dateCount += 1
-  //     }
-  //     else if (this.IsNumeric(value)) {
-  //       numberCount += 1
-  //     }
-  //     else {
-  //       stringCount += 1
-  //     }
-  //   });
-
-  //   let list = [
-  //     { key: "date", value: dateCount },
-  //     { key: "number", value: numberCount },
-  //     { key: "string", value: stringCount }
-  //   ]
-
-  //   list = list.sort((curr, next) => next.value - curr.value)
-  //   return list[0].key
-  // }
-
   IsDate(value) {
     return !isNaN(Date.parse(value))
   }
@@ -122,7 +90,7 @@ class TableView extends React.Component {
 
     return (
       <div>
-        <div style={{ marginBottom: "2px" }}>
+        <div style={{ marginBottom: "2px", marginTop: "-1px" }}>
           <DateInput
             placeholder={"From"}
             callback={dateString => onChange({ ...filter.value, from: dateString })}
@@ -156,18 +124,59 @@ class TableView extends React.Component {
 
     return (
       <div>
-        <Input onChange={event => onChange(event.target.value)}
-          type="number"
-          style={{ height: "24.5px", marginLeft: "-4px", marginRight: "auto", marginTop: "-24px", marginBottom: "0px", width: "95%", fontSize: "15px" }}
-          onChange={event => onChange({ ...filter.value, from: event.target.value })}
-          hint="From" />
-
-        <Input onChange={event => onChange(event.target.value)}
-          type="number"
-          style={{ height: "24.5px", marginLeft: "-4px", marginRight: "auto", marginTop: "-22px", marginBottom: "-28px", width: "95%", fontSize: "15px" }}
-          onChange={event => onChange({ ...filter.value, to: event.target.value })}
-          hint="To" />
+        <div>
+          <TextInput
+            callback={text => onChange({ ...filter.value, from: text })}
+            type="number"
+            hint="From"
+            width="90%"
+            height="24.5px"
+          />
+        </div>
+        <div style={{ marginTop: "27px", marginBottom: "-30px" }}>
+          <TextInput
+            callback={text => onChange({ ...filter.value, to: text })}
+            type="number"
+            hint="To"
+            width="90%"
+            height="24.5px"
+          />
+        </div>
       </div>
+    )
+  }
+
+  filterMethodSelect(filter, row, value) {
+    return true
+  }
+
+  FilterSelect(filter, row, onChange) {
+    return (
+      // <div style={{zIndex: "0"}}>
+      // <SelectInput
+      //   callback={selectedItem => onChange(selectedItem.text)}
+      //   data={[{ id: 1, text: "One" }, { id: 2, text: "Two" }, { id: 3, text: "Three" }]}
+      // />
+      // </div>
+
+      <div className="row">
+        <div className="col-md-12">
+          <select>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+          </select>
+        </div>
+      </div>
+
+      //   <SelectInput
+      //   label="Make a selection:"
+      //   tooltip="Make a selection below"
+      //   value=""
+      //   data={[{ id: 1, text: "One" }, { id: 2, text: "Two" }, { id: 3, text: "Three" }]}
+      //   callback={this.selectCallbackHandler.bind(this)}
+      //   allowEdit={allowEdit}
+      // />
     )
   }
 
@@ -186,11 +195,13 @@ class TableView extends React.Component {
 
   FilterString(filter, row, onChange) {
     return (
-      <div>
-        <Input onChange={event => onChange(event.target.value)}
-          style={{ height: "24.5px", marginLeft: "-4px", marginRight: "auto", marginTop: "-24px", marginBottom: "-25px", width: "95%", fontSize: "15px" }}
-          value={filter ? filter.value : ""} />
-      </div >)
+      <TextInput
+        callback={text => onChange(text)}
+        value={filter ? filter.value : ""}
+        width="90%"
+        height="24.5px"
+      />
+    )
   }
 
   setupColumns(data) {
@@ -206,6 +217,7 @@ class TableView extends React.Component {
 
           filterMethod: (filter, row) => {
 
+            let value = row[filter.id]
             let type = this.GetDataType(data, key)
             switch (type) {
               case "date":
@@ -213,6 +225,9 @@ class TableView extends React.Component {
 
               case "number":
                 return this.filterMethodNumber(filter, row, value)
+
+              case "select":
+                return this.filterMethodSelect(filter, row, value)
 
               default:
                 return this.filterMethodString(filter, row, value)
@@ -228,6 +243,9 @@ class TableView extends React.Component {
 
               case "number":
                 return this.FilterNumber(filter, row, onChange)
+
+              case "select":
+                return this.FilterSelect(filter, row, onChange)
 
               default:
                 return this.FilterString(filter, row, onChange)
@@ -246,8 +264,8 @@ class TableView extends React.Component {
     let { defaultSortedId, defaultSortedDir } = this.state
 
     filterable = fixEmptyValue(filterable, true)
-  
-    if (data.length > 0) {  
+
+    if (data.length > 0) {
       return (
         <div>
           <br />

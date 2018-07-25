@@ -46,23 +46,19 @@ class DateInput extends React.Component {
 
     return (
       <>
-        {(() => {
-          if (label !== "") {
-            <div style={{ marginBottom: "8px" }}>
-              <div hidden={tooltip === ""}>
-                <Tooltip
-                  placement="top"
-                  component="label"
-                  tooltipContent={tooltip}>
-                  <b style={{ color: globalFunctions.getFontColour(allowEdit) }}>{label}</b>
-                </Tooltip>
-              </div>
-              <div hidden={tooltip !== ""}>
-                <b style={{ color: globalFunctions.getFontColour(allowEdit) }}>{label}</b>
-              </div>
-            </div>
-          }
-        })()}
+        {label !== "" && <div style={{ marginBottom: "8px" }}>
+          <div hidden={tooltip === ""}>
+            <Tooltip
+              placement="top"
+              component="label"
+              tooltipContent={tooltip}>
+              <b style={{ color: globalFunctions.getFontColour(allowEdit) }}>{label}</b>
+            </Tooltip>
+          </div>
+          <div hidden={tooltip !== ""}>
+            <b style={{ color: globalFunctions.getFontColour(allowEdit) }}>{label}</b>
+          </div>
+        </div>}
 
         <DatePicker
           placeholder={placeholder}
