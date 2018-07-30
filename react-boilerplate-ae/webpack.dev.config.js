@@ -2,7 +2,6 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const cwd = process.cwd()
-
 const mode = 'development'
 
 /**
@@ -16,16 +15,6 @@ module.exports = {
     historyApiFallback: true
   },
   entry: {
-    hmr: [
-      // Include the client code. Note host/post.
-      "webpack-dev-server/client?http://localhost:8080",
-  
-      // Hot reload only when compiled successfully
-      "webpack/hot/only-dev-server",
-  
-      // Alternative with refresh on failure
-      // "webpack/hot/dev-server",
-    ],
     app: ['./js/index.jsx'],
     react: [
       'react',
@@ -35,7 +24,6 @@ module.exports = {
       'redux',
       'react-redux',
       'react-router-redux',
-      'react-tap-event-plugin',
       'history'
     ],
   },

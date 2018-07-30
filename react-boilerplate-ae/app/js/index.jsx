@@ -1,19 +1,10 @@
-//Components
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import injectTapEventPlugin from 'react-tap-event-plugin'
 import store from './store'
 import userManager from './components/Authentication/userManager';
 import { OidcProvider } from 'redux-oidc'
-
 import App from './App.jsx'
-
-// /**
-//  * Tap Event
-//  * @ignore
-//  */
-// injectTapEventPlugin()
 
 const render = Component => {
   ReactDOM.render(

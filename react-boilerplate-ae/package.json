@@ -1,10 +1,10 @@
 {
-  "name": "boilerplate",
+  "name": "react_boilerplate_and_templates",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "start": "npm run webpack-app --optimize-minimize --progress & echo 'Output files are saved in ./dist'",
-    "app-dev": "webpack-dev-server --inline --hot --watch-poll --progress=true --config ./webpack.dev.config.js",
+    "app-dev": "webpack-dev-server --inline --hot --watch-poll --progress=true --config ./webpack.dev.config.js --open",
     "webpack-app": "./node_modules/.bin/webpack -p",
     "webpack-dev": "./node_modules/.bin/webpack --progress=true --config ./webpack.dev.config.js"
   },
@@ -13,12 +13,9 @@
   "description": "",
   "dependencies": {
     "antd": "^3.7.0",
-    "babel-plugin-emotion": "^9.2.6",
     "bootstrap": "^4.1.2",
-    "copy-webpack-plugin": "^4.5.2",
     "font-awesome": "^4.7.0",
     "mdbreact": "git+https://oauth2:TrvzhasQo5h8aod8YSLE@git.mdbootstrap.com/mdb/react/re-pro.git",
-    "npm": "^5.10.0",
     "oidc-client": "^1.5.2",
     "query-string": "^5.1.1",
     "react": "^16.4.1",
@@ -29,13 +26,10 @@
     "react-router-dom": "^4.3.1",
     "react-router-redux": "^4.0.8",
     "react-table": "^6.8.6",
-    "react-tap-event-plugin": "^3.0.3",
     "react-textarea-autosize": "^6.1.0",
     "react-tooltip": "^3.6.1",
     "redux": "^3.7.2",
     "redux-oidc": "^3.0.1",
-    "save": "^2.3.2",
-    "update": "^0.7.4",
     "whatwg-fetch": "^2.0.4"
   },
   "devDependencies": {
@@ -43,6 +37,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.54",
     "@babel/preset-env": "^7.0.0-beta.54",
     "@babel/preset-react": "^7.0.0-beta.54",
+    "babel-plugin-emotion": "^9.2.6",
     "babel-loader": "^8.0.0-beta.4",
     "babel-polyfill": "^6.26.0",
     "css-loader": "^0.28.11",
@@ -54,6 +49,7 @@
     "style-loader": "^0.20.3",
     "webpack": "^4.16.1",
     "webpack-cli": "^2.1.5",
-    "webpack-dev-server": "^3.1.4"
+    "webpack-dev-server": "^3.1.4",
+    "copy-webpack-plugin": "^4.5.2"
   }
 }
