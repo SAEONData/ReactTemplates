@@ -10,6 +10,7 @@
   ],
   "plugins": [
     "@babel/plugin-proposal-object-rest-spread",
-    "emotion"
+    "emotion",
+    "react-hot-loader/babel"
   ]
 }

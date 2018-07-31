@@ -37,10 +37,12 @@ class App extends React.Component {
 
     this.getNavbar = this.getNavbar.bind(this)
 
-    this.state = { navbar: true }
+    let showNavbar = true
     if (location.toString().includes("navbar=hidden")) {
-      this.state = { navbar: false }
+      showNavbar = false
     }
+
+    this.state = { navbar: showNavbar }
   }
 
   getNavbar() {
