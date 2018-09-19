@@ -3,40 +3,95 @@
 import React from 'react'
 import { SideNav as MSBSideNav, SideNavNav, SideNavCat, SideNavItem, Fa } from 'mdbreact'
 
+import '../../../css/mdbreact-sidenav.css'
 
 class SideNav extends React.Component {
 
   constructor(props) {
     super(props)
 
-    this.state = { navCat1: true }
+    this.renderLinks = this.renderLinks.bind(this)
+    this.toggleNav = this.toggleNav.bind(this)
+    this.state = { navOpen: []}
   }
 
-  // Collapse/Accordion
-  navCat1Click() {
-    this.setState({ navCat1: !this.state.navCat1 })
+  toggleNav(key){
+
+    let { navOpen } = this.state
+
+    if(navOpen.includes(key)){
+      navOpen = navOpen.filter(x => x !== key)
+    }
+    else{
+      navOpen.push(key)
+    }
+
+    this.setState({ navOpen })
+
+  }
+
+  renderLinks(data, level = 0) {
+
+    let { navOpen } = this.state
+    let links = []
+    let indent = (level > 1 ? 26 * (level - 1) : 0) + "px"
+
+    data.forEach(x => {
+
+      if (typeof x.children !== 'undefined') {
+        links.push(
+          <SideNavCat
+            style={{ fontSize: "15px", fontWeight: "400" }}
+            isOpen={navOpen.includes(x.id)} 
+            key={x.id}
+            onClick={() => this.toggleNav(x.id)}
+            name={x.text}
+            icon="chevron-right" >
+            {this.renderLinks(x.children, level + 1)}
+          </SideNavCat>
+        )
+      }
+      else {
+        if (typeof x.link !== 'undefined') {
+          links.push(
+            <SideNavItem key={x.id} onClick={() => window.open(x.link, "blank")}>
+              <Fa style={{ marginLeft: indent }} icon="link" />
+              {x.text}
+            </SideNavItem>
+          )
+        }
+        else {
+          links.push(
+            <SideNavItem key={x.id}>
+              <Fa style={{ marginLeft: indent }} icon="unlink" />
+              {x.text}
+            </SideNavItem>
+          )
+        }
+      }
+
+
+    })
+
+    return links
   }
 
   render() {
 
-    let { isOpen } = this.props
-    let { navCat1 } = this.state
+    let { isOpen, title, data } = this.props
 
     return (
       <MSBSideNav hidden isOpenWithButton={isOpen} breakWidth={1300} className="blue darken-3">
         <br />
         <div className="text-center">
-          <h4>React Boilerplate &amp; Templates</h4>
+          <h4>{title}</h4>
         </div>
         <hr />
 
-
-        <SideNavNav>
-          <SideNavCat name="Links" isOpen={navCat1} onClick={this.navCat1Click.bind(this)} icon="chevron-right">
-            <SideNavItem onClick={() => location.hash = "#/"}>Home</SideNavItem>
-            <SideNavItem onClick={() => location.hash = "#/components"}>Components</SideNavItem>
-          </SideNavCat>
+        <SideNavNav style={{ width: "400px" }}>
+          {this.renderLinks(data)}
         </SideNavNav>
+
       </MSBSideNav>
     )
   }

@@ -16,6 +16,9 @@ import LoadingPanel from '../input/LoadingPanel.jsx'
 import DateInput from '../input/DateInput.jsx'
 import VocabularyLookup from '../input/VocabularyLookup.jsx'
 import SideNav from '../navigation/SideNav.jsx'
+import OpenLayersMap from '../visualisation/OpenLayersMap.jsx';
+
+const NavData = require('../../../data/sideNavData.js')
 
 const mapStateToProps = (state, props) => {
   return {}
@@ -79,7 +82,7 @@ class Components extends React.Component {
 
     return (
       <>
-        <SideNav isOpen={showSideNav} />
+        <SideNav title="React Boilerplate & Templates" data={NavData.data} isOpen={showSideNav} />
 
         <Row>
           <Col md="8">
@@ -287,6 +290,18 @@ class Components extends React.Component {
                   callback={this.treeSelectCallbackHandler.bind(this)}
                   allowEdit={allowEdit}
                 />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        <br />
+        <Row>
+          <Col md="12">
+            <Card>
+              <CardBody>
+                <CardTitle style={{ color: "#1565c0" }}>OpenLayers Map</CardTitle>
+                <br />
+                <OpenLayersMap />
               </CardBody>
             </Card>
           </Col>
