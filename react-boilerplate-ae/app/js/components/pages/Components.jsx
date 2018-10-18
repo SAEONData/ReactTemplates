@@ -16,7 +16,7 @@ import LoadingPanel from '../input/LoadingPanel.jsx'
 import DateInput from '../input/DateInput.jsx'
 import VocabularyLookup from '../input/VocabularyLookup.jsx'
 import SideNav from '../navigation/SideNav.jsx'
-import OpenLayersMap from '../visualisation/OpenLayersMap.jsx';
+import ReactMap from '../visualisation/ReactMap.jsx';
 
 const NavData = require('../../../data/sideNavData.js')
 
@@ -299,9 +299,9 @@ class Components extends React.Component {
           <Col md="12">
             <Card>
               <CardBody>
-                <CardTitle style={{ color: "#1565c0" }}>OpenLayers Map</CardTitle>
+                <CardTitle style={{ color: "#1565c0" }}>React Map (react-leaflet)</CardTitle>
                 <br />
-                <OpenLayersMap />
+                <ReactMap />
               </CardBody>
             </Card>
           </Col>

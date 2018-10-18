@@ -12,7 +12,8 @@ module.exports = {
   devtool: 'inline-source-map',
   mode,
   devServer: {
-    historyApiFallback: true
+    historyApiFallback: true,
+    port: 8087
   },
   entry: {
     app: ['./js/index.jsx'],
@@ -41,9 +42,8 @@ module.exports = {
     },
     {
       test: /\.json$/,
-      use: [
-        'json-loader'
-      ]
+      use: ['json-loader'],
+      exclude: /node_modules/
     },
     {
       test: /\.css$/,
