@@ -17,6 +17,7 @@ import DateInput from '../input/DateInput.jsx'
 import VocabularyLookup from '../input/VocabularyLookup.jsx'
 import SideNav from '../navigation/SideNav.jsx'
 import ReactMap from '../visualisation/ReactMap.jsx';
+import TreeSelectInputWithAdd from '../input/TreeSelectInputWithAdd.jsx';
 
 const NavData = require('../../../data/sideNavData.js')
 
@@ -194,7 +195,15 @@ class Components extends React.Component {
                       <CardBody style={{ height: "180px" }}>
                         <CardTitle style={{ color: "#1565c0" }}>Tree-Select Input</CardTitle>
                         <br />
-                        <TreeSelectInput
+                        {/* <TreeSelectInput
+                          label="Select something:"
+                          tooltip="Select something below"
+                          value=""
+                          data={[{ id: 1, text: "Parent1", children: [{ id: 11, text: "Child1", children: [{ id: 111, text: "SubChild1" }] }, { id: 12, text: "Child2" }] }, { id: 2, text: "Parent2" }]}
+                          callback={this.treeSelectCallbackHandler.bind(this)}
+                          allowEdit={allowEdit}
+                        /> */}
+                        <TreeSelectInputWithAdd
                           label="Select something:"
                           tooltip="Select something below"
                           value=""
